@@ -3,7 +3,7 @@
 # OF_ROOT allows to move projects outside apps/* just set this variable to the
 # absoulte path to the OF root folder
 
-OF_ROOT = ../../..
+OF_ROOT = ../openFrameworks
 
 
 # USER_CFLAGS allows to pass custom flags to the compiler
@@ -22,7 +22,7 @@ USER_LDFLAGS =
 
 # use this to add system libraries for example:
 # USER_LIBS = -lpango
- 
+
 USER_LIBS = -lX11 -lusb-1.0
 
 

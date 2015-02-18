@@ -100,7 +100,7 @@ public:
 
     // use of MostPixelsEver
     bool bMpe;
-    mpeClientTCP client;
+    ofxMPEClient client;
     void mpeFrameEvent(ofxMPEEventArgs& event);
     void mpeMessageEvent(ofxMPEEventArgs& event);
     void mpeResetEvent(ofxMPEEventArgs& event);
