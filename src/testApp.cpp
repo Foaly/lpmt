@@ -1991,3 +1991,8 @@ void testApp::activateQuad(int x, int y)
         gui.setPage((activeQuad*3)+2);
     }
 }
+
+void testApp::newMidiMessage(ofxMidiMessage& eventArgs)
+{
+
+}

@@ -34,6 +34,8 @@ bin/data/timeline/*
 .frag
 .xml
 
+obj/
+
 # general generated data
 *.a
 *.o
