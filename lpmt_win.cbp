@@ -5,7 +5,7 @@
 		<Option title="lpmt" />
 		<Option makefile="makefile" />
 		<Option pch_mode="2" />
-		<Option compiler="gcc" />
+		<Option compiler="gnu_gcc_compiler_471" />
 		<Option virtualFolders="addons\;src\;addons\ofxMSAInteractiveObject\src\;addons\ofxMostPixelsEver\src\;addons\ofxNetwork\src\;addons\ofxOsc\libs\oscpack\src\ip\;addons\ofxOsc\libs\oscpack\src\osc\;addons\ofxOsc\libs\oscpack\src\ip\win32\;addons\ofxOsc\src\;addons\ofxSimpleGuiToo\src\Controls\;addons\ofxSimpleGuiToo\src\;addons\ofxThread\src\;addons\ofxXmlSettings\libs\;addons\ofxXmlSettings\src\;addons\ofxTimeline\;addons\ofxTween\;addons\ofxTween\Easings;addons\ofxRange\;addons\ofxTextInputField\;Resources\;addons\ofxOpenCv\libs\opencv\include\opencv2\flann\;addons\ofxOpenCv\libs\opencv\include\opencv2\core\;addons\ofxOpenCv\src\;addons\ofxOpenCv\libs\opencv\include\opencv2\ts\;addons\ofxOpenCv\libs\opencv\include\opencv2\legacy\;addons\ofxOpenCv\libs\opencv\include\opencv2\imgproc\;addons\ofxOpenCv\libs\opencv\include\opencv2\gpu\;addons\ofxOpenCv\libs\opencv\include\opencv\;addons\ofxOpenCv\libs\opencv\include\opencv2\video\;addons\ofxOpenCv\libs\opencv\include\opencv2\highgui\;addons\ofxOpenCv\libs\opencv\include\opencv2\features2d\;addons\ofxOpenCv\libs\opencv\include\opencv2\objdetect\;addons\ofxOpenCv\libs\opencv\include\opencv2\ml\;addons\ofxOpenCv\libs\opencv\include\opencv2\;addons\ofxOpenCv\libs\opencv\include\opencv2\calib3d\;addons\ofxOpenCv\libs\opencv\include\opencv2\contrib\;addons\ofxMidi\libs\rtmidi\;addons\ofxMidi\;addons\ofxMidi\desktop\;addons\ofxMSATimer\src;addons\ofxTimecode\src;addons\ofxTween\Easings\;addons\ofxMSATimer\src\;addons\ofxTimecode\src\;addons\ofxTimeline\kiss\;addons\ofxTimeline\kiss\src\;addons\ofxTimeline\ofOpenALSoundPlayer_TimelineAdditions\;addons\ofxTimeline\sndfile\;addons\ofxTimeline\openal\;addons\ofxTimeline\kiss\include\;addons\ofxKinect\;addons\ofxKinect\libusb-win32\;addons\ofxKinect\extra\;addons\ofxKinect\libfreenect\;" />
 		<Build>
 			<Target title="release">
@@ -14,7 +14,7 @@
 				<Option object_output="obj/release" />
 				<Option external_deps="../openFrameworks/libs/openFrameworksCompiled/lib/win_cb/openFrameworks.lib;" />
 				<Option type="1" />
-				<Option compiler="gcc" />
+				<Option compiler="gnu_gcc_compiler_471" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-O2" />
@@ -30,9 +30,12 @@
 				<Option object_output="obj/debug/" />
 				<Option external_deps="../openFrameworks/libs/openFrameworksCompiled/lib/win_cb/openFrameworksDebug.lib;" />
 				<Option type="1" />
-				<Option compiler="gcc" />
+				<Option compiler="gnu_gcc_compiler_471" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
+					<Add option="-Weffc++" />
+					<Add option="-Wextra" />
+					<Add option="-Wall" />
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
@@ -107,18 +110,18 @@
 			<Add directory="../openFrameworks/addons/ofxMidi/libs/rtmidi/" />
 		</Compiler>
 		<Linker>
-			<Add library="..\openFrameworks\libs\FreeImage\lib\win_cb\FreeImage.lib" />
-			<Add library="..\openFrameworks\libs\rtAudio\lib\win_cb\librtaudio.a" />
-			<Add library="..\openFrameworks\libs\quicktime\lib\win_cb\qtmlClient.lib" />
-			<Add library="..\openFrameworks\libs\cairo\lib\win_cb\libcairo.a" />
-			<Add library="..\openFrameworks\libs\cairo\lib\win_cb\libpixman-1.a" />
-			<Add library="..\openFrameworks\libs\freetype\lib\win_cb\libfreetype.a" />
-			<Add library="..\openFrameworks\libs\glut\lib\win_cb\libglut.a" />
-            <Add library="../openFrameworks/libs/glfw/lib/win_cb/libglfw3.a" />
-			<Add library="..\openFrameworks\libs\videoInput\lib\win_cb\videoInputLib.a" />
-			<Add library="..\openFrameworks\libs\fmodex\lib\win_cb\libfmodex.a" />
-			<Add library="..\openFrameworks\libs\glew\lib\win_cb\glew32s.lib" />
-			<Add library="..\openFrameworks\libs\glu\lib\win_cb\glu32.lib" />
+			<Add library="../openFrameworks/libs/FreeImage/lib/win_cb/FreeImage.lib" />
+			<Add library="../openFrameworks/libs/rtAudio/lib/win_cb/librtaudio.a" />
+			<Add library="../openFrameworks/libs/quicktime/lib/win_cb/qtmlClient.lib" />
+			<Add library="../openFrameworks/libs/cairo/lib/win_cb/libcairo.a" />
+			<Add library="../openFrameworks/libs/cairo/lib/win_cb/libpixman-1.a" />
+			<Add library="../openFrameworks/libs/freetype/lib/win_cb/libfreetype.a" />
+			<Add library="../openFrameworks/libs/glut/lib/win_cb/libglut.a" />
+			<Add library="../openFrameworks/libs/glfw/lib/win_cb/libglfw3.a" />
+			<Add library="../openFrameworks/libs/videoInput/lib/win_cb/videoInputLib.a" />
+			<Add library="../openFrameworks/libs/fmodex/lib/win_cb/libfmodex.a" />
+			<Add library="../openFrameworks/libs/glew/lib/win_cb/glew32s.lib" />
+			<Add library="../openFrameworks/libs/glu/lib/win_cb/glu32.lib" />
 			<Add library="../openFrameworks/libs/poco/lib/win_cb/libPocoNetSSL.a" />
 			<Add library="../openFrameworks/libs/poco/lib/win_cb/libPocoCrypto.a" />
 			<Add library="../openFrameworks/libs/poco/lib/win_cb/libPocoNet.a" />
@@ -127,7 +130,7 @@
 			<Add library="../openFrameworks/libs/poco/lib/win_cb/libPocoFoundation.a" />
 			<Add library="../openFrameworks/libs/openssl/lib/win_cb/libssl.a" />
 			<Add library="../openFrameworks/libs/openssl/lib/win_cb/libcrypto.a" />
-			<Add library="..\openFrameworks\libs\tess2\lib\win_cb\libtess2.a" />
+			<Add library="../openFrameworks/libs/tess2/lib/win_cb/libtess2.a" />
 			<Add library="../openFrameworks/addons/ofxOpenCv/libs/opencv/lib/win_cb/libopencv_legacy231.a" />
 			<Add library="../openFrameworks/addons/ofxOpenCv/libs/opencv/lib/win_cb/libopencv_calib3d231.a" />
 			<Add library="../openFrameworks/addons/ofxOpenCv/libs/opencv/lib/win_cb/libopencv_flann231.a" />
@@ -255,7 +258,6 @@
 		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/src/usb_libusb10.h">
 			<Option virtualFolder="addons/ofxKinect/libfreenect/" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libusb-1.0/include/libusb-1.0/libusb.h" />
 		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libusb-win32/include/lusb0_usb.h">
 			<Option virtualFolder="addons/ofxKinect/libusb-win32/" />
 		</Unit>
@@ -1214,9 +1216,6 @@
 		</Unit>
 		<Unit filename="src/appUtils.cpp">
 			<Option virtualFolder="src/" />
-		</Unit>
-		<Unit filename="src/ball.h">
-			<Option virtualFolder="src" />
 		</Unit>
 		<Unit filename="src/config.h">
 			<Option virtualFolder="src/" />
