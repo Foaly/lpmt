@@ -14,14 +14,6 @@
 #include "ofxSyphon.h"
 #endif
 
-#ifndef True
-#define True true
-#endif
-
-#ifndef False
-#define False false
-#endif
-
 class quad: public ofNode
 {
 

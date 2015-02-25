@@ -56,7 +56,7 @@ void testApp::setup()
     // camera stuff
     cameras.clear();
     numOfCams = 0;
-    bCameraOk = False;
+    bCameraOk = false;
     if(configOk)
     {
         XML.pushTag("CAMERAS");
@@ -223,11 +223,11 @@ void testApp::setup()
     // set border color for quads in setup mode
     borderColor = 0x666666;
     // starts in quads setup mode
-    isSetup = True;
+    isSetup = true;
     // starts running
-    bStarted = True;
+    bStarted = true;
     // default is not using MostPixelsEver
-    bMpe = False;
+    bMpe = false;
     // starts in windowed mode
     bFullscreen	= 0;
     // gui is on at start
@@ -315,7 +315,7 @@ void testApp::setup()
     quads[3].quadNumber = 3;
     // define last one as active quad
     activeQuad = 3;
-    quads[activeQuad].isActive = True;
+    quads[activeQuad].isActive = true;
     // number of total quads, to be modified later at each quad insertion
     nOfQuads = 4;
     layers[0] = 0;
@@ -567,14 +567,14 @@ void testApp::setup()
         getXml("_lpmt_settings.xml");
         gui.setPage((activeQuad*3)+2);
         XML.clear();
-        isSetup = False;
+        isSetup = false;
         gui.hide();
-        bGui = False;
+        bGui = false;
         for(int i = 0; i < 36; i++)
         {
             if (quads[i].initialized)
             {
-                quads[i].isSetup = False;
+                quads[i].isSetup = false;
             }
         }
         bFullscreen = true;
@@ -591,7 +591,7 @@ void testApp::exit()
 void testApp::mpeSetup()
 {
     stopProjection();
-    bMpe = True;
+    bMpe = true;
     // MPE stuff
     lastFrameTime = ofGetElapsedTimef();
     client.setup("mpe_client_settings.xml", true); //false means you can use backthread
@@ -1092,13 +1092,13 @@ void testApp::keyPressed(int key)
     {
         if (isSetup)
         {
-            quads[activeQuad].isActive = False;
+            quads[activeQuad].isActive = false;
             activeQuad += 1;
             if (activeQuad > nOfQuads-1)
             {
                 activeQuad = 0;
             }
-            quads[activeQuad].isActive = True;
+            quads[activeQuad].isActive = true;
         }
         gui.setPage((activeQuad*3)+2);
     }
@@ -1108,13 +1108,13 @@ void testApp::keyPressed(int key)
     {
         if (isSetup)
         {
-            quads[activeQuad].isActive = False;
+            quads[activeQuad].isActive = false;
             activeQuad -= 1;
             if (activeQuad < 0)
             {
                 activeQuad = nOfQuads-1;
             }
-            quads[activeQuad].isActive = True;
+            quads[activeQuad].isActive = true;
         }
         gui.setPage((activeQuad*3)+2);
     }
@@ -1206,8 +1206,8 @@ void testApp::keyPressed(int key)
                 quads[nOfQuads].quadNumber = nOfQuads;
                 layers[nOfQuads] = nOfQuads;
                 quads[nOfQuads].layer = nOfQuads;
-                quads[activeQuad].isActive = False;
-                quads[nOfQuads].isActive = True;
+                quads[activeQuad].isActive = false;
+                quads[nOfQuads].isActive = true;
                 activeQuad = nOfQuads;
                 ++nOfQuads;
                 gui.setPage((activeQuad*3)+2);
@@ -1227,27 +1227,27 @@ void testApp::keyPressed(int key)
     {
         if (isSetup)
         {
-            isSetup = False;
+            isSetup = false;
             gui.hide();
-            bGui = False;
+            bGui = false;
             for(int i = 0; i < 36; i++)
             {
                 if (quads[i].initialized)
                 {
-                    quads[i].isSetup = False;
+                    quads[i].isSetup = false;
                 }
             }
         }
         else
         {
-            isSetup = True;
+            isSetup = true;
             gui.show();
-            bGui = True;
+            bGui = true;
             for(int i = 0; i < 36; i++)
             {
                 if (quads[i].initialized)
                 {
-                    quads[i].isSetup = True;
+                    quads[i].isSetup = true;
                 }
             }
         }
@@ -1278,12 +1278,12 @@ void testApp::keyPressed(int key)
     if(key == 'g' && !bTimeline)
     {
         if (maskSetup) {
-            maskSetup = False;
+            maskSetup = false;
             for(int i = 0; i < 36; i++)
                 {
                     if (quads[i].initialized)
                     {
-                        quads[i].isMaskSetup = False;
+                        quads[i].isMaskSetup = false;
                     }
                 }
         }
@@ -1378,7 +1378,7 @@ void testApp::keyPressed(int key)
             {
                 if (quads[i].initialized)
                 {
-                quads[i].isOn = False;
+                quads[i].isOn = false;
                     if (quads[i].videoBg && quads[i].video.isLoaded())
                     {
                         quads[i].video.setVolume(0);
@@ -1394,7 +1394,7 @@ void testApp::keyPressed(int key)
             {
                 if (quads[i].initialized)
                 {
-                    quads[i].isOn = True;
+                    quads[i].isOn = true;
                     if (quads[i].videoBg && quads[i].video.isLoaded())
                     {
                         quads[i].video.setVolume(quads[i].videoVolume);
@@ -1529,12 +1529,12 @@ void testApp::mouseMoved(int x, int y )
 
         if(whichCorner >= 0)
             {
-                quads[activeQuad].bHighlightCorner = True;
+                quads[activeQuad].bHighlightCorner = true;
                 quads[activeQuad].highlightedCorner = whichCorner;
             }
         else
             {
-                quads[activeQuad].bHighlightCorner = False;
+                quads[activeQuad].bHighlightCorner = false;
                 quads[activeQuad].highlightedCorner = -1;
 
                 // distance from center
@@ -1585,12 +1585,12 @@ void testApp::mouseMoved(int x, int y )
         }
         if(whichPoint >= 0)
             {
-                quads[activeQuad].bHighlightMaskPoint = True;
+                quads[activeQuad].bHighlightMaskPoint = true;
                 quads[activeQuad].highlightedMaskPoint = whichPoint;
             }
         else
             {
-                quads[activeQuad].bHighlightMaskPoint = False;
+                quads[activeQuad].bHighlightMaskPoint = false;
                 quads[activeQuad].highlightedMaskPoint = -1;
             }
     }
@@ -1646,13 +1646,13 @@ void testApp::mouseMoved(int x, int y )
 
         if(whichPointRow >= 0)
             {
-                quads[activeQuad].bHighlightCtrlPoint = True;
+                quads[activeQuad].bHighlightCtrlPoint = true;
                 quads[activeQuad].highlightedCtrlPointRow = whichPointRow;
                 quads[activeQuad].highlightedCtrlPointCol = whichPointCol;
             }
         else
             {
-                quads[activeQuad].bHighlightCtrlPoint = False;
+                quads[activeQuad].bHighlightCtrlPoint = false;
                 quads[activeQuad].highlightedCtrlPointRow = -1;
                 quads[activeQuad].highlightedCtrlPointCol = -1;
             }
@@ -1846,7 +1846,7 @@ void testApp::mouseReleased()
         }
     }
     whichCorner = -1;
-    quads[activeQuad].bHighlightCorner = False;
+    quads[activeQuad].bHighlightCorner = false;
     }
 }
 
@@ -1860,7 +1860,7 @@ void testApp::windowResized(int w, int h)
             {
                 if (quads[i].initialized)
                 {
-                    quads[i].bHighlightCorner = False;
+                    quads[i].bHighlightCorner = false;
                     quads[i].allocateFbo(ofGetWidth(),ofGetHeight());
                     quadDimensionsReset(i);
                 }
@@ -1985,9 +1985,9 @@ void testApp::activateQuad(int x, int y)
     }
     if (whichQuad != activeQuad)
     {
-        quads[activeQuad].isActive = False;
+        quads[activeQuad].isActive = false;
         activeQuad = whichQuad;
-        quads[activeQuad].isActive = True;
+        quads[activeQuad].isActive = true;
         gui.setPage((activeQuad*3)+2);
     }
 }

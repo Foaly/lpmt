@@ -191,23 +191,23 @@ void testApp::parseOsc()
     {
         if (isSetup)
         {
-            isSetup = False;
+            isSetup = false;
             for(int i = 0; i < 36; i++)
             {
                 if (quads[i].initialized)
                 {
-                    quads[i].isSetup = False;
+                    quads[i].isSetup = false;
                 }
             }
         }
         else
         {
-            isSetup = True;
+            isSetup = true;
             for(int i = 0; i < 36; i++)
             {
                 if (quads[i].initialized)
                 {
-                    quads[i].isSetup = True;
+                    quads[i].isSetup = true;
                 }
             }
         }
@@ -215,24 +215,24 @@ void testApp::parseOsc()
 
     else if ( m.getAddress() == "/projection/mode/setup/on" )
     {
-        isSetup = True;
+        isSetup = true;
         for(int i = 0; i < 36; i++)
         {
             if (quads[i].initialized)
             {
-                quads[i].isSetup = True;
+                quads[i].isSetup = true;
             }
         }
     }
 
     else if ( m.getAddress() == "/projection/mode/setup/off" )
     {
-        isSetup = False;
+        isSetup = false;
         for(int i = 0; i < 36; i++)
         {
             if (quads[i].initialized)
             {
-                quads[i].isSetup = False;
+                quads[i].isSetup = false;
             }
         }
     }
@@ -313,9 +313,9 @@ void testApp::parseOsc()
         int osc_activequad = m.getArgAsInt32( 0 );
         if (osc_activequad <= nOfQuads-1)
         {
-            quads[activeQuad].isActive = False;
+            quads[activeQuad].isActive = false;
             activeQuad = osc_activequad;
-            quads[activeQuad].isActive = True;
+            quads[activeQuad].isActive = true;
             gui.setPage((activeQuad*3)+2);
         }
     }

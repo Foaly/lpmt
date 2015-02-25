@@ -87,33 +87,33 @@
     borderColor = 0x666666;
 
     // sets default variables
-    initialized = True;
-    isActive = False;
-    isSetup = True;
-    isOn = True;
-    isMaskSetup = False;
-    colorBg = False;
-    transBg = False;
-    transUp = True;
-    camBg = False;
-    camGreenscreen = False;
-    imgBg = False;
-    videoBg = False;
-    videoLoop = True;
-    videoGreenscreen = False;
+    initialized = true;
+    isActive = false;
+    isSetup = true;
+    isOn = true;
+    isMaskSetup = false;
+    colorBg = false;
+    transBg = false;
+    transUp = true;
+    camBg = false;
+    camGreenscreen = false;
+    imgBg = false;
+    videoBg = false;
+    videoLoop = true;
+    videoGreenscreen = false;
     sharedVideoBg = false;
     sharedVideoNum = 1;
     sharedVideoId = sharedVideoNum -1;
-    slideshowBg = False;
-    slideFit = False;
-    slideKeepAspect = True;
+    slideshowBg = false;
+    slideFit = false;
+    slideKeepAspect = true;
 
-    videoHFlip = False;
-    imgHFlip = False;
-    camHFlip = False;
-    videoVFlip = False;
-    imgVFlip = False;
-    camVFlip = False;
+    videoHFlip = false;
+    imgHFlip = false;
+    camHFlip = false;
+    videoVFlip = false;
+    imgVFlip = false;
+    camVFlip = false;
 
     camNumber = prevCamNumber = 0;
     camMultX = 1;
@@ -211,7 +211,7 @@
 	syphonScaleY = 1.0;
 	#endif
 
-    edgeBlendBool = False;
+    edgeBlendBool = false;
     edgeBlendExponent = 1.0;
     edgeBlendGamma = 1.8;
     edgeBlendLuminance = 0.0;
@@ -235,27 +235,27 @@
     quadW = ofGetWidth();
     quadH = ofGetHeight();
 
-    bBlendModes = False;
+    bBlendModes = false;
     blendMode = 0;
 
-    bHighlightCorner = False;
+    bHighlightCorner = false;
     highlightedCorner = -1;
 
     bHighlightCenter = false;
     bHighlightRotation = false;
 
     maskPoints = vector<ofPoint>();
-    bMask = False;
-    maskInvert = False;
+    bMask = false;
+    maskInvert = false;
 
-    bHighlightMaskPoint = False;
+    bHighlightMaskPoint = false;
     highlightedMaskPoint = -1;
 
-    bDeform = False;
+    bDeform = false;
 
     //This sets up my Bezier Surface
-    bBezier = False;
-    isBezierSetup = False;
+    bBezier = false;
+    isBezierSetup = false;
     highlightedCtrlPointRow = -1;
     highlightedCtrlPointCol = -1;
 
@@ -263,7 +263,7 @@
     bezierSurfaceSetup();
 
     // prepare grid surface evaluator
-    bGrid = False;
+    bGrid = false;
     gridColumns = 7;
     gridRows = 6;
     gridSurfaceSetup();
@@ -365,7 +365,7 @@ void quad::update()
         if (slideshowBg)
         {
             // put it to off while loading images
-            slideshowBg = False;
+            slideshowBg = false;
             // if a different slideshow has been chosen in gui we do load its images
             if ((slideshowName != loadedSlideshow) && slideshowName != "")
             {
@@ -397,7 +397,7 @@ void quad::update()
             // update fps
             //if (abs(fps-ofGetFrameRate()) > 50) {fps = ofGetFrameRate();}
             slideFramesDuration = (slideshowSpeed * fps);
-            slideshowBg = True;
+            slideshowBg = true;
         }
 
         // -------------------------
