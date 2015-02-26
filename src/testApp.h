@@ -188,7 +188,7 @@ public:
 
     ofxXmlSettings XML;
     void setXml();
-    void getXml(string xmlFile);
+    void loadSettingsFromXMLFile(std::string xmlFilePath);
 
     // double-click stuff
     unsigned long doubleclickTime;

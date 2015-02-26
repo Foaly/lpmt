@@ -156,194 +156,202 @@ void testApp::setXml()
 }
 
 
-void testApp::getXml(string xmlFile)
-
+void testApp::loadSettingsFromXMLFile(std::string xmlFilePath)
 {
-    XML.loadFile(xmlFile);
-    cout<<"loaded settings from "+xmlFile<<endl;
+    const bool wasLoadSuccesful = XML.loadFile(xmlFilePath);
 
-    nOfQuads = XML.getValue("GENERAL:N_OF_QUADS", 0);
-    activeQuad = XML.getValue("GENERAL:ACTIVE_QUAD", 0);
-    useTimeline = XML.getValue("TIMELINE:USE_TIMELINE",0);
-    timelineDurationSeconds = XML.getValue("TIMELINE:DURATION",100);
-
-    for(int j=0; j<4; j++)
+    if(wasLoadSuccesful)
     {
-        string sharedVideoPath = XML.getValue("SHARED_VIDEOS:VIDEO_"+ofToString(j)+":PATH", "");
-        sharedVideosFiles[j] = sharedVideoPath;
-        if(sharedVideoPath != "")
+        std::cout << "Loaded settings file: \"" << xmlFilePath << "\"" << std::endl;
+
+        nOfQuads = XML.getValue("GENERAL:N_OF_QUADS", 0);
+        activeQuad = XML.getValue("GENERAL:ACTIVE_QUAD", 0);
+        useTimeline = XML.getValue("TIMELINE:USE_TIMELINE",0);
+        timelineDurationSeconds = XML.getValue("TIMELINE:DURATION",100);
+
+        for(int j=0; j<4; j++)
         {
-            openSharedVideoFile(sharedVideoPath, j);
-        }
-    }
-
-    for(int i = 0; i < nOfQuads; i++)
-    {
-        float x0 = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CORNERS:CORNER_0:X",0.0);
-        float y0 = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CORNERS:CORNER_0:Y",0.0);
-        float x1 = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CORNERS:CORNER_1:X",0.0);
-        float y1 = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CORNERS:CORNER_1:Y",0.0);
-        float x2 = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CORNERS:CORNER_2:X",0.0);
-        float y2 = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CORNERS:CORNER_2:Y",0.0);
-        float x3 = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CORNERS:CORNER_3:X",0.0);
-        float y3 = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CORNERS:CORNER_3:Y",0.0);
-
-        #ifdef WITH_KINECT
-            #ifdef WITH_SYPHON
-            quads[i].setup(x0, y0, x1, y1, x2, y2, x3, y3, edgeBlendShader, quadMaskShader, chromaShader, cameras, sharedVideos, kinect, syphClient, ttf);
-            #else
-            quads[i].setup(x0, y0, x1, y1, x2, y2, x3, y3, edgeBlendShader, quadMaskShader, chromaShader, cameras, sharedVideos, kinect, ttf);
-            #endif
-        #else
-            #ifdef WITH_SYPHON
-            quads[i].setup(x0, y0, x1, y1, x2, y2, x3, y3, edgeBlendShader, quadMaskShader, chromaShader, cameras, sharedVideos, syphClient, ttf);
-            #else
-            quads[i].setup(x0, y0, x1, y1, x2, y2, x3, y3, edgeBlendShader, quadMaskShader, chromaShader, cameras, sharedVideos, ttf);
-            #endif
-        #endif
-        quads[i].quadNumber = XML.getValue("QUADS:QUAD_"+ofToString(i)+":NUMBER", 0);
-        quads[i].layer = XML.getValue("QUADS:QUAD_"+ofToString(i)+":LAYER", 0);
-        layers[quads[i].layer] = quads[i].quadNumber;
-
-        quads[i].bTimelineTint = XML.getValue("QUADS:QUAD_"+ofToString(i)+":TIMELINE:TINT",0);
-        quads[i].bTimelineColor = XML.getValue("QUADS:QUAD_"+ofToString(i)+":TIMELINE:COLOR",0);
-        quads[i].bTimelineAlpha = XML.getValue("QUADS:QUAD_"+ofToString(i)+":TIMELINE:ALPHA",0);
-        quads[i].bTimelineSlideChange = XML.getValue("QUADS:QUAD_"+ofToString(i)+":TIMELINE:SLIDE",0);
-
-        quads[i].quadDispX = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CONTENT:DISPX",0);
-        quads[i].quadDispY = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CONTENT:DISPY",0);
-        quads[i].quadW = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CONTENT:WIDTH",0);
-        quads[i].quadH = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CONTENT:HEIGHT",0);
-
-        quads[i].imgBg = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:ACTIVE",0);
-        quads[i].loadedImg = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:LOADED_IMG", "", 0);
-        quads[i].bgImg = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:LOADED_IMG_PATH", "", 0);
-        if ((quads[i].imgBg) && (quads[i].bgImg != ""))
-        {
-            quads[i].loadImageFromFile(quads[i].loadedImg, quads[i].bgImg);
-        }
-        quads[i].imgHFlip = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:FLIP:H", 0);
-        quads[i].imgVFlip = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:FLIP:V", 0);
-
-        quads[i].videoBg = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:ACTIVE",0);
-        quads[i].loadedVideo = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:LOADED_VIDEO", "", 0);
-        quads[i].bgVideo = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:LOADED_VIDEO_PATH", "", 0);
-        if ((quads[i].videoBg) && (quads[i].bgVideo != ""))
-        {
-            quads[i].loadVideoFromFile(quads[i].loadedVideo, quads[i].bgVideo);
-        }
-        quads[i].videoHFlip = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:FLIP:H", 0);
-        quads[i].videoVFlip = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:FLIP:V", 0);
-
-        quads[i].sharedVideoBg = XML.getValue("QUADS:QUAD_"+ofToString(i)+":SHARED_VIDEO:ACTIVE",0);
-        quads[i].sharedVideoNum = XML.getValue("QUADS:QUAD_"+ofToString(i)+":SHARED_VIDEO:NUM", 1);
-
-        quads[i].bgSlideshow = XML.getValue("QUADS:QUAD_"+ofToString(i)+":SLIDESHOW:LOADED_SLIDESHOW", 0);
-
-        quads[i].colorBg = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:ACTIVE",0);
-
-        quads[i].transBg = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:TRANS:ACTIVE",0);
-        quads[i].transDuration = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:TRANS:DURATION", 1.0);
-        quads[i].slideshowBg = XML.getValue("QUADS:QUAD_"+ofToString(i)+":SLIDESHOW:ACTIVE", 0);
-        quads[i].slideshowSpeed = XML.getValue("QUADS:QUAD_"+ofToString(i)+":SLIDESHOW:SPEED", 1.0);
-        quads[i].slideFit = XML.getValue("QUADS:QUAD_"+ofToString(i)+":SLIDESHOW:FIT", 0);
-        quads[i].slideKeepAspect = XML.getValue("QUADS:QUAD_"+ofToString(i)+":SLIDESHOW:KEEP_ASPECT", 1);
-
-        quads[i].camBg = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:ACTIVE",0);
-        quads[i].camWidth = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:WIDTH",0);
-        quads[i].camHeight = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:HEIGHT",0);
-        quads[i].camHFlip = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:FLIP:H", 0);
-        quads[i].camVFlip = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:FLIP:V", 0);
-
-        quads[i].camMultX = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:MULT_X",1.0);
-        quads[i].camMultY = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:MULT_Y",1.0);
-        quads[i].imgMultX = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:MULT_X",1.0);
-        quads[i].imgMultY = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:MULT_Y",1.0);
-        quads[i].videoMultX = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:MULT_X",1.0);
-        quads[i].videoMultY = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:MULT_Y",1.0);
-        quads[i].videoSpeed = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:SPEED",1.0);
-        quads[i].videoVolume = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:VOLUME",0);
-        quads[i].videoLoop = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:LOOP",1);
-
-        quads[i].bgColor.r = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:R",0.0);
-        quads[i].bgColor.g = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:G",0.0);
-        quads[i].bgColor.b = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:B",0.0);
-        quads[i].bgColor.a = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:A",0.0);
-
-        quads[i].secondColor.r = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:SECOND_COLOR:R",0.0);
-        quads[i].secondColor.g = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:SECOND_COLOR:G",0.0);
-        quads[i].secondColor.b = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:SECOND_COLOR:B",0.0);
-        quads[i].secondColor.a = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:SECOND_COLOR:A",0.0);
-
-        quads[i].imgColorize.r = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:COLORIZE:R",1.0);
-        quads[i].imgColorize.g = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:COLORIZE:G",1.0);
-        quads[i].imgColorize.b = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:COLORIZE:B",1.0);
-        quads[i].imgColorize.a = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:COLORIZE:A",1.0);
-
-        quads[i].videoColorize.r = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:COLORIZE:R",1.0);
-        quads[i].videoColorize.g = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:COLORIZE:G",1.0);
-        quads[i].videoColorize.b = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:COLORIZE:B",1.0);
-        quads[i].videoColorize.a = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:COLORIZE:A",1.0);
-
-        quads[i].camColorize.r = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:COLORIZE:R",1.0);
-        quads[i].camColorize.g = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:COLORIZE:G",1.0);
-        quads[i].camColorize.b = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:COLORIZE:B",1.0);
-        quads[i].camColorize.a = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:COLORIZE:A",1.0);
-
-        quads[i].bBlendModes = XML.getValue("QUADS:QUAD_"+ofToString(i)+":BLENDING:ON", 0);
-        quads[i].blendMode= XML.getValue("QUADS:QUAD_"+ofToString(i)+":BLENDING:MODE", 0);
-
-        quads[i].edgeBlendBool = XML.getValue("QUADS:QUAD_"+ofToString(i)+":EDGE_BLENDING:ON", 0);
-        quads[i].edgeBlendExponent = XML.getValue("QUADS:QUAD_"+ofToString(i)+":EDGE_BLENDING:EXPONENT", 1.0);
-        quads[i].edgeBlendGamma = XML.getValue("QUADS:QUAD_"+ofToString(i)+":EDGE_BLENDING:GAMMA", 1.8);
-        quads[i].edgeBlendLuminance = XML.getValue("QUADS:QUAD_"+ofToString(i)+":EDGE_BLENDING:LUMINANCE", 0.0);
-        quads[i].edgeBlendAmountSin = XML.getValue("QUADS:QUAD_"+ofToString(i)+":EDGE_BLENDING:AMOUNT:SIN", 0.3);
-        quads[i].edgeBlendAmountDx = XML.getValue("QUADS:QUAD_"+ofToString(i)+":EDGE_BLENDING:AMOUNT:DX", 0.3);
-        quads[i].edgeBlendAmountTop = XML.getValue("QUADS:QUAD_"+ofToString(i)+":EDGE_BLENDING:AMOUNT:TOP", 0.0);
-        quads[i].edgeBlendAmountBottom = XML.getValue("QUADS:QUAD_"+ofToString(i)+":EDGE_BLENDING:AMOUNT:BOTTOM", 0.0);
-
-        //mask stuff
-        quads[i].bMask = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:ON", 0);
-        quads[i].maskInvert = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:INVERT_MASK", 0);
-        int nOfMaskPoints =  XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:N_POINTS", 0);
-        quads[i].maskPoints.clear();
-        if (nOfMaskPoints > 0)
-        {
-            for(int j=0; j<nOfMaskPoints; j++)
+            string sharedVideoPath = XML.getValue("SHARED_VIDEOS:VIDEO_"+ofToString(j)+":PATH", "");
+            sharedVideosFiles[j] = sharedVideoPath;
+            if(sharedVideoPath != "")
             {
-                ofPoint tempMaskPoint;
-                tempMaskPoint.x = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:POINTS:POINT_"+ofToString(j)+":X", 0);
-                tempMaskPoint.y = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:POINTS:POINT_"+ofToString(j)+":Y", 0);
-                quads[i].maskPoints.push_back(tempMaskPoint);
-            }
-        }
-        quads[i].crop[0] = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:CROP:RECTANGULAR:TOP",0.0);
-        quads[i].crop[1] = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:CROP:RECTANGULAR:RIGHT",0.0);
-        quads[i].crop[2] = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:CROP:RECTANGULAR:BOTTOM",0.0);
-        quads[i].crop[3] = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:CROP:RECTANGULAR:LEFT",0.0);
-        quads[i].circularCrop[0] = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:CROP:CIRCULAR:X",0.5);
-        quads[i].circularCrop[1] = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:CROP:CIRCULAR:Y",0.5);
-        quads[i].circularCrop[2] = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:CROP:CIRCULAR:RADIUS",0.0);
-        // deform stuff
-        quads[i].bDeform = XML.getValue("QUADS:QUAD_"+ofToString(i)+":DEFORM:ON",0);
-        quads[i].bBezier = XML.getValue("QUADS:QUAD_"+ofToString(i)+":DEFORM:BEZIER:ON",0);
-        quads[i].bGrid = XML.getValue("QUADS:QUAD_"+ofToString(i)+":DEFORM:GRID:ON",0);
-        // bezier stuff
-        for (int j = 0; j < 4; ++j)
-        {
-            for (int k = 0; k < 4; ++k)
-            {
-                quads[i].bezierPoints[j][k][0] = XML.getValue("QUADS:QUAD_"+ofToString(i)+":DEFORM:BEZIER:CTRLPOINTS:POINT_"+ofToString(j)+"_"+ofToString(k)+":X",0.0);
-                quads[i].bezierPoints[j][k][1] = XML.getValue("QUADS:QUAD_"+ofToString(i)+":DEFORM:BEZIER:CTRLPOINTS:POINT_"+ofToString(j)+"_"+ofToString(k)+":Y",0.0);
-                quads[i].bezierPoints[j][k][2] = XML.getValue("QUADS:QUAD_"+ofToString(i)+":DEFORM:BEZIER:CTRLPOINTS:POINT_"+ofToString(j)+"_"+ofToString(k)+":Z",0.0);
+                openSharedVideoFile(sharedVideoPath, j);
             }
         }
 
+        for(int i = 0; i < nOfQuads; i++)
+        {
+            float x0 = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CORNERS:CORNER_0:X",0.0);
+            float y0 = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CORNERS:CORNER_0:Y",0.0);
+            float x1 = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CORNERS:CORNER_1:X",0.0);
+            float y1 = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CORNERS:CORNER_1:Y",0.0);
+            float x2 = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CORNERS:CORNER_2:X",0.0);
+            float y2 = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CORNERS:CORNER_2:Y",0.0);
+            float x3 = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CORNERS:CORNER_3:X",0.0);
+            float y3 = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CORNERS:CORNER_3:Y",0.0);
 
-        quads[i].isOn = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IS_ON",0);
-        quads[i].isActive = false;
+            #ifdef WITH_KINECT
+                #ifdef WITH_SYPHON
+                quads[i].setup(x0, y0, x1, y1, x2, y2, x3, y3, edgeBlendShader, quadMaskShader, chromaShader, cameras, sharedVideos, kinect, syphClient, ttf);
+                #else
+                quads[i].setup(x0, y0, x1, y1, x2, y2, x3, y3, edgeBlendShader, quadMaskShader, chromaShader, cameras, sharedVideos, kinect, ttf);
+                #endif
+            #else
+                #ifdef WITH_SYPHON
+                quads[i].setup(x0, y0, x1, y1, x2, y2, x3, y3, edgeBlendShader, quadMaskShader, chromaShader, cameras, sharedVideos, syphClient, ttf);
+                #else
+                quads[i].setup(x0, y0, x1, y1, x2, y2, x3, y3, edgeBlendShader, quadMaskShader, chromaShader, cameras, sharedVideos, ttf);
+                #endif
+            #endif
+            quads[i].quadNumber = XML.getValue("QUADS:QUAD_"+ofToString(i)+":NUMBER", 0);
+            quads[i].layer = XML.getValue("QUADS:QUAD_"+ofToString(i)+":LAYER", 0);
+            layers[quads[i].layer] = quads[i].quadNumber;
+
+            quads[i].bTimelineTint = XML.getValue("QUADS:QUAD_"+ofToString(i)+":TIMELINE:TINT",0);
+            quads[i].bTimelineColor = XML.getValue("QUADS:QUAD_"+ofToString(i)+":TIMELINE:COLOR",0);
+            quads[i].bTimelineAlpha = XML.getValue("QUADS:QUAD_"+ofToString(i)+":TIMELINE:ALPHA",0);
+            quads[i].bTimelineSlideChange = XML.getValue("QUADS:QUAD_"+ofToString(i)+":TIMELINE:SLIDE",0);
+
+            quads[i].quadDispX = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CONTENT:DISPX",0);
+            quads[i].quadDispY = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CONTENT:DISPY",0);
+            quads[i].quadW = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CONTENT:WIDTH",0);
+            quads[i].quadH = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CONTENT:HEIGHT",0);
+
+            quads[i].imgBg = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:ACTIVE",0);
+            quads[i].loadedImg = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:LOADED_IMG", "", 0);
+            quads[i].bgImg = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:LOADED_IMG_PATH", "", 0);
+            if ((quads[i].imgBg) && (quads[i].bgImg != ""))
+            {
+                quads[i].loadImageFromFile(quads[i].loadedImg, quads[i].bgImg);
+            }
+            quads[i].imgHFlip = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:FLIP:H", 0);
+            quads[i].imgVFlip = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:FLIP:V", 0);
+
+            quads[i].videoBg = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:ACTIVE",0);
+            quads[i].loadedVideo = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:LOADED_VIDEO", "", 0);
+            quads[i].bgVideo = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:LOADED_VIDEO_PATH", "", 0);
+            if ((quads[i].videoBg) && (quads[i].bgVideo != ""))
+            {
+                quads[i].loadVideoFromFile(quads[i].loadedVideo, quads[i].bgVideo);
+            }
+            quads[i].videoHFlip = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:FLIP:H", 0);
+            quads[i].videoVFlip = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:FLIP:V", 0);
+
+            quads[i].sharedVideoBg = XML.getValue("QUADS:QUAD_"+ofToString(i)+":SHARED_VIDEO:ACTIVE",0);
+            quads[i].sharedVideoNum = XML.getValue("QUADS:QUAD_"+ofToString(i)+":SHARED_VIDEO:NUM", 1);
+
+            quads[i].bgSlideshow = XML.getValue("QUADS:QUAD_"+ofToString(i)+":SLIDESHOW:LOADED_SLIDESHOW", 0);
+
+            quads[i].colorBg = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:ACTIVE",0);
+
+            quads[i].transBg = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:TRANS:ACTIVE",0);
+            quads[i].transDuration = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:TRANS:DURATION", 1.0);
+            quads[i].slideshowBg = XML.getValue("QUADS:QUAD_"+ofToString(i)+":SLIDESHOW:ACTIVE", 0);
+            quads[i].slideshowSpeed = XML.getValue("QUADS:QUAD_"+ofToString(i)+":SLIDESHOW:SPEED", 1.0);
+            quads[i].slideFit = XML.getValue("QUADS:QUAD_"+ofToString(i)+":SLIDESHOW:FIT", 0);
+            quads[i].slideKeepAspect = XML.getValue("QUADS:QUAD_"+ofToString(i)+":SLIDESHOW:KEEP_ASPECT", 1);
+
+            quads[i].camBg = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:ACTIVE",0);
+            quads[i].camWidth = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:WIDTH",0);
+            quads[i].camHeight = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:HEIGHT",0);
+            quads[i].camHFlip = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:FLIP:H", 0);
+            quads[i].camVFlip = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:FLIP:V", 0);
+
+            quads[i].camMultX = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:MULT_X",1.0);
+            quads[i].camMultY = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:MULT_Y",1.0);
+            quads[i].imgMultX = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:MULT_X",1.0);
+            quads[i].imgMultY = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:MULT_Y",1.0);
+            quads[i].videoMultX = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:MULT_X",1.0);
+            quads[i].videoMultY = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:MULT_Y",1.0);
+            quads[i].videoSpeed = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:SPEED",1.0);
+            quads[i].videoVolume = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:VOLUME",0);
+            quads[i].videoLoop = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:LOOP",1);
+
+            quads[i].bgColor.r = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:R",0.0);
+            quads[i].bgColor.g = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:G",0.0);
+            quads[i].bgColor.b = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:B",0.0);
+            quads[i].bgColor.a = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:A",0.0);
+
+            quads[i].secondColor.r = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:SECOND_COLOR:R",0.0);
+            quads[i].secondColor.g = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:SECOND_COLOR:G",0.0);
+            quads[i].secondColor.b = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:SECOND_COLOR:B",0.0);
+            quads[i].secondColor.a = XML.getValue("QUADS:QUAD_"+ofToString(i)+":COLOR:SECOND_COLOR:A",0.0);
+
+            quads[i].imgColorize.r = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:COLORIZE:R",1.0);
+            quads[i].imgColorize.g = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:COLORIZE:G",1.0);
+            quads[i].imgColorize.b = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:COLORIZE:B",1.0);
+            quads[i].imgColorize.a = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IMG:COLORIZE:A",1.0);
+
+            quads[i].videoColorize.r = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:COLORIZE:R",1.0);
+            quads[i].videoColorize.g = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:COLORIZE:G",1.0);
+            quads[i].videoColorize.b = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:COLORIZE:B",1.0);
+            quads[i].videoColorize.a = XML.getValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:COLORIZE:A",1.0);
+
+            quads[i].camColorize.r = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:COLORIZE:R",1.0);
+            quads[i].camColorize.g = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:COLORIZE:G",1.0);
+            quads[i].camColorize.b = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:COLORIZE:B",1.0);
+            quads[i].camColorize.a = XML.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:COLORIZE:A",1.0);
+
+            quads[i].bBlendModes = XML.getValue("QUADS:QUAD_"+ofToString(i)+":BLENDING:ON", 0);
+            quads[i].blendMode= XML.getValue("QUADS:QUAD_"+ofToString(i)+":BLENDING:MODE", 0);
+
+            quads[i].edgeBlendBool = XML.getValue("QUADS:QUAD_"+ofToString(i)+":EDGE_BLENDING:ON", 0);
+            quads[i].edgeBlendExponent = XML.getValue("QUADS:QUAD_"+ofToString(i)+":EDGE_BLENDING:EXPONENT", 1.0);
+            quads[i].edgeBlendGamma = XML.getValue("QUADS:QUAD_"+ofToString(i)+":EDGE_BLENDING:GAMMA", 1.8);
+            quads[i].edgeBlendLuminance = XML.getValue("QUADS:QUAD_"+ofToString(i)+":EDGE_BLENDING:LUMINANCE", 0.0);
+            quads[i].edgeBlendAmountSin = XML.getValue("QUADS:QUAD_"+ofToString(i)+":EDGE_BLENDING:AMOUNT:SIN", 0.3);
+            quads[i].edgeBlendAmountDx = XML.getValue("QUADS:QUAD_"+ofToString(i)+":EDGE_BLENDING:AMOUNT:DX", 0.3);
+            quads[i].edgeBlendAmountTop = XML.getValue("QUADS:QUAD_"+ofToString(i)+":EDGE_BLENDING:AMOUNT:TOP", 0.0);
+            quads[i].edgeBlendAmountBottom = XML.getValue("QUADS:QUAD_"+ofToString(i)+":EDGE_BLENDING:AMOUNT:BOTTOM", 0.0);
+
+            //mask stuff
+            quads[i].bMask = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:ON", 0);
+            quads[i].maskInvert = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:INVERT_MASK", 0);
+            int nOfMaskPoints =  XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:N_POINTS", 0);
+            quads[i].maskPoints.clear();
+            if (nOfMaskPoints > 0)
+            {
+                for(int j=0; j<nOfMaskPoints; j++)
+                {
+                    ofPoint tempMaskPoint;
+                    tempMaskPoint.x = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:POINTS:POINT_"+ofToString(j)+":X", 0);
+                    tempMaskPoint.y = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:POINTS:POINT_"+ofToString(j)+":Y", 0);
+                    quads[i].maskPoints.push_back(tempMaskPoint);
+                }
+            }
+            quads[i].crop[0] = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:CROP:RECTANGULAR:TOP",0.0);
+            quads[i].crop[1] = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:CROP:RECTANGULAR:RIGHT",0.0);
+            quads[i].crop[2] = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:CROP:RECTANGULAR:BOTTOM",0.0);
+            quads[i].crop[3] = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:CROP:RECTANGULAR:LEFT",0.0);
+            quads[i].circularCrop[0] = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:CROP:CIRCULAR:X",0.5);
+            quads[i].circularCrop[1] = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:CROP:CIRCULAR:Y",0.5);
+            quads[i].circularCrop[2] = XML.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:CROP:CIRCULAR:RADIUS",0.0);
+            // deform stuff
+            quads[i].bDeform = XML.getValue("QUADS:QUAD_"+ofToString(i)+":DEFORM:ON",0);
+            quads[i].bBezier = XML.getValue("QUADS:QUAD_"+ofToString(i)+":DEFORM:BEZIER:ON",0);
+            quads[i].bGrid = XML.getValue("QUADS:QUAD_"+ofToString(i)+":DEFORM:GRID:ON",0);
+            // bezier stuff
+            for (int j = 0; j < 4; ++j)
+            {
+                for (int k = 0; k < 4; ++k)
+                {
+                    quads[i].bezierPoints[j][k][0] = XML.getValue("QUADS:QUAD_"+ofToString(i)+":DEFORM:BEZIER:CTRLPOINTS:POINT_"+ofToString(j)+"_"+ofToString(k)+":X",0.0);
+                    quads[i].bezierPoints[j][k][1] = XML.getValue("QUADS:QUAD_"+ofToString(i)+":DEFORM:BEZIER:CTRLPOINTS:POINT_"+ofToString(j)+"_"+ofToString(k)+":Y",0.0);
+                    quads[i].bezierPoints[j][k][2] = XML.getValue("QUADS:QUAD_"+ofToString(i)+":DEFORM:BEZIER:CTRLPOINTS:POINT_"+ofToString(j)+"_"+ofToString(k)+":Z",0.0);
+                }
+            }
+
+
+            quads[i].isOn = XML.getValue("QUADS:QUAD_"+ofToString(i)+":IS_ON",0);
+            quads[i].isActive = false;
+        }
+        quads[activeQuad].isActive = true;
+        gui.setPage((activeQuad*3)+2);
+        glDisable(GL_DEPTH_TEST);
     }
-    quads[activeQuad].isActive = true;
-    gui.setPage((activeQuad*3)+2);
-    glDisable(GL_DEPTH_TEST);
+    else
+    {
+        // load was not succesful, maybe the xml is malformatted
+        std::cout << "Error loading the settings file: \"" << xmlFilePath << "\" (make sure it is a properly formatted *.xml file)" << std::endl;
+    }
 }

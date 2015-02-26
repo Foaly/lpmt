@@ -564,7 +564,7 @@ void testApp::setup()
 
     if(autoStart)
     {
-        getXml("_lpmt_settings.xml");
+        loadSettingsFromXMLFile("_lpmt_settings.xml");
         gui.setPage((activeQuad*3)+2);
         XML.clear();
         isSetup = false;
@@ -1020,24 +1020,15 @@ void testApp::keyPressed(int key)
 
     }
 
-    // loads settings and quads from default xml file
+    // let the user choose an xml settings file and load it
     if ((key == 'l') && !bTimeline)
     {
-        getXml("_lpmt_settings.xml");
-        gui.setPage((activeQuad*3)+2);
-    }
+        ofFileDialogResult dialog_result = ofSystemLoadDialog("Load settings file (.xml)");
 
-    // choses a xml settings file and loads it
-    if ((key == 'L') && !bTimeline)
-    {
-        ofFileDialogResult dialog_result = ofSystemLoadDialog("load xml settings file", false);
         if(dialog_result.bSuccess)
         {
-        ofImage img;
-        string fileName = dialog_result.getName();
-        string filePath = dialog_result.getPath();
-        getXml(filePath);
-        gui.setPage((activeQuad*3)+2);
+            loadSettingsFromXMLFile(dialog_result.getPath());
+            gui.setPage((activeQuad*3)+2);
         }
     }
 
