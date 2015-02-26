@@ -3,43 +3,42 @@
 //-----------------------------------------------------------
 void testApp::openImageFile()
 {
-    cout << "loading image " << endl;
-    ofFileDialogResult dialog_result = ofSystemLoadDialog("load image file");
-    cout << "image loaded " << endl;
+    ofFileDialogResult dialog_result = ofSystemLoadDialog("Load image file");
+
     if(dialog_result.bSuccess)
     {
         quads[activeQuad].loadImageFromFile(dialog_result.getName(), dialog_result.getPath());
+        std::cout << "Loaded image: \"" << dialog_result.getPath() << "\"" << std::endl;
     }
 }
 
 //-----------------------------------------------------------
 void testApp::openVideoFile()
 {
-    cout << "loading video " << endl;
-    ofFileDialogResult dialog_result = ofSystemLoadDialog("load video file");
-    cout << "video loaded " << endl;
+    ofFileDialogResult dialog_result = ofSystemLoadDialog("Load video file");
+
     if(dialog_result.bSuccess)
     {
         quads[activeQuad].loadVideoFromFile(dialog_result.getName(), dialog_result.getPath());
+        std::cout << "Loaded video: \"" << dialog_result.getPath() << "\"" << std::endl;
     }
 }
 
 //-----------------------------------------------------------
 void testApp::openSharedVideoFile(int i)
 {
-    cout << "loading shared video " << endl;
-    ofFileDialogResult dialog_result = ofSystemLoadDialog("load shared video file");
+    ofFileDialogResult dialog_result = ofSystemLoadDialog("Load shared video file");
     if(dialog_result.bSuccess)
     {
         if (sharedVideos[i].isLoaded())
         {
             sharedVideos[i].closeMovie();
         }
-        string path = dialog_result.getPath();
+        std::string path = dialog_result.getPath();
         sharedVideos[i].loadMovie(path);
         if(sharedVideos[i].isLoaded())
         {
-            cout << "shared video loaded" << endl;
+            std::cout << "Loaded shared video #" << i + 1 << ": \"" << path << "\"" << std::endl;
             sharedVideosFiles[i] = path;
             sharedVideos[i].setLoopState(OF_LOOP_NORMAL);
             sharedVideos[i].play();
@@ -56,7 +55,7 @@ void testApp::openSharedVideoFile(int i)
 }
 
 //-----------------------------------------------------------
-void testApp::openSharedVideoFile(string path, int i)
+void testApp::openSharedVideoFile(std::string path, int i)
 {
         if (sharedVideos[i].isLoaded())
         {
@@ -65,7 +64,7 @@ void testApp::openSharedVideoFile(string path, int i)
         sharedVideos[i].loadMovie(path);
         if(sharedVideos[i].isLoaded())
         {
-            cout << "shared video loaded" << endl;
+            std::cout << "Loaded shared video: #" << i + 1 << ": \"" << path << "\"" << std::endl;
             sharedVideosFiles[i] = path;
             sharedVideos[i].setLoopState(OF_LOOP_NORMAL);
             sharedVideos[i].play();
@@ -84,7 +83,7 @@ void testApp::openSharedVideoFile(string path, int i)
 //-----------------------------------------------------------
 ofImage testApp::loadImageFromFile()
 {
-    ofFileDialogResult dialog_result = ofSystemLoadDialog("load image file", false);
+    ofFileDialogResult dialog_result = ofSystemLoadDialog("Load image file", false);
     if(dialog_result.bSuccess)
     {
         ofImage img;
@@ -101,7 +100,7 @@ ofImage testApp::loadImageFromFile()
 
 string testApp::loadSlideshow()
 {
-   ofFileDialogResult dialog_result = ofSystemLoadDialog("find slideshow folder", true);
+   ofFileDialogResult dialog_result = ofSystemLoadDialog("Find slideshow folder", true);
     if(dialog_result.bSuccess)
     {
         string slideshowPath = dialog_result.getPath();
