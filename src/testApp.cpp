@@ -60,41 +60,46 @@ void testApp::setup()
 
     // camera stuff
     cameras.clear();
-    numOfCams = 0;
-    bCameraOk = false;
     if(wasConfigLoadSuccessful)
     {
         xmlConfigFile.pushTag("CAMERAS");
         // check how many cameras are defined in settings
-        numOfCams = xmlConfigFile.getNumTags("CAMERA");
+        unsigned int numberOfCameras = 0;
+        numberOfCameras = xmlConfigFile.getNumTags("CAMERA");
+
         // cycle through defined cameras trying to initialize them and populate the cameras vector
-        for (int i=0; i<numOfCams; i++)
+        for (unsigned int i = 0; i < numberOfCameras; i++)
         {
+            // read the requested parameters for the camera
             xmlConfigFile.pushTag("CAMERA", i);
-            reqCamWidth = xmlConfigFile.getValue("WIDTH",640);
-            reqCamHeight = xmlConfigFile.getValue("HEIGHT",480);
-            camID = xmlConfigFile.getValue("ID",0);
+            const int requestedCameraWidth = xmlConfigFile.getValue("WIDTH",640);
+            const int requestedCameraHeight = xmlConfigFile.getValue("HEIGHT",480);
+            const int cameraID = xmlConfigFile.getValue("ID",0);
             xmlConfigFile.popTag();
-            ofVideoGrabber cam;
-            cam.setDeviceID(camID);
-            bCameraOk = cam.initGrabber(reqCamWidth,reqCamHeight);
-            camWidth = cam.width;
-            camHeight= cam.height;
-            string message = "camera with id "+ ofToString(camID) +" asked for %i by %i - actual size is %i by %i \n";
-            char *buf = new char[message.length()];
-            strcpy(buf,message.c_str());
-            printf(buf, reqCamWidth, reqCamHeight, camWidth, camHeight);
-            delete []buf;
+
+            // try initialize a video grabber
+            ofVideoGrabber camera;
+            camera.setDeviceID(cameraID);
+            bool isVideoGrabberInitialized = false;
+            isVideoGrabberInitialized = camera.initGrabber(requestedCameraWidth, requestedCameraHeight);
+            camWidth = camera.width;
+            camHeight = camera.height;
+
+            // inform the user that the requested camera dimensions and the actual ones might differ
+            std::cout << "Camera with ID " << cameraID << " asked for dimensions " << requestedCameraWidth << "x" << requestedCameraHeight;
+            std::cout << " - actual size is " << camWidth << "x" << camHeight << std::endl;
+
             // check if the camera is available and eventually push it to cameras vector
-            if (camWidth == 0 || camHeight == 0)
+            if (isVideoGrabberInitialized || camWidth == 0 || camHeight == 0)
             {
-                ofSystemAlertDialog("camera with id " + ofToString(camID) + " not found or not available");
+                ofSystemAlertDialog("Camera with ID " + ofToString(cameraID) + " not found or not available");
+                std::cout << "Camera with ID " << cameraID << " not found or not available" << std::endl;
             }
             else
             {
-                cameras.push_back(cam);
+                cameras.push_back(camera);
                 // following vector is used for the combo box in SimpleGuiToo gui
-                cameraIDs.push_back(ofToString(camID));
+                cameraIDs.push_back(ofToString(cameraID));
             }
         }
         xmlConfigFile.popTag();

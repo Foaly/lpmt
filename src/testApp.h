@@ -91,7 +91,6 @@ public:
     bool bSplash;
     bool maskSetup;
     bool gridSetup;
-    bool bCameraOk;
     bool bSnapOn;
 
     ofImage splashImg;
@@ -168,16 +167,12 @@ public:
     //ofVideoGrabber camGrabber;
     ofTexture camTexture;
     ofTexture snapshotTexture;
-    int numOfCams;
 	vector<ofVideoGrabber> cameras;
 	vector<string> cameraIDs;
 
     vector<ofVideoPlayer> sharedVideos;
     vector<string> sharedVideosFiles;
 
-    int camID;
-    int reqCamWidth;
-    int reqCamHeight;
     int camWidth;
     int camHeight;
 
