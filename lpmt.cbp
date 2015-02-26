@@ -1036,9 +1036,6 @@
 		<Unit filename="src/appUtils.cpp">
 			<Option virtualFolder="src/" />
 		</Unit>
-		<Unit filename="src/ball.h">
-			<Option virtualFolder="src" />
-		</Unit>
 		<Unit filename="src/config.h">
 			<Option virtualFolder="src/" />
 		</Unit>
