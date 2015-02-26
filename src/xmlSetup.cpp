@@ -2,9 +2,9 @@
 
 //--------------------------------------------------------------
 
-void testApp::setXml()
-
+void testApp::saveCurrentSettingsToXMLFile(std::string xmlFilePath)
 {
+    // update the XML object with the current settings, before saving it
     XML.setValue("GENERAL:ACTIVE_QUAD",activeQuad);
     XML.setValue("GENERAL:N_OF_QUADS",nOfQuads);
     XML.setValue("TIMELINE:USE_TIMELINE",useTimeline);
@@ -153,14 +153,27 @@ void testApp::setXml()
 
         }
     }
+
+    // actually save the *.xml settings file
+    const bool wasSavedSuccessful = XML.saveFile(xmlFilePath);
+
+    // error handeling
+    if (wasSavedSuccessful)
+    {
+        std::cout << "Saved settings file to: \"" << xmlFilePath << "\"" << std::endl;
+    }
+    else
+    {
+        std::cout << "Error saving the settings file: \"" << xmlFilePath << "\"" << std::endl;
+    }
 }
 
 
 void testApp::loadSettingsFromXMLFile(std::string xmlFilePath)
 {
-    const bool wasLoadSuccesful = XML.loadFile(xmlFilePath);
+    const bool wasLoadSuccessful = XML.loadFile(xmlFilePath);
 
-    if(wasLoadSuccesful)
+    if(wasLoadSuccessful)
     {
         std::cout << "Loaded settings file: \"" << xmlFilePath << "\"" << std::endl;
 

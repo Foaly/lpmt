@@ -187,7 +187,7 @@ public:
     vector<string> slideshowFolders;
 
     ofxXmlSettings XML;
-    void setXml();
+    void saveCurrentSettingsToXMLFile(std::string xmlFilePath);
     void loadSettingsFromXMLFile(std::string xmlFilePath);
 
     // double-click stuff

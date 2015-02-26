@@ -1014,10 +1014,12 @@ void testApp::keyPressed(int key)
     // saves quads settings to an xml file in data directory
     if ( (key == 's' || key == 'S') && !bTimeline)
     {
-        setXml();
-        XML.saveFile("_lpmt_settings.xml");
-        cout<<"saved settings to data/_lpmt_settings.xml"<<endl;
+        ofFileDialogResult dialog_result = ofSystemSaveDialog("lpmt_settings.xml", "Save settings file (.xml)");
 
+        if(dialog_result.bSuccess)
+        {
+            saveCurrentSettingsToXMLFile(dialog_result.getPath());
+        }
     }
 
     // let the user choose an xml settings file and load it
