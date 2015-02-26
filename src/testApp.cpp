@@ -90,7 +90,7 @@ void testApp::setup()
             std::cout << " - actual size is " << camWidth << "x" << camHeight << std::endl;
 
             // check if the camera is available and eventually push it to cameras vector
-            if (isVideoGrabberInitialized || camWidth == 0 || camHeight == 0)
+            if (!isVideoGrabberInitialized || camWidth == 0 || camHeight == 0)
             {
                 ofSystemAlertDialog("Camera with ID " + ofToString(cameraID) + " not found or not available");
                 std::cout << "Camera with ID " << cameraID << " not found or not available" << std::endl;
