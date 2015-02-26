@@ -80,7 +80,6 @@ public:
     int borderColor;
     int copyQuadNum;
 
-    bool configOk;
     bool autoStart;
 
     bool isSetup;
@@ -186,7 +185,6 @@ public:
     vector<string> videoFiles;
     vector<string> slideshowFolders;
 
-    ofxXmlSettings XML;
     void saveCurrentSettingsToXMLFile(std::string xmlFilePath);
     void loadSettingsFromXMLFile(std::string xmlFilePath);
 
