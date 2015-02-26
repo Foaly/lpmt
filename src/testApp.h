@@ -80,7 +80,6 @@ public:
     int borderColor;
     int copyQuadNum;
 
-    bool configOk;
     bool autoStart;
 
     bool isSetup;
@@ -186,9 +185,8 @@ public:
     vector<string> videoFiles;
     vector<string> slideshowFolders;
 
-    ofxXmlSettings XML;
-    void setXml();
-    void getXml(string xmlFile);
+    void saveCurrentSettingsToXMLFile(std::string xmlFilePath);
+    void loadSettingsFromXMLFile(std::string xmlFilePath);
 
     // double-click stuff
     unsigned long doubleclickTime;

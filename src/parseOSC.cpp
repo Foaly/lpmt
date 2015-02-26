@@ -85,15 +85,18 @@ void testApp::parseOsc()
     // save
     else if ( m.getAddress() == "/projection/save" )
     {
-        setXml();
-        XML.saveFile("_lpmt_settings.xml");
-        cout<<"saved settings to data/_lpmt_settings.xml"<<endl;
+        ofFileDialogResult dialog_result = ofSystemSaveDialog("lpmt_settings.xml", "Save settings file (.xml)");
+
+        if(dialog_result.bSuccess)
+        {
+            saveCurrentSettingsToXMLFile(dialog_result.getPath());
+        }
     }
 
     // load
     else if ( m.getAddress() == "/projection/load" )
     {
-        getXml("_lpmt_settings.xml");
+        loadSettingsFromXMLFile("_lpmt_settings.xml");
         gui.setPage((activeQuad*3)+2);
     }
 

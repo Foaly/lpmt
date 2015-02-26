@@ -43,9 +43,14 @@ void testApp::setup()
     autoStart = false;
 
     // read xml config file
-    configOk = XML.loadFile("config.xml");
-    if(!configOk) {cout << "WARNING: config file config.xml not found!" << endl << endl;}
-    else {cout << "using config file config.xml" << endl;}
+    ofxXmlSettings xmlConfigFile;
+    const bool wasConfigLoadSuccessful = xmlConfigFile.loadFile("config.xml");
+    if(!wasConfigLoadSuccessful) {
+        std::cout << "WARNING: config file \"config.xml\" not found!" << std::endl << std::endl;
+    }
+    else {
+        std::cout << "Loaded config file: \"config.xml\"" << std::endl;
+    }
 
     #ifdef WITH_KINECT
     bKinectOk = kinect.setup();
@@ -57,19 +62,19 @@ void testApp::setup()
     cameras.clear();
     numOfCams = 0;
     bCameraOk = false;
-    if(configOk)
+    if(wasConfigLoadSuccessful)
     {
-        XML.pushTag("CAMERAS");
+        xmlConfigFile.pushTag("CAMERAS");
         // check how many cameras are defined in settings
-        numOfCams = XML.getNumTags("CAMERA");
+        numOfCams = xmlConfigFile.getNumTags("CAMERA");
         // cycle through defined cameras trying to initialize them and populate the cameras vector
         for (int i=0; i<numOfCams; i++)
         {
-            XML.pushTag("CAMERA", i);
-            reqCamWidth = XML.getValue("WIDTH",640);
-            reqCamHeight = XML.getValue("HEIGHT",480);
-            camID = XML.getValue("ID",0);
-            XML.popTag();
+            xmlConfigFile.pushTag("CAMERA", i);
+            reqCamWidth = xmlConfigFile.getValue("WIDTH",640);
+            reqCamHeight = xmlConfigFile.getValue("HEIGHT",480);
+            camID = xmlConfigFile.getValue("ID",0);
+            xmlConfigFile.popTag();
             ofVideoGrabber cam;
             cam.setDeviceID(camID);
             bCameraOk = cam.initGrabber(reqCamWidth,reqCamHeight);
@@ -92,7 +97,7 @@ void testApp::setup()
                 cameraIDs.push_back(ofToString(camID));
             }
         }
-        XML.popTag();
+        xmlConfigFile.popTag();
     }
 
     // shared videos setup
@@ -137,9 +142,9 @@ void testApp::setup()
     gridSetup = false;
 
     // OSC setup
-    if (configOk)
+    if (wasConfigLoadSuccessful)
     {
-        int oscReceivePort = XML.getValue("OSC:LISTENING_PORT",12345);
+        int oscReceivePort = xmlConfigFile.getValue("OSC:LISTENING_PORT",12345);
         cout << "listening for OSC messages on port: " << oscReceivePort << endl;
         receiver.setup(oscReceivePort);
     }
@@ -149,8 +154,8 @@ void testApp::setup()
         receiver.setup( PORT );
     }
     current_msg_string = 0;
-    oscControlMin = XML.getValue("OSC:GUI_CONTROL:SLIDER:MIN",0.0);
-    oscControlMax = XML.getValue("OSC:GUI_CONTROL:SLIDER:MAX",1.0);
+    oscControlMin = xmlConfigFile.getValue("OSC:GUI_CONTROL:SLIDER:MIN",0.0);
+    oscControlMax = xmlConfigFile.getValue("OSC:GUI_CONTROL:SLIDER:MAX",1.0);
     cout << "osc control of gui sliders range: min=" << oscControlMin << " - max=" << oscControlMax << endl;
 
 
@@ -541,32 +546,30 @@ void testApp::setup()
     timeline.hide();
     timeline.disable();
     // if timeline autostart is defined in timeline it starts timeline playing
-    if(configOk)
+    if(wasConfigLoadSuccessful)
     {
-        float timelineConfigDuration = XML.getValue("TIMELINE:DURATION",10);
+        float timelineConfigDuration = xmlConfigFile.getValue("TIMELINE:DURATION",10);
         timelineDurationSeconds = timelinePreviousDuration = timelineConfigDuration;
         timeline.setDurationInSeconds(timelineDurationSeconds);
-        if(XML.getValue("TIMELINE:AUTOSTART",0))
+        if(xmlConfigFile.getValue("TIMELINE:AUTOSTART",0))
         {
             timeline.togglePlay();
         }
     }
     #endif
 
-    if(configOk)
+    if(wasConfigLoadSuccessful)
     {
-        autoStart = XML.getValue("PROJECTION:AUTO",0);
+        autoStart = xmlConfigFile.getValue("PROJECTION:AUTO",0);
     }
 
-    // free xml reader from config file
-    cout << "setup done! playing now" << endl << endl;
-    XML.clear();
+    std::cout << "Setup done! playing now" << std::endl << std::endl;
 
     if(autoStart)
     {
-        getXml("_lpmt_settings.xml");
+        loadSettingsFromXMLFile("_lpmt_settings.xml");
         gui.setPage((activeQuad*3)+2);
-        XML.clear();
+
         isSetup = false;
         gui.hide();
         bGui = false;
@@ -1014,30 +1017,23 @@ void testApp::keyPressed(int key)
     // saves quads settings to an xml file in data directory
     if ( (key == 's' || key == 'S') && !bTimeline)
     {
-        setXml();
-        XML.saveFile("_lpmt_settings.xml");
-        cout<<"saved settings to data/_lpmt_settings.xml"<<endl;
+        ofFileDialogResult dialog_result = ofSystemSaveDialog("lpmt_settings.xml", "Save settings file (.xml)");
 
-    }
-
-    // loads settings and quads from default xml file
-    if ((key == 'l') && !bTimeline)
-    {
-        getXml("_lpmt_settings.xml");
-        gui.setPage((activeQuad*3)+2);
-    }
-
-    // choses a xml settings file and loads it
-    if ((key == 'L') && !bTimeline)
-    {
-        ofFileDialogResult dialog_result = ofSystemLoadDialog("load xml settings file", false);
         if(dialog_result.bSuccess)
         {
-        ofImage img;
-        string fileName = dialog_result.getName();
-        string filePath = dialog_result.getPath();
-        getXml(filePath);
-        gui.setPage((activeQuad*3)+2);
+            saveCurrentSettingsToXMLFile(dialog_result.getPath());
+        }
+    }
+
+    // let the user choose an xml settings file and load it
+    if ((key == 'l') && !bTimeline)
+    {
+        ofFileDialogResult dialog_result = ofSystemLoadDialog("Load settings file (.xml)");
+
+        if(dialog_result.bSuccess)
+        {
+            loadSettingsFromXMLFile(dialog_result.getPath());
+            gui.setPage((activeQuad*3)+2);
         }
     }
 
