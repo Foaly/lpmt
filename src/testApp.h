@@ -200,7 +200,7 @@ public:
 
     #ifdef WITH_KINECT
     kinectManager kinect;
-    bool bKinectOk;
+    bool m_isKinectInitialized;
     bool bCloseKinect;
     bool bOpenKinect;
     #endif

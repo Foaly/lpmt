@@ -53,7 +53,7 @@ void testApp::setup()
     }
 
     #ifdef WITH_KINECT
-    bKinectOk = kinect.setup();
+    m_isKinectInitialized = kinect.setup();
     bCloseKinect = false;
     bOpenKinect = false;
     #endif
@@ -492,7 +492,7 @@ void testApp::setup()
         gui.addToggle("slides to quad size", quads[i].slideFit);
         gui.addToggle("keep aspect ratio", quads[i].slideKeepAspect);
         #ifdef WITH_KINECT
-        if(bKinectOk)
+        if(m_isKinectInitialized)
         {
             gui.addTitle("Kinect").setNewColumn(true);
             gui.addToggle("use kinect", quads[i].kinectBg);
@@ -766,7 +766,10 @@ void testApp::prepare()
 
         // kinect update
         #ifdef WITH_KINECT
-        kinect.update();
+        if(m_isKinectInitialized)
+        {
+            kinect.update();
+        }
         #endif
 
         //timeline update
