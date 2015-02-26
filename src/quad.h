@@ -1,4 +1,5 @@
-#pragma once
+#ifndef QUAD_INCLUDE
+#define QUAD_INCLUDE
 
 #include "config.h"
 
@@ -283,4 +284,6 @@ public:
 
 
 };
+
+#endif //QUAD_INCLUDE
 
