@@ -6,7 +6,7 @@
 		<Option makefile="makefile" />
 		<Option pch_mode="2" />
 		<Option compiler="gnu_gcc_compiler_471" />
-		<Option virtualFolders="addons\;src\;addons\ofxMSAInteractiveObject\src\;addons\ofxMostPixelsEver\src\;addons\ofxNetwork\src\;addons\ofxOsc\libs\oscpack\src\ip\;addons\ofxOsc\libs\oscpack\src\osc\;addons\ofxOsc\libs\oscpack\src\ip\win32\;addons\ofxOsc\src\;addons\ofxSimpleGuiToo\src\Controls\;addons\ofxSimpleGuiToo\src\;addons\ofxThread\src\;addons\ofxXmlSettings\libs\;addons\ofxXmlSettings\src\;addons\ofxTimeline\;addons\ofxTween\;addons\ofxTween\Easings;addons\ofxRange\;addons\ofxTextInputField\;Resources\;addons\ofxOpenCv\libs\opencv\include\opencv2\flann\;addons\ofxOpenCv\libs\opencv\include\opencv2\core\;addons\ofxOpenCv\src\;addons\ofxOpenCv\libs\opencv\include\opencv2\ts\;addons\ofxOpenCv\libs\opencv\include\opencv2\legacy\;addons\ofxOpenCv\libs\opencv\include\opencv2\imgproc\;addons\ofxOpenCv\libs\opencv\include\opencv2\gpu\;addons\ofxOpenCv\libs\opencv\include\opencv\;addons\ofxOpenCv\libs\opencv\include\opencv2\video\;addons\ofxOpenCv\libs\opencv\include\opencv2\highgui\;addons\ofxOpenCv\libs\opencv\include\opencv2\features2d\;addons\ofxOpenCv\libs\opencv\include\opencv2\objdetect\;addons\ofxOpenCv\libs\opencv\include\opencv2\ml\;addons\ofxOpenCv\libs\opencv\include\opencv2\;addons\ofxOpenCv\libs\opencv\include\opencv2\calib3d\;addons\ofxOpenCv\libs\opencv\include\opencv2\contrib\;addons\ofxMidi\libs\rtmidi\;addons\ofxMidi\;addons\ofxMidi\desktop\;addons\ofxMSATimer\src;addons\ofxTimecode\src;addons\ofxTween\Easings\;addons\ofxMSATimer\src\;addons\ofxTimecode\src\;addons\ofxTimeline\kiss\;addons\ofxTimeline\kiss\src\;addons\ofxTimeline\ofOpenALSoundPlayer_TimelineAdditions\;addons\ofxTimeline\sndfile\;addons\ofxTimeline\openal\;addons\ofxTimeline\kiss\include\;addons\ofxKinect\;addons\ofxKinect\libusb-win32\;addons\ofxKinect\extra\;addons\ofxKinect\libfreenect\;" />
+		<Option virtualFolders="addons\;src\;addons\ofxMSAInteractiveObject\src\;addons\ofxMostPixelsEver\src\;addons\ofxNetwork\src\;addons\ofxOsc\libs\oscpack\src\ip\;addons\ofxOsc\libs\oscpack\src\osc\;addons\ofxOsc\libs\oscpack\src\ip\win32\;addons\ofxOsc\src\;addons\ofxSimpleGuiToo\src\Controls\;addons\ofxSimpleGuiToo\src\;addons\ofxXmlSettings\libs\;addons\ofxXmlSettings\src\;addons\ofxTimeline\;addons\ofxTween\;addons\ofxTween\Easings;addons\ofxRange\;addons\ofxTextInputField\;Resources\;addons\ofxOpenCv\libs\opencv\include\opencv2\flann\;addons\ofxOpenCv\libs\opencv\include\opencv2\core\;addons\ofxOpenCv\src\;addons\ofxOpenCv\libs\opencv\include\opencv2\ts\;addons\ofxOpenCv\libs\opencv\include\opencv2\legacy\;addons\ofxOpenCv\libs\opencv\include\opencv2\imgproc\;addons\ofxOpenCv\libs\opencv\include\opencv2\gpu\;addons\ofxOpenCv\libs\opencv\include\opencv\;addons\ofxOpenCv\libs\opencv\include\opencv2\video\;addons\ofxOpenCv\libs\opencv\include\opencv2\highgui\;addons\ofxOpenCv\libs\opencv\include\opencv2\features2d\;addons\ofxOpenCv\libs\opencv\include\opencv2\objdetect\;addons\ofxOpenCv\libs\opencv\include\opencv2\ml\;addons\ofxOpenCv\libs\opencv\include\opencv2\;addons\ofxOpenCv\libs\opencv\include\opencv2\calib3d\;addons\ofxOpenCv\libs\opencv\include\opencv2\contrib\;addons\ofxMidi\libs\rtmidi\;addons\ofxMidi\;addons\ofxMidi\desktop\;addons\ofxMSATimer\src;addons\ofxTimecode\src;addons\ofxTween\Easings\;addons\ofxMSATimer\src\;addons\ofxTimecode\src\;addons\ofxTimeline\kiss\;addons\ofxTimeline\kiss\src\;addons\ofxTimeline\ofOpenALSoundPlayer_TimelineAdditions\;addons\ofxTimeline\sndfile\;addons\ofxTimeline\openal\;addons\ofxTimeline\kiss\include\;addons\ofxKinect\;addons\ofxKinect\libusb-win32\;addons\ofxKinect\extra\;addons\ofxKinect\libfreenect\;" />
 		<Build>
 			<Target title="release">
 				<Option output="bin/$(PROJECT_NAME)" prefix_auto="1" extension_auto="1" />
@@ -681,9 +681,6 @@
 		<Unit filename="../openFrameworks/addons/ofxOpenCv/src/ofxCvImage.h">
 			<Option virtualFolder="addons/ofxOpenCv/src" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxOpenCv/src/ofxCvMain.h">
-			<Option virtualFolder="addons/ofxOpenCv/src" />
-		</Unit>
 		<Unit filename="../openFrameworks/addons/ofxOpenCv/src/ofxCvShortImage.cpp">
 			<Option virtualFolder="addons/ofxOpenCv/src" />
 		</Unit>
@@ -899,9 +896,6 @@
 		</Unit>
 		<Unit filename="../openFrameworks/addons/ofxTextInputField/src/ofxTextInputField.h">
 			<Option virtualFolder="addons/ofxTextInputField/" />
-		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxThread/src/ofxThread.h">
-			<Option virtualFolder="addons/ofxThread/src" />
 		</Unit>
 		<Unit filename="../openFrameworks/addons/ofxTimecode/src/ofxTimecode.cpp">
 			<Option virtualFolder="addons/ofxTimecode/src" />
