@@ -68,7 +68,7 @@ public:
     void mouseReleased();
     void windowResized(int w, int h);
 
-    int whichCorner;
+    int m_selectedCorner;
 
     ofTrueTypeFont ttf;
 

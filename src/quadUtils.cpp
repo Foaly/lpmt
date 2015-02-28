@@ -11,30 +11,17 @@ void quad::allocateFbo(int w, int h)
     targetFbo.allocate(settings);
 }
 
-//--------------------------------------------------------------
-void quad::maskAddPoint(int x, int y)
+// adds a new point to the mask point vector
+void quad::maskAddPoint(ofPoint point)
 {
+    ofPoint warpedPoint = getWarpedPoint(point);
 
-    ofPoint mouse;
-    mouse.x = x;
-    mouse.y = y;
-
-    ofVec3f warped;
-    warped = findWarpedPoint(src, dst, mouse);
-
-    maskPoints.push_back(warped);
-
+    maskPoints.push_back(warpedPoint);
 }
 
-ofVec3f quad::getWarpedPoint(int x, int y)
+ofPoint quad::getWarpedPoint(ofPoint point)
 {
-    ofPoint punto;
-    punto.x = x;
-    punto.y = y;
-
-    ofVec3f warped;
-    warped = findWarpedPoint(src, dst, punto);
-    return warped;
+    return findWarpedPoint(src, dst, point);
 }
 
 

@@ -8,15 +8,15 @@
 
 #ifdef WITH_KINECT
     #ifdef WITH_SYPHON
-    void quad::setup(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, kinectManager &kinect, ofxSyphonClient &syphon, ofTrueTypeFont &font)
+    void quad::setup(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, kinectManager &kinect, ofxSyphonClient &syphon, ofTrueTypeFont &font)
     #else
-    void quad::setup(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, kinectManager &kinect, ofTrueTypeFont &font)
+    void quad::setup(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, kinectManager &kinect, ofTrueTypeFont &font)
     #endif
 #else
     #ifdef WITH_SYPHON
-    void quad::setup(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, ofxSyphonClient &syphon, ofTrueTypeFont &font)
+    void quad::setup(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, ofxSyphonClient &syphon, ofTrueTypeFont &font)
     #else
-    void quad::setup(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, ofTrueTypeFont &font)
+    void quad::setup(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, ofTrueTypeFont &font)
     #endif
 #endif
 {
@@ -58,19 +58,13 @@
     //this is just for our gui / mouse handles
     //this will end up being the destination quad we are warping too
 
-    corners[0].x = x1;
-    corners[0].y = y1;
+    // setup the corner points
+    corners[0] = point1;
+    corners[1] = point2;
+    corners[2] = point3;
+    corners[3] = point4;
 
-    corners[1].x = x2;
-    corners[1].y = y2;
-
-    corners[2].x = x3;
-    corners[2].y = y3;
-
-    corners[3].x = x4;
-    corners[3].y = y4;
-
-    center = (corners[0]+corners[1]+corners[2]+corners[3])/4;
+    center = (corners[0] + corners[1] + corners[2] + corners[3]) / 4;
 
     crop[0] = 0.0;
     crop[1] = 0.0;
@@ -140,46 +134,21 @@
     fps = ofGetFrameRate();
     transCounter = 0;
 
-    bgColor.r = 0;
-    bgColor.g = 0;
-    bgColor.b = 0;
-    bgColor.a = 0;
+    // initialize the solid and transition colors with solid black
+    bgColor = ofFloatColor(0, 0, 0, 1);
+    secondColor = ofFloatColor(0, 0, 0, 1);
 
-    secondColor.r = 0;
-    secondColor.g = 0;
-    secondColor.b = 0;
-    secondColor.a = 0;
+    // initialize some colors with transparent black
+    startColor = ofFloatColor(0, 0, 0, 0);
+    endColor = ofFloatColor(0, 0, 0, 0);
 
-    startColor.r = 0;
-    startColor.g = 0;
-    startColor.b = 0;
-    startColor.a = 0;
+    // initialize some colors with solid white
+    imgColorize = ofFloatColor(1, 1, 1, 1);
+    videoColorize = ofFloatColor(1, 1, 1, 1);
+    camColorize = ofFloatColor(1, 1, 1, 1);
 
-    endColor.r = 0;
-    endColor.g = 0;
-    endColor.b = 0;
-    endColor.a = 0;
-
-    imgColorize.r = 1;
-    imgColorize.g = 1;
-    imgColorize.b = 1;
-    imgColorize.a = 1;
-
-    videoColorize.r = 1;
-    videoColorize.g = 1;
-    videoColorize.b = 1;
-    videoColorize.a = 1;
-
-    camColorize.r = 1;
-    camColorize.g = 1;
-    camColorize.b = 1;
-    camColorize.a = 1;
-
-    colorGreenscreen.r = 0;
-    colorGreenscreen.g = 0;
-    colorGreenscreen.b = 0;
-    colorGreenscreen.a = 0;
-
+    // greenscreen setup
+    colorGreenscreen = ofFloatColor(0, 0, 0, 0);
     thresholdGreenscreen = 10;
 
     kinectBg = false;
@@ -293,7 +262,7 @@ void quad::update()
             prevCamNumber = camNumber;
         }
         //recalculates center of quad
-        center = (corners[0]+corners[1]+corners[2]+corners[3])/4;
+        center = (corners[0] + corners[1] + corners[2] + corners[3]) / 4;
 
         // solid colors ---------------------------------------------------------------
         // calculates transition between two solid colors
@@ -316,10 +285,10 @@ void quad::update()
             //transStep = (transDuration * ofGetFrameRate());
             //if (abs(fps-ofGetFrameRate()) > 50) {fps = ofGetFrameRate();}
             transStep = (transDuration * fps);
-            transColor.r = startColor.r + (((endColor.r - startColor.r)/transStep)*transCounter);
-            transColor.g = startColor.g + (((endColor.g - startColor.g)/transStep)*transCounter);
-            transColor.b = startColor.b + (((endColor.b - startColor.b)/transStep)*transCounter);
-            transColor.a = startColor.a + (((endColor.a - startColor.a)/transStep)*transCounter);
+            transColor.r = startColor.r + (((endColor.r - startColor.r) / transStep) * transCounter);
+            transColor.g = startColor.g + (((endColor.g - startColor.g) / transStep) * transCounter);
+            transColor.b = startColor.b + (((endColor.b - startColor.b) / transStep) * transCounter);
+            transColor.a = startColor.a + (((endColor.a - startColor.a) / transStep) * transCounter);
             transCounter += 1;
             if (transCounter >= transStep)
             {
@@ -424,7 +393,7 @@ void quad::update()
                 //polySmoothed.close();
                 vector<ofPoint> points = polySmoothed.getVertices();
 
-                for( int j=0; j<points.size(); j++ )
+                for(size_t j=0; j<points.size(); j++ )
                 {
                     if (kinectContourCurved)
                     {
@@ -450,20 +419,16 @@ void quad::update()
 
         //we set the warp coordinates
         //source coordinates as the dimensions of our window
-        src[0].x = 0;
-        src[0].y = 0;
-        src[1].x = ofGetWidth();
-        src[1].y = 0;
-        src[2].x = ofGetWidth();
-        src[2].y = ofGetHeight();
-        src[3].x = 0;
-        src[3].y = ofGetHeight();
+        src[0] = ofPoint(           0,             0);
+        src[1] = ofPoint(ofGetWidth(),             0);
+        src[2] = ofPoint(ofGetWidth(), ofGetHeight());
+        src[3] = ofPoint(           0, ofGetHeight());
 
         //corners are in 0.0 - 1.0 range
         //so we scale up so that they are at the window's scale
         for(int i = 0; i < 4; i++)
         {
-            dst[i].x = corners[i].x  * (float)ofGetWidth();
+            dst[i].x = corners[i].x * (float)ofGetWidth();
             dst[i].y = corners[i].y * (float) ofGetHeight();
         }
 
