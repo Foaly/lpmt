@@ -78,7 +78,7 @@ public:
     int activeQuad;
     int nOfQuads;
     int borderColor;
-    int copyQuadNum;
+    int m_sourceQuadForCopying;
 
     bool autoStart;
 

@@ -245,8 +245,8 @@ void testApp::setup()
 
     // snap mode for surfaces corner is on
     bSnapOn = true;
-    // number of surface to use as source in copy/paste is disabled
-    copyQuadNum = -1;
+    // number of surface to use as source in copy/paste (per default no quad is selected)
+    m_sourceQuadForCopying = -1;
 
     //timeline defaults
     #ifdef WITH_TIMELINE
@@ -1160,24 +1160,18 @@ void testApp::keyPressed(int key)
         gui.setPage((activeQuad*3)+4);
     }
 
-    // paste settings from source surface to current active surface
-    /*if ( (key == 'v') && !bTimeline)
-    {
-        if(glutGetModifiers() & GLUT_ACTIVE_CTRL)
-        {
-           copyQuadSettings(copyQuadNum);
-        }
-    }*/
-
+    // make currently active quad the source quad for copying
+    // (3 corresponds to CTRL + C)
     if ( (key == 3) && !bTimeline)
     {
-        copyQuadNum = activeQuad;
+        m_sourceQuadForCopying = activeQuad;
     }
 
-
+    // paste settings from source surface to currently active surface
+    // (22 corresponds to CTRL + V)
     if ( (key == 22) && !bTimeline)
     {
-        copyQuadSettings(copyQuadNum);
+        copyQuadSettings(m_sourceQuadForCopying);
     }
 
     // adds a new quad in the middle of the screen
