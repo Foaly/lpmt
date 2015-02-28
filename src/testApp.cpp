@@ -229,8 +229,6 @@ void testApp::setup()
 
     //ttf.loadFont("type/frabk.ttf", 11);
     ttf.loadFont("type/OpenSans-Regular.ttf", 11);
-    // set border color for quads in setup mode
-    borderColor = 0x666666;
     // starts in quads setup mode
     isSetup = true;
     // starts running
@@ -793,7 +791,6 @@ void testApp::prepare()
                 if (quads[i].initialized)
                 {
                     quads[i].update();
-                    quads[i].borderColor = borderColor;
                     // frame delay correction for Mpe sync
                     if(bMpe)
                     {
@@ -868,13 +865,6 @@ void testApp::update()
 //--------------------------------------------------------------
 void testApp::draw()
 {
-    // in setup mode writes the number of active quad at the bottom of the window
-    if (isSetup)
-    {
-        // in setup mode sets active quad border to be white
-        quads[activeQuad].borderColor = 0xFFFFFF;
-    }
-
     if (!bMpe)
     {
         dostuff();
@@ -882,19 +872,20 @@ void testApp::draw()
 
     if (isSetup)
     {
-
         if (bStarted)
         {
             // if we are rotating surface, draws a feedback rotation sector
             ofEnableAlphaBlending();
             ofFill();
-            //ofSetColor(0,200,220,120);
-            ofSetColor(219,104,0,255);
+            ofSetColor(219, 104, 0, 255); // orange
             rotationSector.draw();
             ofNoFill();
             ofDisableAlphaBlending();
-            ofSetHexColor(0xFFFFFF);
-            ttf.drawString("active surface: "+ofToString(activeQuad), 30, ofGetHeight()-25);
+
+            // in setup mode writes the number of the active quad at the bottom of the window
+            ofSetHexColor(0xFFFFFF); // white
+            ttf.drawString("active surface: " + ofToString(activeQuad), 30, ofGetHeight() - 25);
+
             if(maskSetup) {
                 ofSetHexColor(0xFF0000);
                 ttf.drawString("Mask-editing mode ", 170, ofGetHeight()-25);
@@ -927,6 +918,7 @@ void testApp::draw()
     if (m_isSplashScreenActive)
     {
         ofEnableAlphaBlending();
+        ofSetHexColor(0xFFFFFF); // white
         m_SplashScreenImage.draw((ofGetWidth() / 2) - 230, (ofGetHeight() / 2) - 110);
         ofDisableAlphaBlending();
     }

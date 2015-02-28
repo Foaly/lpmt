@@ -232,6 +232,7 @@ void quad::drawMaskMarkers()
             contourPoint = findWarpedPoint(dst, src, contourPoint);
             contour.addVertex(contourPoint);
         }
+        ofSetHexColor(0x444444); // dark-grey
         ofSetLineWidth(1.6);
         contour.close();
         contour.draw();

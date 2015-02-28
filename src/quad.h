@@ -42,7 +42,6 @@ public:
     int videoWidth;
     int videoHeight;
 
-    int borderColor;
     ofFloatColor bgColor;
     ofFloatColor secondColor;
     ofFloatColor startColor;

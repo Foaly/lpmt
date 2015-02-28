@@ -78,8 +78,6 @@
     //videos = videoFiles;
     //slideshows = slideshowFolders;
 
-    borderColor = 0x666666;
-
     // sets default variables
     initialized = true;
     isActive = false;
@@ -1159,127 +1157,114 @@ void quad::draw()
             ofDisableAlphaBlending();
         }
 
-        /*
-        // draws a little triangle to highlight draggable corner
-        if(isActive && bHighlightCorner && highlightedCorner >= 0)
-        {
-            ofFill();
-            ofSetHexColor(0x00FF00);
-            ofEnableAlphaBlending();
-            if(highlightedCorner == 0)
-            {
-                ofTriangle(0,0,25,0,0,25);
-            }
-            else if(highlightedCorner == 1)
-            {
-                ofTriangle(ofGetWidth(),0,ofGetWidth()-25,0,ofGetWidth(),25);
-            }
-            else if(highlightedCorner == 2)
-            {
-                ofTriangle(ofGetWidth(),ofGetHeight(),ofGetWidth()-25,ofGetHeight(),ofGetWidth(),ofGetHeight()-25);
-            }
-            else if(highlightedCorner == 3)
-            {
-                ofTriangle(0,ofGetHeight(),0,ofGetHeight()-25,25,ofGetHeight());
-            }
-            ofDisableAlphaBlending();
-            ofNoFill();
-        }
-        */
-
-        //lets draw a bounding box if we are in setup mode
-        ofNoFill();
-        //ofEnableSmoothing();
-        ofSetLineWidth(1.0);
+        // in setup mode draw the border of the quad and if it is active draw the helper grid
         if (isSetup)
         {
-            ofSetHexColor(borderColor);
-            ofRect(0, 0, ofGetWidth(), ofGetHeight());
-            // draws helper grid on active quad
+            ofNoFill();
+            ofSetLineWidth(1.0);
+            ofEnableSmoothing();
             if (isActive)
             {
-                ofSetHexColor(0x444444);
-                ofLine(0,ofGetHeight()/2,ofGetWidth(),ofGetHeight()/2);
-                ofLine(ofGetWidth()/2,0,ofGetWidth()/2,ofGetHeight());
-                ofLine(ofGetWidth()/2,0,ofGetWidth()/2-20,20);
-                ofLine(ofGetWidth()/2,0,ofGetWidth()/2+20,20);
-                ofLine(ofGetWidth()/2-20,20,ofGetWidth()/2+20,20);
-                ofLine(0,ofGetHeight()/4,ofGetWidth(),ofGetHeight()/4);
-                ofLine(0,ofGetHeight()/2+ofGetHeight()/4,ofGetWidth(),ofGetHeight()/2+ofGetHeight()/4);
-                ofLine(ofGetWidth()/4,0,ofGetWidth()/4,ofGetHeight());
-                ofLine(ofGetWidth()/2+ofGetWidth()/4,0,ofGetWidth()/2+ofGetWidth()/4,ofGetHeight());
+                // draws helper grid on active quad
+                ofSetHexColor(0x444444); // dark-grey
+                // horizontal lines
+                ofLine(0, ofGetHeight() / 4, ofGetWidth(), ofGetHeight() / 4);
+                ofLine(0, ofGetHeight() / 2, ofGetWidth(), ofGetHeight() / 2);
+                ofLine(0, ofGetHeight() / 2 + ofGetHeight() / 4, ofGetWidth(), ofGetHeight() / 2 + ofGetHeight() / 4);
+                // vertical lines
+                ofLine(ofGetWidth() / 4, 0, ofGetWidth() / 4, ofGetHeight());
+                ofLine(ofGetWidth() / 2, 0, ofGetWidth() / 2, ofGetHeight());
+                ofLine(ofGetWidth() / 2 + ofGetWidth() / 4, 0, ofGetWidth() / 2 + ofGetWidth() / 4, ofGetHeight());
+                // little arrow at top center to indicate where up is
+                ofLine(ofGetWidth() / 2, 0, ofGetWidth() / 2 - 20, 20);
+                ofLine(ofGetWidth() / 2, 0, ofGetWidth() / 2 + 20, 20);
+                ofLine(ofGetWidth() / 2 - 20, 20, ofGetWidth() / 2 + 20, 20);
 
+                // set active quads border to be white
+                ofSetHexColor(0xFFFFFF); // white
+                ofRect(0, 0, ofGetWidth(), ofGetHeight());
             }
+            else
+            {
+                // if the quad is not active draw a grey border
+                ofSetHexColor(0x666666); // light-grey
+                ofRect(0, 0, ofGetWidth(), ofGetHeight());
+            }
+            ofDisableSmoothing();
         }
 
         ofPopMatrix();
 
-        // draws markers for bezier deform setup
-        if (isActive && isBezierSetup)
+        if (isActive)
         {
-            if (bBezier)
+            // draws markers for bezier deform setup
+            if(isBezierSetup)
             {
-                drawBezierMarkers();
+                if (bBezier)
+                {
+                    drawBezierMarkers();
+                }
+                else if (bGrid)
+                {
+                    drawGridMarkers();
+                }
             }
-            else if (bGrid)
+            // draws mask markers and contour in mask-setup mode
+            if(isMaskSetup)
             {
-                drawGridMarkers();
+                drawMaskMarkers();
             }
-        }
-
-        // draws mask markers and contour in mask-setup mode
-        if (isActive && isMaskSetup)
-        {
-            drawMaskMarkers();
-        }
-
-
-        // draws a little circle to highlight draggable corner
-        if(isActive && bHighlightCorner && highlightedCorner >= 0)
-        {
-            //ofFill();
-            //ofSetColor(0,200,220,120);
-            ofSetColor(219,104,0,255);
-            ofEnableAlphaBlending();
-            ofCircle(corners[highlightedCorner].x*ofGetWidth(),corners[highlightedCorner].y*ofGetHeight(),5);
-            ofCircle(corners[highlightedCorner].x*ofGetWidth(),corners[highlightedCorner].y*ofGetHeight(),20);
-            ofDisableAlphaBlending();
-            //ofNoFill();
         }
 
         if (isSetup)
         {
-            ofSetHexColor(0x000000);
-            ttf.drawString("surface "+ofToString(quadNumber), center.x*ofGetWidth()+10, center.y*ofGetHeight()-10);
+            // transform the normalized coordinates into window pixel coordinates
+            const ofPoint centerInPixel(center.x * ofGetWidth(), center.y * ofGetHeight());
+
+            // draw the a string with the surface number a little offset in black, as a drop shadow
+            ofSetHexColor(0x000000); // black
+            ttf.drawString("surface " + ofToString(quadNumber), centerInPixel.x + 10, centerInPixel.y - 10);
+
             if (isActive)
             {
+                if(bHighlightCorner && highlightedCorner >= 0)
+                {
+                    // if the mouse is over a corner, draw two orange circles around it, to show it is draggable
+                    ofSetColor(219, 104, 0, 255);
+                    ofEnableAlphaBlending();
+                    ofCircle(corners[highlightedCorner].x * ofGetWidth(), corners[highlightedCorner].y * ofGetHeight(), 5);
+                    ofCircle(corners[highlightedCorner].x * ofGetWidth(), corners[highlightedCorner].y * ofGetHeight(), 20);
+                    ofDisableAlphaBlending();
+                }
 
                 if(bHighlightCenter)
                 {
+                    // if the mouse is over the center handle, fill it with a little semi-transparent orange square
                     ofFill();
                     ofEnableAlphaBlending();
-                    //ofSetColor(0,200,220,120);
-                    ofSetColor(219,104,0,120);
-                    ofRect(center.x*ofGetWidth()-5,center.y*ofGetHeight()-5,10,10);
+                    ofSetColor(219, 104, 0, 120); // semi-transparent orange
+                    ofRect(centerInPixel.x - 5, centerInPixel.y - 5, 10, 10);
                     ofDisableAlphaBlending();
                     ofNoFill();
-                    //ofSetColor(255,255,255,255);
-                    ofLine(center.x*ofGetWidth()-25,center.y*ofGetHeight(),center.x*ofGetWidth()-15,center.y*ofGetHeight());
-                    ofLine(center.x*ofGetWidth()-15,center.y*ofGetHeight(),center.x*ofGetWidth()-19,center.y*ofGetHeight()+4);
-                    ofLine(center.x*ofGetWidth()-15,center.y*ofGetHeight(),center.x*ofGetWidth()-19,center.y*ofGetHeight()-4);
-                    ofLine(center.x*ofGetWidth()-25,center.y*ofGetHeight(),center.x*ofGetWidth()-25,center.y*ofGetHeight()-10);
-                    ofLine(center.x*ofGetWidth()-25,center.y*ofGetHeight()-10,center.x*ofGetWidth()-29,center.y*ofGetHeight()-6);
-                    ofLine(center.x*ofGetWidth()-25,center.y*ofGetHeight()-10,center.x*ofGetWidth()-21,center.y*ofGetHeight()-6);
 
-                    ofLine(center.x*ofGetWidth()-25,center.y*ofGetHeight(),center.x*ofGetWidth()-35,center.y*ofGetHeight());
-                    ofLine(center.x*ofGetWidth()-35,center.y*ofGetHeight(),center.x*ofGetWidth()-31,center.y*ofGetHeight()+4);
-                    ofLine(center.x*ofGetWidth()-35,center.y*ofGetHeight(),center.x*ofGetWidth()-31,center.y*ofGetHeight()-4);
-                    ofLine(center.x*ofGetWidth()-25,center.y*ofGetHeight(),center.x*ofGetWidth()-25,center.y*ofGetHeight()+10);
-                    ofLine(center.x*ofGetWidth()-25,center.y*ofGetHeight()+10,center.x*ofGetWidth()-29,center.y*ofGetHeight()+6);
-                    ofLine(center.x*ofGetWidth()-25,center.y*ofGetHeight()+10,center.x*ofGetWidth()-21,center.y*ofGetHeight()+6);
+                    // draw a move cursor next to the center handle to show it is dragable
+                    ofLine(centerInPixel.x - 25, centerInPixel.y, centerInPixel.x - 15, centerInPixel.y);
+                    ofLine(centerInPixel.x - 15, centerInPixel.y, centerInPixel.x - 19, centerInPixel.y + 4);
+                    ofLine(centerInPixel.x - 15, centerInPixel.y, centerInPixel.x - 19, centerInPixel.y - 4);
+                    ofLine(centerInPixel.x - 25, centerInPixel.y, centerInPixel.x - 25, centerInPixel.y - 10);
+                    ofLine(centerInPixel.x - 25, centerInPixel.y - 10, centerInPixel.x - 29, centerInPixel.y - 6);
+                    ofLine(centerInPixel.x - 25, centerInPixel.y - 10, centerInPixel.x - 21, centerInPixel.y - 6);
 
+                    ofLine(centerInPixel.x - 25, centerInPixel.y, centerInPixel.x - 35, centerInPixel.y);
+                    ofLine(centerInPixel.x - 35, centerInPixel.y, centerInPixel.x - 31, centerInPixel.y + 4);
+                    ofLine(centerInPixel.x - 35, centerInPixel.y, centerInPixel.x - 31, centerInPixel.y - 4);
+                    ofLine(centerInPixel.x - 25, centerInPixel.y, centerInPixel.x - 25, centerInPixel.y + 10);
+                    ofLine(centerInPixel.x - 25, centerInPixel.y + 10, centerInPixel.x - 29, centerInPixel.y + 6);
+                    ofLine(centerInPixel.x - 25, centerInPixel.y + 10, centerInPixel.x - 21, centerInPixel.y + 6);
+
+                    // enclose the move cursor in a circle
                     ofSetCircleResolution(48);
-                    ofCircle(center.x*ofGetWidth()-25,center.y*ofGetHeight(),12);
+                    ofCircle(centerInPixel.x - 25, centerInPixel.y, 12);
                     ofSetCircleResolution(40);
                     ofSetHexColor(0x444444);
 
@@ -1287,30 +1272,33 @@ void quad::draw()
 
                 if(bHighlightRotation)
                 {
+                    // if the mouse is over the rotation handle, fill it with semi-transparent orange
                     ofFill();
                     ofEnableAlphaBlending();
-                    //ofSetColor(0,200,220,120);
-                    ofSetColor(219,104,0,120);
-                    ofCircle((center.x+0.1)*ofGetWidth(),center.y*ofGetHeight(),5);
+                    ofSetColor(219, 104, 0, 120); // semi-transparent orange
+                    ofCircle((center.x + 0.1) * ofGetWidth(), centerInPixel.y ,5);
                     ofDisableAlphaBlending();
                     ofSetHexColor(0x444444);
                     ofNoFill();
                 }
-                ofSetHexColor(0x444444);
-                ofRect(center.x*ofGetWidth()-5,center.y*ofGetHeight()-5,10,10);
-                ofCircle((center.x+0.1)*ofGetWidth(),center.y*ofGetHeight(),5);
-                ofLine(center.x*ofGetWidth(),center.y*ofGetHeight(),(center.x+0.1)*ofGetWidth(),center.y*ofGetHeight());
 
-                ofSetColor(219,104,0,255);    // draws orange label if active quad, white if not
-                ttf.drawString("surface "+ofToString(quadNumber), (center.x*ofGetWidth())+8, (center.y*ofGetHeight())-12);
+                ofSetHexColor(0x444444); // grey
+                // draw the center handle
+                ofRect(centerInPixel.x - 5, centerInPixel.y - 5, 10, 10);
+                // draw the rotation handle
+                ofCircle((center.x + 0.1) * ofGetWidth(), centerInPixel.y, 5);
+                ofLine(centerInPixel.x, centerInPixel.y, (center.x + 0.1) * ofGetWidth(), centerInPixel.y);
+
+                // draw a string with the surface number in orange if the quad is the active one
+                ofSetColor(219, 104, 0, 255); // solid orange
+                ttf.drawString("surface " + ofToString(quadNumber), centerInPixel.x + 8, centerInPixel.y - 12);
             }
             else
             {
-                ofSetHexColor(0xFFFFFF);
-                ttf.drawString("surface "+ofToString(quadNumber), (center.x*ofGetWidth())+8, (center.y*ofGetHeight())-12);
+                // draw a string with the surface number in white if the quad is not the active one
+                ofSetHexColor(0xFFFFFF);// white
+                ttf.drawString("surface " + ofToString(quadNumber), centerInPixel.x + 8, centerInPixel.y - 12);
             }
-
         }
-
     }
 }
