@@ -12,11 +12,13 @@ void quad::allocateFbo(int w, int h)
 }
 
 // adds a new point to the mask point vector
+// the given point has to be in non-normalized window pixel coordinates
 void quad::maskAddPoint(ofPoint point)
 {
-    ofPoint warpedPoint = getWarpedPoint(point);
+    const ofPoint warpedPoint = getWarpedPoint(point);
+    const ofPoint normalizedPoint(warpedPoint.x / ofGetWidth(), warpedPoint.y / ofGetHeight());
 
-    maskPoints.push_back(warpedPoint);
+    m_maskPoints.push_back(normalizedPoint);
 }
 
 ofPoint quad::getWarpedPoint(ofPoint point)

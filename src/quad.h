@@ -249,7 +249,7 @@ public:
     void maskAddPoint(ofPoint point);
     void drawMaskMarkers();
 
-    vector<ofPoint> maskPoints;
+    std::vector<ofPoint> m_maskPoints;
     ofPoint getWarpedPoint(ofPoint point);
     bool bHighlightMaskPoint;
     int highlightedMaskPoint;

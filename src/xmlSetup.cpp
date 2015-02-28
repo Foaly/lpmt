@@ -122,13 +122,13 @@ void testApp::saveCurrentSettingsToXMLFile(std::string xmlFilePath)
             //mask stuff
             xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":MASK:ON",quads[i].bMask);
             xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":MASK:INVERT_MASK",quads[i].maskInvert);
-            xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":MASK:N_POINTS",(int)quads[i].maskPoints.size());
-            if (quads[i].maskPoints.size() > 0)
+            xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":MASK:N_POINTS",(int)quads[i].m_maskPoints.size());
+            if (quads[i].m_maskPoints.size() > 0)
             {
-                for(int j=0; j<quads[i].maskPoints.size(); j++)
+                for(size_t j = 0; j < quads[i].m_maskPoints.size(); j++)
                 {
-                    xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":MASK:POINTS:POINT_"+ofToString(j)+":X",quads[i].maskPoints[j].x);
-                    xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":MASK:POINTS:POINT_"+ofToString(j)+":Y",quads[i].maskPoints[j].y);
+                    xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":MASK:POINTS:POINT_"+ofToString(j)+":X",quads[i].m_maskPoints[j].x);
+                    xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":MASK:POINTS:POINT_"+ofToString(j)+":Y",quads[i].m_maskPoints[j].y);
                 }
             }
             xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":MASK:CROP:RECTANGULAR:TOP",quads[i].crop[0]);
@@ -323,16 +323,16 @@ void testApp::loadSettingsFromXMLFile(std::string xmlFilePath)
             //mask stuff
             quads[i].bMask = xmlSettingsFile.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:ON", 0);
             quads[i].maskInvert = xmlSettingsFile.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:INVERT_MASK", 0);
-            int nOfMaskPoints =  xmlSettingsFile.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:N_POINTS", 0);
-            quads[i].maskPoints.clear();
-            if (nOfMaskPoints > 0)
+            const int numberOfMaskPoints =  xmlSettingsFile.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:N_POINTS", 0);
+            quads[i].m_maskPoints.clear();
+            if (numberOfMaskPoints > 0)
             {
-                for(int j=0; j<nOfMaskPoints; j++)
+                for(size_t j = 0; j < numberOfMaskPoints; j++)
                 {
                     ofPoint tempMaskPoint;
                     tempMaskPoint.x = xmlSettingsFile.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:POINTS:POINT_"+ofToString(j)+":X", 0);
                     tempMaskPoint.y = xmlSettingsFile.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:POINTS:POINT_"+ofToString(j)+":Y", 0);
-                    quads[i].maskPoints.push_back(tempMaskPoint);
+                    quads[i].m_maskPoints.push_back(tempMaskPoint);
                 }
             }
             quads[i].crop[0] = xmlSettingsFile.getValue("QUADS:QUAD_"+ofToString(i)+":MASK:CROP:RECTANGULAR:TOP",0.0);
