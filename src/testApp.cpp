@@ -115,8 +115,8 @@ void testApp::setup()
     }
 
     //double click time
-    doubleclickTime = 500;
-    lastTap = 0;
+    m_doubleclickTime = 500; // 500 milliseconds
+    m_timeLastClicked = 0;
 
     // rotation angle for surface-rotation visual feedback
     totRotationAngle = 0;
@@ -1779,11 +1779,12 @@ void testApp::mousePressed(int x, int y, int button)
         else
         {
             // check if the user double-clicked on a different quad and make it the active one
-            unsigned long curTap = ofGetElapsedTimeMillis();
-            if(lastTap != 0 && curTap - lastTap < doubleclickTime){
-                activateQuad(x,y);
+            unsigned long now = ofGetElapsedTimeMillis();
+            if (m_timeLastClicked != 0 && now - m_timeLastClicked < m_doubleclickTime)
+            {
+                activateClosestQuad(mousePosition);
             }
-            lastTap = curTap;
+            m_timeLastClicked = now;
 
             // check if the user clicked on one of active quad's corners and select it
             float smallestDist = 1.0;
@@ -1962,30 +1963,35 @@ void testApp::quadBezierReset(int q)
 
 
 //---------------------------------------------------------------
-void testApp::activateQuad(int x, int y)
+// This method activates the quad, whos center is closest to the given point.
+// Since we don't have a proper quad/point intersection test, the point must also be
+// within a radius the size of a 10th of the windows size, to get acceptable results.
+void testApp::activateClosestQuad(ofPoint point)
 {
-    float smallestDist = 1.0;
-    int whichQuad = activeQuad;
+    float smallestDistance = 1.0;
+    int closestQuad = activeQuad;
 
     for(int i = 0; i < 36; i++)
     {
         if (quads[i].initialized)
         {
-            float distx = quads[i].center.x - (float)x/ofGetWidth();
-            float disty = quads[i].center.y - (float)y/ofGetHeight();
-            float dist  = sqrt( distx * distx + disty * disty);
+            // find the quad closest to the point
+            const float distanceX = quads[i].center.x - static_cast<float>(point.x) / ofGetWidth();
+            const float distanceY = quads[i].center.y - static_cast<float>(point.y) / ofGetHeight();
+            const float distance  = distanceX * distanceX + distanceY * distanceY; // no square root needed, since we can simply square the value it's compared to
 
-            if(dist < smallestDist && dist < 0.1)
+            if(distance < smallestDistance && distance < 0.01)
             {
-                whichQuad = i;
-                smallestDist = dist;
+                closestQuad = i;
+                smallestDistance = distance;
             }
         }
     }
-    if (whichQuad != activeQuad)
+    // if the closest quad is not currently active, activate it
+    if (closestQuad != activeQuad)
     {
         quads[activeQuad].isActive = false;
-        activeQuad = whichQuad;
+        activeQuad = closestQuad;
         quads[activeQuad].isActive = true;
         gui.setPage((activeQuad*3)+2);
     }

@@ -183,11 +183,11 @@ public:
     void saveCurrentSettingsToXMLFile(std::string xmlFilePath);
     void loadSettingsFromXMLFile(std::string xmlFilePath);
 
-    // double-click stuff
-    unsigned long doubleclickTime;
-    unsigned long lastTap;
+    // double-click variables for quad picking
+    unsigned long m_doubleclickTime;
+    unsigned long long m_timeLastClicked;
 
-    void activateQuad(int x, int y);
+    void activateClosestQuad(ofPoint point);
 
     ofPoint startDrag;
 
