@@ -88,13 +88,13 @@ public:
     bool bTimeline;
     bool snapshotOn;
     bool bStarted;
-    bool bSplash;
     bool maskSetup;
     bool gridSetup;
     bool bSnapOn;
 
-    ofImage splashImg;
-    float splashTime;
+    // splash screen variables
+    bool m_isSplashScreenActive;
+    ofImage m_SplashScreenImage;
 
     // use of MostPixelsEver
     bool bMpe;

@@ -135,10 +135,9 @@ void testApp::setup()
     //we run at 60 fps!
     //ofSetVerticalSync(true);
 
-    // splash image
-    bSplash = true;
-    splashImg.loadImage("lpmt_splash.png");
-    splashTime = ofGetElapsedTimef();
+    // initialize the splash screen
+    m_isSplashScreenActive = true;
+    m_SplashScreenImage.loadImage("lpmt_splash.png");
 
     //mask editing
     maskSetup = false;
@@ -852,14 +851,14 @@ void testApp::dostuff()
 //--------------------------------------------------------------
 void testApp::update()
 {
-
     if (!bMpe)
     {
-        if (bSplash)
+        if (m_isSplashScreenActive)
         {
-            if (abs(splashTime - ofGetElapsedTimef()) > 8.0)
+            // turn the splash screen image of after 10 seconds
+            if (ofGetElapsedTimef() > 10.f)
             {
-                bSplash = ! bSplash;
+                m_isSplashScreenActive = ! m_isSplashScreenActive;
             }
         }
         prepare();
@@ -924,10 +923,11 @@ void testApp::draw()
     }
     #endif
 
-    if (bSplash)
+    // if the splash screen is active, draw the splash screen image
+    if (m_isSplashScreenActive)
     {
         ofEnableAlphaBlending();
-        splashImg.draw(((ofGetWidth()/2)-230),((ofGetHeight()/2)-110));
+        m_SplashScreenImage.draw((ofGetWidth() / 2) - 230, (ofGetHeight() / 2) - 110);
         ofDisableAlphaBlending();
     }
 }
@@ -1759,9 +1759,9 @@ void testApp::mousePressed(int x, int y, int button)
     startDrag = mousePosition;
 
     // deactivate the splash screen on click
-    if(bSplash)
+    if (m_isSplashScreenActive)
     {
-        bSplash = !bSplash;
+        m_isSplashScreenActive = !m_isSplashScreenActive;
     }
 
     if (isSetup && !bGui && !bTimeline)
