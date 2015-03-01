@@ -156,17 +156,14 @@ void testApp::setup()
     gridSetup = false;
 
     // OSC setup
+    int oscReceivePort = OSC_DEFAULT_PORT;
     if (wasConfigLoadSuccessful)
     {
-        int oscReceivePort = xmlConfigFile.getValue("OSC:LISTENING_PORT",12345);
-        cout << "listening for OSC messages on port: " << oscReceivePort << endl;
-        receiver.setup(oscReceivePort);
+        oscReceivePort = xmlConfigFile.getValue("OSC:LISTENING_PORT", OSC_DEFAULT_PORT);
     }
-    else
-    {
-        cout << "listening for OSC messages on default port 12345" << endl;
-        receiver.setup( PORT );
-    }
+    std::cout << "Listening for OSC messages on port: " << oscReceivePort << std::endl;
+    receiver.setup(oscReceivePort);
+
     current_msg_string = 0;
     oscControlMin = xmlConfigFile.getValue("OSC:GUI_CONTROL:SLIDER:MIN",0.0);
     oscControlMax = xmlConfigFile.getValue("OSC:GUI_CONTROL:SLIDER:MAX",1.0);
