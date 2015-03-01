@@ -85,7 +85,6 @@ public:
     bool bFullscreen;
     bool bGui;
     bool bTimeline;
-    bool snapshotOn;
     bool bStarted;
     bool maskSetup;
     bool gridSetup;
@@ -162,18 +161,15 @@ public:
     float totRotationAngle;
     ofPolyline rotationSector;
 
-    // camera grabber
-    //ofVideoGrabber camGrabber;
-    ofTexture camTexture;
-    ofTexture snapshotTexture;
-	vector<ofVideoGrabber> cameras;
-	vector<string> cameraIDs;
+    // snapshot background variables
+    bool m_isSnapshotTextureOn;
+    ofTexture m_snapshotBackgroundTexture;
+	std::vector<ofVideoGrabber> m_cameras;
+	std::vector<ofVideoGrabber>::iterator m_snapshotBackgroundCamera;
+	std::vector<string> m_cameraIds;
 
     vector<ofVideoPlayer> sharedVideos;
     vector<string> sharedVideosFiles;
-
-    int camWidth;
-    int camHeight;
 
     vector<string> imgFiles;
     vector<string> videoFiles;

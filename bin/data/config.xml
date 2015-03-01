@@ -1,11 +1,19 @@
-<CAMERAS>
-<CAMERA>
-	<WIDTH>640</WIDTH>
-	<HEIGHT>480</HEIGHT>
-	<ID>0</ID>
-</CAMERA>
+<!-- For a detailed explanation on how this file and its structure works,
+     please take a look at the `doc/config file format.md` file. -->
 
-</CAMERAS>
+<cameras>
+    <camera>
+        <requestedWidth>800</requestedWidth>
+        <requestedHeight>600</requestedHeight>
+        <id>0</id>
+    </camera>
+    <camera>
+        <requestedWidth>640</requestedWidth>
+        <requestedHeight>480</requestedHeight>
+        <id>1</id>
+        <useForSnapshotBackround>1</useForSnapshotBackround>
+    </camera>
+</cameras>
 
 <OSC>
 <LISTENING_PORT>8888</LISTENING_PORT>
