@@ -284,7 +284,7 @@ void testApp::copyQuadSettings(int sourceQuad)
         //mask stuff
         quads[activeQuad].bMask = quads[sourceQuad].bMask;
         quads[activeQuad].maskInvert = quads[sourceQuad].maskInvert;
-        quads[activeQuad].maskPoints = quads[sourceQuad].maskPoints;
+        quads[activeQuad].m_maskPoints = quads[sourceQuad].m_maskPoints;
         quads[activeQuad].crop[0] = quads[sourceQuad].crop[0];
         quads[activeQuad].crop[1] = quads[sourceQuad].crop[1];
         quads[activeQuad].crop[2] = quads[sourceQuad].crop[2];

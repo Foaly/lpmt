@@ -220,39 +220,40 @@ void quad::drawGridMarkers()
 // Mask markers --------------------------------------
 void quad::drawMaskMarkers()
 {
-    if (maskPoints.size()>0)
+    if (m_maskPoints.size() > 0)
     {
+        // draw the contour polygon the markers form
         ofPolyline contour;
-        for(unsigned int i = 0; i < maskPoints.size(); i++)
+        for(size_t i = 0; i < m_maskPoints.size(); i++)
         {
-            ofVec3f contourPoint;
-            contourPoint.x = maskPoints[i].x;
-            contourPoint.y = maskPoints[i].y;
-            contourPoint.z = 0;
-            contourPoint = findWarpedPoint(dst, src, contourPoint);
-            contour.addVertex(contourPoint);
+            const ofPoint scaledPoint(m_maskPoints[i].x * ofGetWidth(), m_maskPoints[i].y * ofGetHeight());
+            const ofPoint warpedPoint = findWarpedPoint(dst, src, scaledPoint);
+            contour.addVertex(warpedPoint);
         }
         ofSetHexColor(0x444444); // dark-grey
         ofSetLineWidth(1.6);
+        ofEnableSmoothing();
         contour.close();
         contour.draw();
+        ofDisableSmoothing();
 
-        for(unsigned int i = 0; i < maskPoints.size(); i++)
+        // draw the marker handles
+        for(size_t i = 0; i < m_maskPoints.size(); i++)
         {
-            ofVec3f punto;
-            punto.x = maskPoints[i].x;
-            punto.y = maskPoints[i].y;
-            punto.z = 0.0;
-            punto = findWarpedPoint(dst, src, punto);
-            ofSetColor(100,139,150,255);
+            ofSetColor(100, 139, 150, 255); // blueish grey
             ofSetLineWidth(1.0);
+
+            const ofPoint scaledPoint(m_maskPoints[i].x * ofGetWidth(), m_maskPoints[i].y * ofGetHeight());
+            const ofPoint warpedPoint = findWarpedPoint(dst, src, scaledPoint);
+
+            // if the mouse is over the handle fill the inner circle
             if(bHighlightMaskPoint && highlightedMaskPoint == i)
             {
                 ofFill();
             }
-            ofCircle(punto.x, punto.y, 4);
+            ofCircle(warpedPoint, 4);
             ofNoFill();
-            ofCircle(punto.x, punto.y, 10);
+            ofCircle(warpedPoint, 10);
         }
     }
 }

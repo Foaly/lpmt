@@ -211,7 +211,7 @@
     bHighlightCenter = false;
     bHighlightRotation = false;
 
-    maskPoints = vector<ofPoint>();
+    m_maskPoints = std::vector<ofPoint>();
     bMask = false;
     maskInvert = false;
 
@@ -817,14 +817,15 @@ void quad::draw()
             ofSetCircleResolution(22);
         }
 
-        // user mask
-        if(maskPoints.size()>0)
+        // draw the user-defined mask on the mask FBO
+        if(m_maskPoints.size() > 0)
         {
-            ofSetColor(255,255,255);
+            ofSetColor(255, 255, 255); // white
             ofBeginShape();
-            for(unsigned int i = 0; i < maskPoints.size(); i++)
+            for(size_t i = 0; i < m_maskPoints.size(); i++)
             {
-                ofVertex(maskPoints[i]);
+                ofPoint scaledPoint = ofPoint(m_maskPoints[i].x * ofGetWidth(), m_maskPoints[i].y * ofGetHeight());
+                ofVertex(scaledPoint);
             }
             ofEndShape(true);
         }

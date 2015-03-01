@@ -1124,8 +1124,14 @@ void testApp::keyPressed(int key)
     // goes to first page of gui for active quad or, in mask edit mode, delete last drawn point
     if ( (key == 'z' || key == 'Z') && !bTimeline)
     {
-        if(maskSetup && quads[activeQuad].maskPoints.size()>0) {quads[activeQuad].maskPoints.pop_back();}
-        else {gui.setPage((activeQuad*3)+2);}
+        if(maskSetup && quads[activeQuad].m_maskPoints.size() > 0)
+        {
+            quads[activeQuad].m_maskPoints.pop_back();
+        }
+        else
+        {
+            gui.setPage((activeQuad*3)+2);
+        }
     }
 
     if ( key == OF_KEY_F1)
@@ -1136,11 +1142,11 @@ void testApp::keyPressed(int key)
 
     if ( (key == 'd' || key == 'D') && !bTimeline)
     {
-        if(maskSetup && quads[activeQuad].maskPoints.size()>0)
+        if(maskSetup && quads[activeQuad].m_maskPoints.size() > 0)
         {
             if (quads[activeQuad].bHighlightMaskPoint)
             {
-                quads[activeQuad].maskPoints.erase(quads[activeQuad].maskPoints.begin()+quads[activeQuad].highlightedMaskPoint);
+                quads[activeQuad].m_maskPoints.erase(quads[activeQuad].m_maskPoints.begin() + quads[activeQuad].highlightedMaskPoint);
             }
 
         }
@@ -1156,8 +1162,14 @@ void testApp::keyPressed(int key)
     // goes to second page of gui for active quad or, in edit mask mode, clears mask
     if ( (key == 'c' || key == 'C') && !bTimeline)
     {
-        if(maskSetup) {quads[activeQuad].maskPoints.clear();}
-        else {gui.setPage((activeQuad*3)+4);}
+        if(maskSetup)
+        {
+            quads[activeQuad].m_maskPoints.clear();
+        }
+        else
+        {
+            gui.setPage((activeQuad*3)+4);
+        }
     }
 
     if (key == OF_KEY_F3)
@@ -1567,11 +1579,11 @@ void testApp::mouseMoved(int x, int y)
         float smallestDist = sqrt( ofGetWidth() * ofGetWidth() + ofGetHeight() * ofGetHeight());;
         int whichPoint = -1;
         ofVec3f warped;
-        for(int i = 0; i < quads[activeQuad].maskPoints.size(); i++)
+        for(int i = 0; i < quads[activeQuad].m_maskPoints.size(); i++)
         {
             warped = quads[activeQuad].getWarpedPoint(mousePosition);
-            float distx = (float)quads[activeQuad].maskPoints[i].x - (float)warped.x;
-            float disty = (float)quads[activeQuad].maskPoints[i].y - (float)warped.y;
+            float distx = (float)quads[activeQuad].m_maskPoints[i].x * ofGetWidth() - (float)warped.x;
+            float disty = (float)quads[activeQuad].m_maskPoints[i].y * ofGetHeight()- (float)warped.y;
             float dist  = sqrt( distx * distx + disty * disty);
 
             if(dist < smallestDist && dist < 20.0)
@@ -1726,7 +1738,9 @@ void testApp::mouseDragged(int x, int y, int button)
     {
         // in mask setup mode, move the selected mask point
         const ofPoint warpedPoint = quads[activeQuad].getWarpedPoint(mousePosition);
-        quads[activeQuad].maskPoints[quads[activeQuad].highlightedMaskPoint] = warpedPoint;
+        const ofPoint normalizedPoint(warpedPoint.x / ofGetWidth(), warpedPoint.y / ofGetHeight());
+
+        quads[activeQuad].m_maskPoints[quads[activeQuad].highlightedMaskPoint] = normalizedPoint;
     }
 
     else if(gridSetup && quads[activeQuad].bHighlightCtrlPoint && !bTimeline)
