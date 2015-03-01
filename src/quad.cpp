@@ -132,9 +132,9 @@
     fps = ofGetFrameRate();
     transCounter = 0;
 
-    // initialize the solid and transition colors with solid black
-    bgColor = ofFloatColor(0, 0, 0, 1);
-    secondColor = ofFloatColor(0, 0, 0, 1);
+    // initialize the solid and transition colors with solid white
+    bgColor = ofFloatColor(1, 1, 1, 1);
+    secondColor = ofFloatColor(1, 1, 1, 1);
 
     // initialize some colors with transparent black
     startColor = ofFloatColor(0, 0, 0, 0);

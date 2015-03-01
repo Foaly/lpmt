@@ -536,7 +536,9 @@ void testApp::setup()
         gui.addTitle("Corner 2");
         gui.addSlider("X", quads[i].corners[2].x, -1.0, 2.0);
         gui.addSlider("Y", quads[i].corners[2].y, -1.0, 2.0);
-        gui.addTitle("Rectangular crop").setNewColumn(true);
+        gui.addTitle("Crop").setNewColumn(true);
+        gui.addToggle("mask on/off", quads[i].bMask);
+        gui.addTitle("Rectangular crop");
         gui.addSlider("top", quads[i].crop[0], 0, 1.0);
         gui.addSlider("right", quads[i].crop[1], 0, 1.0);
         gui.addSlider("bottom", quads[i].crop[2], 0, 1.0);
