@@ -235,6 +235,8 @@ public:
 
     void draw();
 
+    void applyBlendmode();
+
     void gaussian_elimination(float *input, int n);
     void findHomography(ofPoint src[4], ofPoint dst[4], float homography[16]);
     ofMatrix4x4 findVectorHomography(ofPoint src[4], ofPoint dst[4]);

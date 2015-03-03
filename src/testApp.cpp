@@ -387,7 +387,7 @@ void testApp::setup()
     #endif
 
     // then three pages of settings for each quad surface
-    string blendModesArray[] = {"screen","add","subtract","multiply"};
+    std::string blendModesArray[] = {"None", "Normal Alpha-Blending", "Additive (with Alpha)", "Subtractive (with Alpha)", "Multiply", "Screen"};
     for(int i = 0; i < 36; i++)
     {
         gui.addPage("surface "+ofToString(i)+" - 1/3");
@@ -418,7 +418,7 @@ void testApp::setup()
         gui.addTitle("Blending modes");
         gui.addToggle("blending on/off", quads[i].bBlendModes);
 
-        gui.addComboBox("blending mode", quads[i].blendMode, 4, blendModesArray);
+        gui.addComboBox("blending mode", quads[i].blendMode, 6, blendModesArray);
         gui.addTitle("Solid color").setNewColumn(true);
         gui.addToggle("solid bg on/off", quads[i].colorBg);
         gui.addColorPicker("Color", &quads[i].bgColor.r);

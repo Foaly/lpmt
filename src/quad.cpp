@@ -884,10 +884,7 @@ void quad::draw()
                 if(bBlendModes)
                 {
                     glEnable(GL_BLEND);
-                    if(blendMode == 0) glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_COLOR); //screen
-                    else if(blendMode == 1) glBlendFunc(GL_ONE, GL_ONE); //add
-                    else if(blendMode == 2) glBlendFunc(GL_DST_COLOR, GL_SRC_COLOR); // subtract
-                    else if(blendMode == 3) glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA); // multiply
+                    applyBlendmode();
                 }
                 if(!bDeform)
                 {
@@ -988,10 +985,7 @@ void quad::draw()
                     if(bBlendModes)
                     {
                         glEnable(GL_BLEND);
-                        if(blendMode == 0) glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_COLOR); //screen
-                        else if(blendMode == 1) glBlendFunc(GL_ONE, GL_ONE); //add
-                        else if(blendMode == 2) glBlendFunc(GL_DST_COLOR, GL_SRC_COLOR); // subtract
-                        else if(blendMode == 3) glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA); // multiply
+                        applyBlendmode();
                     }
                     if(!bDeform)
                     {
@@ -1077,10 +1071,7 @@ void quad::draw()
                     if(bBlendModes)
                     {
                         glEnable(GL_BLEND);
-                        if(blendMode == 0) glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_COLOR); //screen
-                        else if(blendMode == 1) glBlendFunc(GL_ONE, GL_ONE); //add
-                        else if(blendMode == 2) glBlendFunc(GL_DST_COLOR, GL_SRC_COLOR); // subtract
-                        else if(blendMode == 3) glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA); // multiply
+                        applyBlendmode();
                     }
 
                     if(!bDeform)
@@ -1301,5 +1292,44 @@ void quad::draw()
                 ttf.drawString("surface " + ofToString(quadNumber), centerInPixel.x + 8, centerInPixel.y - 12);
             }
         }
+    }
+}
+
+void quad::applyBlendmode()
+{
+    switch(blendMode)
+    {
+        case 0:
+            // None
+            glBlendFunc(GL_ONE, GL_ZERO);
+            glBlendEquation(GL_FUNC_ADD);
+            break;
+        case 1:
+            // Normal Alpha-Blending
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glBlendEquation(GL_FUNC_ADD);
+            break;
+        case 2:
+            // Additiv (with Alpha)
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+            glBlendEquation(GL_FUNC_ADD);
+            break;
+        case 3:
+            // Subtract
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+            glBlendEquation(GL_FUNC_SUBTRACT);
+            break;
+        case 4:
+            // Multiply
+            glBlendFunc(GL_DST_COLOR, GL_ZERO);
+            glBlendEquation(GL_FUNC_ADD);
+            break;
+        case 5:
+            // Screen
+            glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_COLOR);
+            glBlendEquation(GL_FUNC_ADD);
+            break;
+        default:
+            break;
     }
 }
