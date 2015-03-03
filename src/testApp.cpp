@@ -42,6 +42,9 @@ void testApp::setup()
     ofSetLogLevel(OF_LOG_WARNING);
     autoStart = false;
 
+    // set window title
+    ofSetWindowTitle("LPMT");
+
     // read xml config file
     ofxXmlSettings xmlConfigFile;
     const bool wasConfigLoadSuccessful = xmlConfigFile.loadFile("config.xml");
