@@ -1317,11 +1317,11 @@ void quad::applyBlendmode()
         case 3:
             // Subtract
             glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-            glBlendEquation(GL_FUNC_SUBTRACT);
+            glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
             break;
         case 4:
             // Multiply
-            glBlendFunc(GL_DST_COLOR, GL_ZERO);
+            glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA);
             glBlendEquation(GL_FUNC_ADD);
             break;
         case 5:
