@@ -371,7 +371,7 @@ void testApp::setup()
     // GUI STUFF ---------------------------------------------------
     m_gui.setupPages();
     m_gui.updatePages(quads[activeQuad]);
-    gui.setPage(2);
+    m_gui.showPage(2);
 
     // timeline off at start
     bTimeline = false;
@@ -403,10 +403,10 @@ void testApp::setup()
     {
         loadSettingsFromXMLFile("_lpmt_settings.xml");
         m_gui.updatePages(quads[activeQuad]);
-        gui.setPage(2);
+        m_gui.showPage(2);
 
         isSetup = false;
-        gui.hide();
+        m_gui.hide();
         bGui = false;
         for(int i = 0; i < 36; i++)
         {
@@ -736,7 +736,7 @@ void testApp::draw()
                 ofRect(2,2,ofGetWidth()-4,ofGetHeight()-4);
             }
             // draws gui
-            gui.draw();
+            m_gui.draw();
         }
     }
 
@@ -867,7 +867,7 @@ void testApp::keyPressed(int key)
         {
             loadSettingsFromXMLFile(dialog_result.getPath());
             m_gui.updatePages(quads[activeQuad]);
-            gui.setPage(2);
+            m_gui.showPage(2);
         }
     }
 
@@ -926,7 +926,7 @@ void testApp::keyPressed(int key)
             quads[activeQuad].isActive = true;
         }
         m_gui.updatePages(quads[activeQuad]);
-        gui.setPage(2);
+        m_gui.showPage(2);
     }
 
     // activates prev quad
@@ -943,7 +943,7 @@ void testApp::keyPressed(int key)
             quads[activeQuad].isActive = true;
         }
         m_gui.updatePages(quads[activeQuad]);
-        gui.setPage(2);
+        m_gui.showPage(2);
     }
 
     // goes to first page of gui for active quad or, in mask edit mode, delete last drawn point
@@ -955,13 +955,13 @@ void testApp::keyPressed(int key)
         }
         else
         {
-            gui.setPage(2);
+            m_gui.showPage(2);
         }
     }
 
     if ( key == OF_KEY_F1)
     {
-        gui.setPage(2);
+        m_gui.showPage(2);
     }
 
 
@@ -981,7 +981,7 @@ void testApp::keyPressed(int key)
     // goes to second page of gui for active quad
     if ( (key == 'x' || key == 'X' || key == OF_KEY_F2) && !bTimeline)
     {
-        gui.setPage(3);
+        m_gui.showPage(3);
     }
 
     // goes to third page of gui for active quad or, in edit mask mode, clears mask
@@ -993,13 +993,13 @@ void testApp::keyPressed(int key)
         }
         else
         {
-            gui.setPage(4);
+            m_gui.showPage(4);
         }
     }
 
     if (key == OF_KEY_F3)
     {
-        gui.setPage(4);
+        m_gui.showPage(4);
     }
 
     // make currently active quad the source quad for copying
@@ -1044,7 +1044,7 @@ void testApp::keyPressed(int key)
                 activeQuad = nOfQuads;
                 ++nOfQuads;
                 m_gui.updatePages(quads[activeQuad]);
-                gui.setPage(2);
+                m_gui.showPage(2);
                 // add timeline page for new quad
                 #ifdef WITH_TIMELINE
                 timelineAddQuadPage(activeQuad);
@@ -1062,7 +1062,7 @@ void testApp::keyPressed(int key)
         if (isSetup)
         {
             isSetup = false;
-            gui.hide();
+            m_gui.hide();
             bGui = false;
             for(int i = 0; i < 36; i++)
             {
@@ -1075,7 +1075,7 @@ void testApp::keyPressed(int key)
         else
         {
             isSetup = true;
-            gui.show();
+            m_gui.show();
             bGui = true;
             for(int i = 0; i < 36; i++)
             {
@@ -1121,7 +1121,7 @@ void testApp::keyPressed(int key)
                     }
                 }
         }
-        gui.toggleDraw();
+        m_gui.toggleDraw();
         bGui = !bGui;
     }
 
@@ -1157,18 +1157,18 @@ void testApp::keyPressed(int key)
 
     if(key == '[' && !bTimeline)
     {
-        gui.prevPage();
+        m_gui.prevPage();
     }
 
     if(key == ']' && !bTimeline)
     {
-        gui.nextPage();
+        m_gui.nextPage();
     }
 
     // show general settings page of gui
     if(key == 'v' && !bTimeline)
     {
-        gui.setPage(1);
+        m_gui.showPage(1);
     }
 
     // resyncs videos to start point in every quad
@@ -1249,7 +1249,7 @@ void testApp::keyPressed(int key)
         if(bTimeline)
         {
             timeline.enable();
-            gui.hide();
+            m_gui.hide();
             bGui = false;
         }
         else
@@ -1833,6 +1833,6 @@ void testApp::activateClosestQuad(ofPoint point)
         activeQuad = closestQuad;
         quads[activeQuad].isActive = true;
         m_gui.updatePages(quads[activeQuad]);
-        gui.setPage(2);
+        m_gui.showPage(2);
     }
 }

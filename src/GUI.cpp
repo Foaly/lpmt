@@ -17,10 +17,10 @@ GUI::GUI(testApp* app) : m_app(app),
 //    m_config.textColor = 0xFFFFFF;       // white
 //    m_config.textBGOverColor = 0xDB6800; // orange
 //
-//    gui.config = &m_config;
+//    m_gui.config = &m_config;
 
     // initializing gui (sets up header page etc.)
-    gui.setup();
+    m_gui.setup();
 
     defaultSimpleGuiConfig.toggleHeight = 16;
     defaultSimpleGuiConfig.buttonHeight = 18;
@@ -32,6 +32,7 @@ GUI::GUI(testApp* app) : m_app(app),
     defaultSimpleGuiConfig.textBGOverColor = 0xDB6800;
 }
 
+
 /**
  * This method sets up the GUI pages structure and initializes the quad specific values with dummies.
  * The loading flags are set here as well.
@@ -40,204 +41,205 @@ GUI::GUI(testApp* app) : m_app(app),
 void GUI::setupPages()
 {
     // general page
-    gui.addTitle("show/hide quads");
+    m_gui.addTitle("show/hide quads");
     // first the default page for general controls and toggling surfaces on/off
     for(int i = 0; i < 36; i++)
     {
-        gui.addToggle("surface " + ofToString(i), m_app->quads[i].isOn);
+        m_gui.addToggle("surface " + ofToString(i), m_app->quads[i].isOn);
     }
-    gui.addTitle("General controls").setNewColumn(true);
-    gui.addToggle("surfaces corner snap", m_app->bSnapOn);
-    gui.addTitle("Shared videos");
-    gui.addButton("load shared video 1", m_app->m_loadSharedVideo0Flag);
-    gui.addButton("load shared video 2", m_app->m_loadSharedVideo1Flag);
-    gui.addButton("load shared video 3", m_app->m_loadSharedVideo2Flag);
-    gui.addButton("load shared video 4", m_app->m_loadSharedVideo3Flag);
-    gui.addButton("load shared video 5", m_app->m_loadSharedVideo4Flag);
-    gui.addButton("load shared video 6", m_app->m_loadSharedVideo5Flag);
-    gui.addButton("load shared video 7", m_app->m_loadSharedVideo6Flag);
-    gui.addButton("load shared video 8", m_app->m_loadSharedVideo7Flag);
+    m_gui.addTitle("General controls").setNewColumn(true);
+    m_gui.addToggle("surfaces corner snap", m_app->bSnapOn);
+    m_gui.addTitle("Shared videos");
+    m_gui.addButton("load shared video 1", m_app->m_loadSharedVideo0Flag);
+    m_gui.addButton("load shared video 2", m_app->m_loadSharedVideo1Flag);
+    m_gui.addButton("load shared video 3", m_app->m_loadSharedVideo2Flag);
+    m_gui.addButton("load shared video 4", m_app->m_loadSharedVideo3Flag);
+    m_gui.addButton("load shared video 5", m_app->m_loadSharedVideo4Flag);
+    m_gui.addButton("load shared video 6", m_app->m_loadSharedVideo5Flag);
+    m_gui.addButton("load shared video 7", m_app->m_loadSharedVideo6Flag);
+    m_gui.addButton("load shared video 8", m_app->m_loadSharedVideo7Flag);
     #ifdef WITH_TIMELINE
-    gui.addTitle("Timeline");
-    gui.addToggle("use timeline", m_app->useTimeline);
-    gui.addSlider("timeline seconds", m_app->timelineDurationSeconds, 10.0, 1200.0);
+    m_gui.addTitle("Timeline");
+    m_gui.addToggle("use timeline", m_app->useTimeline);
+    m_gui.addSlider("timeline seconds", m_app->timelineDurationSeconds, 10.0, 1200.0);
     #endif
 
     // Page One
-    gui.addPage("Page 1");
-    gui.addTitle("surface");
-    gui.addToggle("show/hide", m_dummyBool);
+    m_gui.addPage("Page 1");
+    m_gui.addTitle("surface");
+    m_gui.addToggle("show/hide", m_dummyBool);
     #ifdef WITH_TIMELINE
-    gui.addToggle("use timeline", m_app->useTimeline);
-    gui.addSlider("timeline seconds", m_app->timelineDurationSeconds, 10.0, 1200.0);
-    gui.addToggle("use timeline tint", m_dummyBool);
-    gui.addToggle("use timeline color", m_dummyBool);
-    gui.addToggle("use timeline alpha", m_dummyBool);
-    gui.addToggle("use timeline for slides", m_dummyBool);
+    m_gui.addToggle("use timeline", m_app->useTimeline);
+    m_gui.addSlider("timeline seconds", m_app->timelineDurationSeconds, 10.0, 1200.0);
+    m_gui.addToggle("use timeline tint", m_dummyBool);
+    m_gui.addToggle("use timeline color", m_dummyBool);
+    m_gui.addToggle("use timeline alpha", m_dummyBool);
+    m_gui.addToggle("use timeline for slides", m_dummyBool);
     #endif
     #ifdef WITH_SYPHON
-    gui.addToggle("use Syphon", m_dummyBool);
-    gui.addSlider("syphon origin X", m_dummyFloat, -1600, 1600);
-    gui.addSlider("syphon origin Y", m_dummyFloat, -1600, 1600);
-    gui.addSlider("syphon scale X", m_dummyFloat, 0.1, 10.0);
-    gui.addSlider("syphon scale Y", m_dummyFloat, 0.1, 10.0);
+    m_gui.addToggle("use Syphon", m_dummyBool);
+    m_gui.addSlider("syphon origin X", m_dummyFloat, -1600, 1600);
+    m_gui.addSlider("syphon origin Y", m_dummyFloat, -1600, 1600);
+    m_gui.addSlider("syphon scale X", m_dummyFloat, 0.1, 10.0);
+    m_gui.addSlider("syphon scale Y", m_dummyFloat, 0.1, 10.0);
     #endif
-    gui.addToggle("image on/off", m_dummyBool);
-    gui.addButton("load image", m_app->m_loadImageFlag);
-    gui.addSlider("img scale X", m_dummyFloat, 0.1, 10.0);
-    gui.addSlider("img scale Y", m_dummyFloat, 0.1, 10.0);
-    gui.addToggle("H mirror", m_dummyBool);
-    gui.addToggle("V mirror", m_dummyBool);
-    gui.addColorPicker("img color", &m_dummyFloat);
-    gui.addTitle("Blending modes");
-    gui.addToggle("blending on/off", m_dummyBool);
+    m_gui.addToggle("image on/off", m_dummyBool);
+    m_gui.addButton("load image", m_app->m_loadImageFlag);
+    m_gui.addSlider("img scale X", m_dummyFloat, 0.1, 10.0);
+    m_gui.addSlider("img scale Y", m_dummyFloat, 0.1, 10.0);
+    m_gui.addToggle("H mirror", m_dummyBool);
+    m_gui.addToggle("V mirror", m_dummyBool);
+    m_gui.addColorPicker("img color", &m_dummyFloat);
+    m_gui.addTitle("Blending modes");
+    m_gui.addToggle("blending on/off", m_dummyBool);
     std::string blendModesArray[] = {"None", "Normal Alpha-Blending", "Additive (with Alpha)", "Subtractive (with Alpha)", "Multiply", "Screen"};
-    gui.addComboBox("blending mode", m_dummyInt, 6, blendModesArray);
+    m_gui.addComboBox("blending mode", m_dummyInt, 6, blendModesArray);
 
-    gui.addTitle("Solid color").setNewColumn(true);
-    gui.addToggle("solid bg on/off", m_dummyBool);
-    gui.addColorPicker("Color", &m_dummyFloat);
-    gui.addToggle("transition color",m_dummyBool);
-    gui.addColorPicker("second Color", &m_dummyFloat);
-    gui.addSlider("trans duration", m_dummyFloat, 0.1, 60.0);
-    gui.addTitle("Mask");
-    gui.addToggle("mask on/off", m_dummyBool);
-    gui.addToggle("invert mask", m_dummyBool);
-    gui.addTitle("Surface deformation");
-    gui.addToggle("surface deform.", m_dummyBool);
-    gui.addToggle("use bezier", m_dummyBool);
-    gui.addToggle("use grid", m_dummyBool);
-    gui.addSlider("grid rows", m_dummyInt, 2, 15);
-    gui.addSlider("grid columns", m_dummyInt, 2, 20);
-    gui.addButton("spherize light", m_app->bQuadBezierSpherize);
-    gui.addButton("spherize strong", m_app->bQuadBezierSpherizeStrong);
-    gui.addButton("reset bezier warp", m_app->bQuadBezierReset);
+    m_gui.addTitle("Solid color").setNewColumn(true);
+    m_gui.addToggle("solid bg on/off", m_dummyBool);
+    m_gui.addColorPicker("Color", &m_dummyFloat);
+    m_gui.addToggle("transition color",m_dummyBool);
+    m_gui.addColorPicker("second Color", &m_dummyFloat);
+    m_gui.addSlider("trans duration", m_dummyFloat, 0.1, 60.0);
+    m_gui.addTitle("Mask");
+    m_gui.addToggle("mask on/off", m_dummyBool);
+    m_gui.addToggle("invert mask", m_dummyBool);
+    m_gui.addTitle("Surface deformation");
+    m_gui.addToggle("surface deform.", m_dummyBool);
+    m_gui.addToggle("use bezier", m_dummyBool);
+    m_gui.addToggle("use grid", m_dummyBool);
+    m_gui.addSlider("grid rows", m_dummyInt, 2, 15);
+    m_gui.addSlider("grid columns", m_dummyInt, 2, 20);
+    m_gui.addButton("spherize light", m_app->bQuadBezierSpherize);
+    m_gui.addButton("spherize strong", m_app->bQuadBezierSpherizeStrong);
+    m_gui.addButton("reset bezier warp", m_app->bQuadBezierReset);
 
-    gui.addTitle("Edge blending").setNewColumn(true);
-    gui.addToggle("edge blend on/off", m_dummyBool);
-    gui.addSlider("power", m_dummyFloat, 0.0, 4.0);
-    gui.addSlider("gamma", m_dummyFloat, 0.0, 4.0);
-    gui.addSlider("luminance", m_dummyFloat, -4.0, 4.0);
-    gui.addSlider("left edge", m_dummyFloat, 0.0, 0.5);
-    gui.addSlider("right edge", m_dummyFloat, 0.0, 0.5);
-    gui.addSlider("top edge", m_dummyFloat, 0.0, 0.5);
-    gui.addSlider("bottom edge", m_dummyFloat, 0.0, 0.5);
-    gui.addTitle("Content placement");
-    gui.addSlider("X displacement", m_dummyInt, -1600, 1600);
-    gui.addSlider("Y displacement", m_dummyInt, -1600, 1600);
-    gui.addSlider("Width", m_dummyInt, 0, 2400);
-    gui.addSlider("Height", m_dummyInt, 0, 2400);
-    gui.addButton("Reset", m_app->m_resetCurrentQuadFlag);
+    m_gui.addTitle("Edge blending").setNewColumn(true);
+    m_gui.addToggle("edge blend on/off", m_dummyBool);
+    m_gui.addSlider("power", m_dummyFloat, 0.0, 4.0);
+    m_gui.addSlider("gamma", m_dummyFloat, 0.0, 4.0);
+    m_gui.addSlider("luminance", m_dummyFloat, -4.0, 4.0);
+    m_gui.addSlider("left edge", m_dummyFloat, 0.0, 0.5);
+    m_gui.addSlider("right edge", m_dummyFloat, 0.0, 0.5);
+    m_gui.addSlider("top edge", m_dummyFloat, 0.0, 0.5);
+    m_gui.addSlider("bottom edge", m_dummyFloat, 0.0, 0.5);
+    m_gui.addTitle("Content placement");
+    m_gui.addSlider("X displacement", m_dummyInt, -1600, 1600);
+    m_gui.addSlider("Y displacement", m_dummyInt, -1600, 1600);
+    m_gui.addSlider("Width", m_dummyInt, 0, 2400);
+    m_gui.addSlider("Height", m_dummyInt, 0, 2400);
+    m_gui.addButton("Reset", m_app->m_resetCurrentQuadFlag);
 
     // Page Two
-    gui.addPage("Page 2");
-    gui.addTitle("Video");
-    gui.addToggle("video on/off", m_dummyBool);
-    //gui.addComboBox("video bg", quads[i].bgVideo, videoFiles.size(), videos);
-    gui.addButton("load video", m_app->m_loadVideoFlag);
-    gui.addSlider("video scale X", m_dummyFloat, 0.1, 10.0);
-    gui.addSlider("video scale Y", m_dummyFloat, 0.1, 10.0);
-    gui.addToggle("H mirror", m_dummyBool);
-    gui.addToggle("V mirror", m_dummyBool);
-    gui.addColorPicker("video color", &m_dummyFloat);
-    gui.addSlider("video sound vol", m_dummyInt, 0, 10);
-    gui.addSlider("video speed", m_dummyFloat, -2.0, 4.0);
-    gui.addToggle("video loop", m_dummyBool);
-    gui.addToggle("video greenscreen", m_dummyBool);
-    gui.addToggle("shared video on/off", m_dummyBool);
-    gui.addSlider("shared video", m_dummyInt, 1, 8);
+    m_gui.addPage("Page 2");
+    m_gui.addTitle("Video");
+    m_gui.addToggle("video on/off", m_dummyBool);
+    //m_gui.addComboBox("video bg", quads[i].bgVideo, videoFiles.size(), videos);
+    m_gui.addButton("load video", m_app->m_loadVideoFlag);
+    m_gui.addSlider("video scale X", m_dummyFloat, 0.1, 10.0);
+    m_gui.addSlider("video scale Y", m_dummyFloat, 0.1, 10.0);
+    m_gui.addToggle("H mirror", m_dummyBool);
+    m_gui.addToggle("V mirror", m_dummyBool);
+    m_gui.addColorPicker("video color", &m_dummyFloat);
+    m_gui.addSlider("video sound vol", m_dummyInt, 0, 10);
+    m_gui.addSlider("video speed", m_dummyFloat, -2.0, 4.0);
+    m_gui.addToggle("video loop", m_dummyBool);
+    m_gui.addToggle("video greenscreen", m_dummyBool);
+    m_gui.addToggle("shared video on/off", m_dummyBool);
+    m_gui.addSlider("shared video", m_dummyInt, 1, 8);
 
     if (m_app->m_cameras.size() > 0)
     {
-        gui.addTitle("Camera").setNewColumn(true);
-        gui.addToggle("cam on/off", m_dummyBool);
+        m_gui.addTitle("Camera").setNewColumn(true);
+        m_gui.addToggle("cam on/off", m_dummyBool);
         if(m_app->m_cameras.size() > 1)
         {
-            gui.addComboBox("select camera", m_dummyInt, m_app->m_cameras.size(), &(m_app->m_cameraIds[0]));
+            m_gui.addComboBox("select camera", m_dummyInt, m_app->m_cameras.size(), &(m_app->m_cameraIds[0]));
         }
-        gui.addSlider("camera scale X", m_dummyFloat, 0.1, 10.0);
-        gui.addSlider("camera scale Y", m_dummyFloat, 0.1, 10.0);
-        gui.addToggle("flip H", m_dummyBool);
-        gui.addToggle("flip V", m_dummyBool);
-        gui.addColorPicker("cam color", &m_dummyFloat);
-        gui.addToggle("camera greenscreen", m_dummyBool);
-        gui.addTitle("Greenscreen");
+        m_gui.addSlider("camera scale X", m_dummyFloat, 0.1, 10.0);
+        m_gui.addSlider("camera scale Y", m_dummyFloat, 0.1, 10.0);
+        m_gui.addToggle("flip H", m_dummyBool);
+        m_gui.addToggle("flip V", m_dummyBool);
+        m_gui.addColorPicker("cam color", &m_dummyFloat);
+        m_gui.addToggle("camera greenscreen", m_dummyBool);
+        m_gui.addTitle("Greenscreen");
     }
     else
     {
-    gui.addTitle("Greenscreen").setNewColumn(true);
+    m_gui.addTitle("Greenscreen").setNewColumn(true);
     }
-    gui.addSlider("g-screen threshold", m_dummyFloat, 0.0, 255.0);
-    gui.addColorPicker("greenscreen col", &m_dummyFloat);
-    gui.addTitle("Slideshow").setNewColumn(false);
-    gui.addToggle("slideshow on/off", m_dummyBool);
-    gui.addButton("load slideshow", m_app->m_loadSlideshowFlag);
-    gui.addSlider("slide duration", m_dummyFloat, 0.1, 15.0);
-    gui.addToggle("slides to quad size", m_dummyBool);
-    gui.addToggle("keep aspect ratio", m_dummyBool);
+    m_gui.addSlider("g-screen threshold", m_dummyFloat, 0.0, 255.0);
+    m_gui.addColorPicker("greenscreen col", &m_dummyFloat);
+    m_gui.addTitle("Slideshow").setNewColumn(false);
+    m_gui.addToggle("slideshow on/off", m_dummyBool);
+    m_gui.addButton("load slideshow", m_app->m_loadSlideshowFlag);
+    m_gui.addSlider("slide duration", m_dummyFloat, 0.1, 15.0);
+    m_gui.addToggle("slides to quad size", m_dummyBool);
+    m_gui.addToggle("keep aspect ratio", m_dummyBool);
 
     #ifdef WITH_KINECT
     if(m_app->m_isKinectInitialized)
     {
-        gui.addTitle("Kinect").setNewColumn(true);
-        gui.addToggle("use kinect", m_dummyBool);
-        gui.addToggle("show kinect image", m_dummyBool);
-        gui.addToggle("show kinect gray image", m_dummyBool);
-        gui.addToggle("use kinect as mask", m_dummyBool);
-        gui.addToggle("kinect blob detection", m_dummyBool);
-        gui.addToggle("blob curved contour", m_dummyBool);
-        gui.addSlider("kinect scale X", m_dummyFloat, 0.1, 10.0);
-        gui.addSlider("kinect scale Y", m_dummyFloat, 0.1, 10.0);
-        gui.addColorPicker("kinect color", &m_dummyFloat);
-        gui.addSlider("near threshold", m_dummyInt, 0, 255);
-        gui.addSlider("far threshold", m_dummyInt, 0, 255);
-        gui.addSlider("kinect tilt angle", m_app->kinect.kinectAngle, -30, 30);
-        gui.addSlider("kinect image blur", m_dummyInt, 0, 10);
-        gui.addSlider("blob min area", m_dummyFloat, 0.01, 1.0);
-        gui.addSlider("blob max area", m_dummyFloat, 0.0, 1.0);
-        gui.addSlider("blob contour smooth", m_dummyInt, 0, 20);
-        gui.addSlider("blob simplify", m_dummyFloat, 0.0, 2.0);
-        gui.addButton("close connection", m_dummyBool);
-        gui.addButton("reopen connection", m_dummyBool);
+        m_gui.addTitle("Kinect").setNewColumn(true);
+        m_gui.addToggle("use kinect", m_dummyBool);
+        m_gui.addToggle("show kinect image", m_dummyBool);
+        m_gui.addToggle("show kinect gray image", m_dummyBool);
+        m_gui.addToggle("use kinect as mask", m_dummyBool);
+        m_gui.addToggle("kinect blob detection", m_dummyBool);
+        m_gui.addToggle("blob curved contour", m_dummyBool);
+        m_gui.addSlider("kinect scale X", m_dummyFloat, 0.1, 10.0);
+        m_gui.addSlider("kinect scale Y", m_dummyFloat, 0.1, 10.0);
+        m_gui.addColorPicker("kinect color", &m_dummyFloat);
+        m_gui.addSlider("near threshold", m_dummyInt, 0, 255);
+        m_gui.addSlider("far threshold", m_dummyInt, 0, 255);
+        m_gui.addSlider("kinect tilt angle", m_app->kinect.kinectAngle, -30, 30);
+        m_gui.addSlider("kinect image blur", m_dummyInt, 0, 10);
+        m_gui.addSlider("blob min area", m_dummyFloat, 0.01, 1.0);
+        m_gui.addSlider("blob max area", m_dummyFloat, 0.0, 1.0);
+        m_gui.addSlider("blob contour smooth", m_dummyInt, 0, 20);
+        m_gui.addSlider("blob simplify", m_dummyFloat, 0.0, 2.0);
+        m_gui.addButton("close connection", m_dummyBool);
+        m_gui.addButton("reopen connection", m_dummyBool);
     }
     #endif
 
     // Page Three
-    gui.addPage("Page 3");
-    gui.addTitle("Corner 0");
-    gui.addSlider("corner 0 X", m_dummyFloat, -1.0, 2.0);
-    gui.addSlider("corner 0 Y", m_dummyFloat, -1.0, 2.0);
-    gui.addTitle("Corner 3");
-    gui.addSlider("corner 3 X", m_dummyFloat, -1.0, 2.0);
-    gui.addSlider("corner 3 Y", m_dummyFloat, -1.0, 2.0);
+    m_gui.addPage("Page 3");
+    m_gui.addTitle("Corner 0");
+    m_gui.addSlider("corner 0 X", m_dummyFloat, -1.0, 2.0);
+    m_gui.addSlider("corner 0 Y", m_dummyFloat, -1.0, 2.0);
+    m_gui.addTitle("Corner 3");
+    m_gui.addSlider("corner 3 X", m_dummyFloat, -1.0, 2.0);
+    m_gui.addSlider("corner 3 Y", m_dummyFloat, -1.0, 2.0);
 
-    gui.addTitle("Corner 1").setNewColumn(true);
-    gui.addSlider("corner 1 X", m_dummyFloat, -1.0, 2.0);
-    gui.addSlider("corner 1 Y", m_dummyFloat, -1.0, 2.0);
-    gui.addTitle("Corner 2");
-    gui.addSlider("corner 2 X", m_dummyFloat, -1.0, 2.0);
-    gui.addSlider("corner 2 Y", m_dummyFloat, -1.0, 2.0);
+    m_gui.addTitle("Corner 1").setNewColumn(true);
+    m_gui.addSlider("corner 1 X", m_dummyFloat, -1.0, 2.0);
+    m_gui.addSlider("corner 1 Y", m_dummyFloat, -1.0, 2.0);
+    m_gui.addTitle("Corner 2");
+    m_gui.addSlider("corner 2 X", m_dummyFloat, -1.0, 2.0);
+    m_gui.addSlider("corner 2 Y", m_dummyFloat, -1.0, 2.0);
 
-    gui.addTitle("Crop").setNewColumn(true);
-    gui.addToggle("mask on/off", m_dummyBool);
-    gui.addTitle("Rectangular crop");
-    gui.addSlider("top", m_dummyFloat, 0, 1.0);
-    gui.addSlider("right", m_dummyFloat, 0, 1.0);
-    gui.addSlider("bottom", m_dummyFloat, 0, 1.0);
-    gui.addSlider("left", m_dummyFloat, 0, 1.0);
-    gui.addTitle("Circular crop");
-    gui.addSlider("center X", m_dummyFloat, 0, 1.0);
-    gui.addSlider("center Y", m_dummyFloat, 0, 1.0);
-    gui.addSlider("radius", m_dummyFloat, 0, 2.0);
+    m_gui.addTitle("Crop").setNewColumn(true);
+    m_gui.addToggle("mask on/off", m_dummyBool);
+    m_gui.addTitle("Rectangular crop");
+    m_gui.addSlider("top", m_dummyFloat, 0, 1.0);
+    m_gui.addSlider("right", m_dummyFloat, 0, 1.0);
+    m_gui.addSlider("bottom", m_dummyFloat, 0, 1.0);
+    m_gui.addSlider("left", m_dummyFloat, 0, 1.0);
+    m_gui.addTitle("Circular crop");
+    m_gui.addSlider("center X", m_dummyFloat, 0, 1.0);
+    m_gui.addSlider("center Y", m_dummyFloat, 0, 1.0);
+    m_gui.addSlider("radius", m_dummyFloat, 0, 2.0);
 
     // then we set displayed gui page to the one corresponding to active quad and show the gui
-//    gui.setPage((activeQuad*3)+2);
-    gui.show();
+//    m_gui.setPage((activeQuad*3)+2);
+    m_gui.show();
 }
+
 
 void GUI::updatePages(quad& activeQuad)
 {
-    ofxSimpleGuiPage& firstPage = gui.page("Page 1");
+    ofxSimpleGuiPage& firstPage = m_gui.page("Page 1");
 
     dynamic_cast<ofxSimpleGuiToggle*>(firstPage.findControlByName("show/hide"))->value = &activeQuad.isOn;
     #ifdef WITH_TIMELINE
@@ -290,7 +292,7 @@ void GUI::updatePages(quad& activeQuad)
     dynamic_cast<ofxSimpleGuiSliderInt*>(firstPage.findControlByName("Height"))->value = &activeQuad.quadH;
 
     // Second Page
-    ofxSimpleGuiPage& secondPage = gui.page("Page 2");
+    ofxSimpleGuiPage& secondPage = m_gui.page("Page 2");
     dynamic_cast<ofxSimpleGuiToggle*>(secondPage.findControlByName("video on/off"))->value = &activeQuad.videoBg;
     dynamic_cast<ofxSimpleGuiSliderFloat*>(secondPage.findControlByName("video scale X"))->value = &activeQuad.videoMultX;
     dynamic_cast<ofxSimpleGuiSliderFloat*>(secondPage.findControlByName("video scale Y"))->value = &activeQuad.videoMultY;
@@ -347,7 +349,7 @@ void GUI::updatePages(quad& activeQuad)
     }
     #endif
 
-    ofxSimpleGuiPage& thirdPage = gui.page("Page 3");
+    ofxSimpleGuiPage& thirdPage = m_gui.page("Page 3");
     dynamic_cast<ofxSimpleGuiSliderFloat*>(thirdPage.findControlByName("corner 0 X"))->value = &activeQuad.corners[0].x;
     dynamic_cast<ofxSimpleGuiSliderFloat*>(thirdPage.findControlByName("corner 0 Y"))->value = &activeQuad.corners[0].y;
     dynamic_cast<ofxSimpleGuiSliderFloat*>(thirdPage.findControlByName("corner 3 X"))->value = &activeQuad.corners[3].x;
@@ -367,3 +369,57 @@ void GUI::updatePages(quad& activeQuad)
     dynamic_cast<ofxSimpleGuiSliderFloat*>(thirdPage.findControlByName("center Y"))->value = &activeQuad.circularCrop[1];
     dynamic_cast<ofxSimpleGuiSliderFloat*>(thirdPage.findControlByName("radius"))->value = &activeQuad.circularCrop[2];
 }
+
+
+void GUI::nextPage()
+{
+    m_gui.nextPage();
+}
+
+
+void GUI::prevPage()
+{
+    m_gui.prevPage();
+}
+
+
+void GUI::showPage(int i)
+{
+    m_gui.setPage(i);
+}
+
+
+void GUI::toggleDraw()
+{
+	m_gui.toggleDraw();
+}
+
+
+void GUI::show()
+{
+	m_gui.show();
+}
+
+
+void GUI::hide()
+{
+	m_gui.hide();
+}
+
+
+bool GUI::isOn()
+{
+	return m_gui.isOn();
+}
+
+
+std::vector<ofxSimpleGuiPage*>&	GUI::getPages()
+{
+	return m_gui.getPages();
+}
+
+void GUI::draw()
+{
+    m_gui.draw();
+}
+

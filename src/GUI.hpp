@@ -10,10 +10,26 @@ class GUI
 {
 public:
     GUI(testApp* app);
+
     void setupPages();
     void updatePages(quad& activeQuad);
 
+    void nextPage();
+    void prevPage();
+    void showPage(int i);               // 1 based index of page
+
+    void toggleDraw();
+    void show();
+    void hide();
+    bool isOn();
+
+    std::vector<ofxSimpleGuiPage*>&    getPages();
+
+    void draw();
+
+
 private:
+    ofxSimpleGuiToo       m_gui;
     ofxSimpleGuiConfig    m_config;
     testApp*              m_app;
     bool                  m_dummyBool;

@@ -97,7 +97,8 @@ void testApp::parseOsc()
     else if ( m.getAddress() == "/projection/load" )
     {
         loadSettingsFromXMLFile("_lpmt_settings.xml");
-        gui.setPage((activeQuad*3)+2);
+        m_gui.updatePages(quads[activeQuad]);
+        m_gui.showPage(2);
     }
 
     // toggle fullscreen
@@ -140,7 +141,7 @@ void testApp::parseOsc()
     // toggle gui
     else if ( m.getAddress() == "/projection/gui/toggle" )
     {
-        gui.toggleDraw();
+        m_gui.toggleDraw();
         bGui = !bGui;
     }
 
@@ -294,7 +295,7 @@ void testApp::parseOsc()
         if(bTimeline)
         {
             timeline.enable();
-            gui.hide();
+            m_gui.hide();
             bGui = false;
         }
         else
@@ -319,7 +320,8 @@ void testApp::parseOsc()
             quads[activeQuad].isActive = false;
             activeQuad = osc_activequad;
             quads[activeQuad].isActive = true;
-            gui.setPage((activeQuad*3)+2);
+            m_gui.updatePages(quads[activeQuad]);
+            m_gui.showPage(2);
         }
     }
 
@@ -1719,31 +1721,31 @@ void testApp::parseOsc()
             }
 
         // gui coupling stuff
-        for(int i=0; i < gui.getPages().size(); i++)
+        for(int i=0; i < m_gui.getPages().size(); i++)
         {
-            for(int j=0; j < gui.getPages()[i]->getControls().size(); j++)
+            for(int j=0; j < m_gui.getPages()[i]->getControls().size(); j++)
             {
                 // toggle case
-                if(gui.getPages()[i]->getControls()[j]->controlType == "Toggle")
+                if(m_gui.getPages()[i]->getControls()[j]->controlType == "Toggle")
                 {
                     // learning
-                    if(gui.getPages()[i]->getControls()[j]->bLearning)
+                    if(m_gui.getPages()[i]->getControls()[j]->bLearning)
                     {
-                        gui.getPages()[i]->getControls()[j]->bLearning = false;
-                        gui.getPages()[i]->getControls()[j]->bLearnt = true;
-                        gui.getPages()[i]->getControls()[j]->oscControl = m;
+                        m_gui.getPages()[i]->getControls()[j]->bLearning = false;
+                        m_gui.getPages()[i]->getControls()[j]->bLearnt = true;
+                        m_gui.getPages()[i]->getControls()[j]->oscControl = m;
                     }
                     // checking
-                    else if(gui.getPages()[i]->getControls()[j]->bLearnt)
+                    else if(m_gui.getPages()[i]->getControls()[j]->bLearnt)
                     {
-                        ofxOscMessage oscControl = gui.getPages()[i]->getControls()[j]->oscControl;
+                        ofxOscMessage oscControl = m_gui.getPages()[i]->getControls()[j]->oscControl;
                         if(m.getAddress() == oscControl.getAddress())
                         {
                             if(m.getNumArgs()>0 && m.getArgType(0) == OFXOSC_TYPE_INT32)
                             {
                                 if(m.getArgAsInt32(0) == oscControl.getArgAsInt32(0))
                                 {
-                                    ofxSimpleGuiToggle *t = (ofxSimpleGuiToggle *) gui.getPages()[i]->getControls()[j];
+                                    ofxSimpleGuiToggle *t = (ofxSimpleGuiToggle *) m_gui.getPages()[i]->getControls()[j];
                                     t->toggle();
                                 }
                             }
@@ -1751,7 +1753,7 @@ void testApp::parseOsc()
                             {
                                 if(m.getArgAsFloat(0) == oscControl.getArgAsFloat(0))
                                 {
-                                    ofxSimpleGuiToggle *t = (ofxSimpleGuiToggle *) gui.getPages()[i]->getControls()[j];
+                                    ofxSimpleGuiToggle *t = (ofxSimpleGuiToggle *) m_gui.getPages()[i]->getControls()[j];
                                     t->toggle();
                                 }
                             }
@@ -1759,13 +1761,13 @@ void testApp::parseOsc()
                             {
                                 if(m.getArgAsString(0) == oscControl.getArgAsString(0))
                                 {
-                                    ofxSimpleGuiToggle *t = (ofxSimpleGuiToggle *) gui.getPages()[i]->getControls()[j];
+                                    ofxSimpleGuiToggle *t = (ofxSimpleGuiToggle *) m_gui.getPages()[i]->getControls()[j];
                                     t->toggle();
                                 }
                             }
                             else if(m.getNumArgs()==0)
                             {
-                                ofxSimpleGuiToggle *t = (ofxSimpleGuiToggle *) gui.getPages()[i]->getControls()[j];
+                                ofxSimpleGuiToggle *t = (ofxSimpleGuiToggle *) m_gui.getPages()[i]->getControls()[j];
                                 t->toggle();
                             }
                         }
@@ -1773,29 +1775,29 @@ void testApp::parseOsc()
                     }
                 }
                 // slider case
-                else if(gui.getPages()[i]->getControls()[j]->controlType == "SliderFloat" || gui.getPages()[i]->getControls()[j]->controlType == "SliderInt")
+                else if(m_gui.getPages()[i]->getControls()[j]->controlType == "SliderFloat" || m_gui.getPages()[i]->getControls()[j]->controlType == "SliderInt")
                 {
                     // learning
-                    if(gui.getPages()[i]->getControls()[j]->bLearning)
+                    if(m_gui.getPages()[i]->getControls()[j]->bLearning)
                     {
                         if(m.getNumArgs()>0)
                         {
-                            gui.getPages()[i]->getControls()[j]->bLearning = false;
-                            gui.getPages()[i]->getControls()[j]->bLearnt = true;
-                            gui.getPages()[i]->getControls()[j]->oscControl = m;
+                            m_gui.getPages()[i]->getControls()[j]->bLearning = false;
+                            m_gui.getPages()[i]->getControls()[j]->bLearnt = true;
+                            m_gui.getPages()[i]->getControls()[j]->oscControl = m;
                         }
                     }
                     // checking
-                    else if(gui.getPages()[i]->getControls()[j]->bLearnt)
+                    else if(m_gui.getPages()[i]->getControls()[j]->bLearnt)
                     {
-                        ofxOscMessage oscControl = gui.getPages()[i]->getControls()[j]->oscControl;
+                        ofxOscMessage oscControl = m_gui.getPages()[i]->getControls()[j]->oscControl;
                         if(m.getNumArgs()>0 && (m.getArgType(0) == OFXOSC_TYPE_INT32 || m.getArgType(0) == OFXOSC_TYPE_FLOAT))
                         {
                             if(m.getAddress() == oscControl.getAddress())
                             {
-                                if(gui.getPages()[i]->getControls()[j]->controlType == "SliderFloat")
+                                if(m_gui.getPages()[i]->getControls()[j]->controlType == "SliderFloat")
                                 {
-                                    ofxSimpleGuiSliderFloat *s = (ofxSimpleGuiSliderFloat *) gui.getPages()[i]->getControls()[j];
+                                    ofxSimpleGuiSliderFloat *s = (ofxSimpleGuiSliderFloat *) m_gui.getPages()[i]->getControls()[j];
                                     float remappedValue;
                                     if(m.getArgType(0) == OFXOSC_TYPE_INT32)
                                     {
@@ -1811,7 +1813,7 @@ void testApp::parseOsc()
                                 }
                                 else
                                 {
-                                    ofxSimpleGuiSliderInt *s = (ofxSimpleGuiSliderInt *) gui.getPages()[i]->getControls()[j];
+                                    ofxSimpleGuiSliderInt *s = (ofxSimpleGuiSliderInt *) m_gui.getPages()[i]->getControls()[j];
                                     float remappedValue;
                                     if(m.getArgType(0) == OFXOSC_TYPE_INT32)
                                     {
