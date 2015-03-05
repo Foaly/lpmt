@@ -15,6 +15,8 @@
 #include "ofMain.h"
 
 #include "quad.h"
+#include "GUI.hpp"
+
 #ifdef WITH_KINECT
 #include "kinectManager.h"
 #endif
@@ -46,6 +48,7 @@ public:
     int WINDOW_W;
     int WINDOW_H;
 
+    testApp();
     void setup();
     void update();
     void draw();
@@ -71,6 +74,7 @@ public:
     int m_selectedCorner;
 
     ofTrueTypeFont ttf;
+    GUI m_gui;
 
     quad quads[36];
     int layers[36];
@@ -130,17 +134,17 @@ public:
     // gui elements
     bool showGui;
 
-    bool bImageLoad;
-    bool bVideoLoad;
-    bool bSharedVideoLoad0;
-    bool bSharedVideoLoad1;
-    bool bSharedVideoLoad2;
-    bool bSharedVideoLoad3;
-    bool bSharedVideoLoad4;
-    bool bSharedVideoLoad5;
-    bool bSharedVideoLoad6;
-    bool bSharedVideoLoad7;
-    bool bQuadReset;
+    bool m_loadImageFlag;
+    bool m_loadVideoFlag;
+    bool m_loadSharedVideo0Flag;
+    bool m_loadSharedVideo1Flag;
+    bool m_loadSharedVideo2Flag;
+    bool m_loadSharedVideo3Flag;
+    bool m_loadSharedVideo4Flag;
+    bool m_loadSharedVideo5Flag;
+    bool m_loadSharedVideo6Flag;
+    bool m_loadSharedVideo7Flag;
+    bool m_resetCurrentQuadFlag;
     bool bQuadBezierSpherize;
     bool bQuadBezierSpherizeStrong;
     bool bQuadBezierReset;
@@ -191,7 +195,7 @@ public:
     ofImage loadImageFromFile();
 
     string loadSlideshow();
-    bool bSlideshowLoad;
+    bool m_loadSlideshowFlag;
 
     #ifdef WITH_KINECT
     kinectManager kinect;

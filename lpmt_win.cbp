@@ -44,6 +44,7 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++11" />
 			<Add option="-Wno-multichar" />
 			<Add directory="../openFrameworks/libs/glu/include" />
 			<Add directory="../openFrameworks/libs/freetype/include" />
@@ -1207,6 +1208,12 @@
 		</Unit>
 		<Unit filename="resources.rc">
 			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="src/GUI.cpp">
+			<Option virtualFolder="src/" />
+		</Unit>
+		<Unit filename="src/GUI.hpp">
+			<Option virtualFolder="src/" />
 		</Unit>
 		<Unit filename="src/appUtils.cpp">
 			<Option virtualFolder="src/" />

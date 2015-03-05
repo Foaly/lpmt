@@ -362,7 +362,8 @@ void testApp::loadSettingsFromXMLFile(std::string xmlFilePath)
             quads[i].isActive = false;
         }
         quads[activeQuad].isActive = true;
-        gui.setPage((activeQuad*3)+2);
+        m_gui.updatePages(quads[activeQuad]);
+        gui.setPage(2);
         glDisable(GL_DEPTH_TEST);
     }
     else

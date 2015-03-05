@@ -33,6 +33,10 @@ int getdir (string dir, vector<string> &files)
     return 0;
 }
 
+testApp::testApp() : m_gui(this)
+{
+
+}
 
 //--------------------------------------------------------------
 void testApp::setup()
@@ -225,6 +229,22 @@ void testApp::setup()
     }
     */
 
+    // initialize the load flags
+    m_loadImageFlag = false;
+    m_loadVideoFlag = false;
+    m_loadSlideshowFlag = false;
+    m_loadSharedVideo0Flag = false;
+    m_loadSharedVideo1Flag = false;
+    m_loadSharedVideo2Flag = false;
+    m_loadSharedVideo3Flag = false;
+    m_loadSharedVideo4Flag = false;
+    m_loadSharedVideo5Flag = false;
+    m_loadSharedVideo6Flag = false;
+    m_loadSharedVideo7Flag = false;
+
+    m_resetCurrentQuadFlag = false;
+
+
     #ifdef WITH_SYPHON
 	// Syphon setup
 	syphClient.setup();
@@ -349,209 +369,10 @@ void testApp::setup()
     #endif
 
     // GUI STUFF ---------------------------------------------------
+    m_gui.setupPages();
+    m_gui.updatePages(quads[activeQuad]);
+    gui.setPage(2);
 
-    // general page
-    gui.addTitle("show/hide quads");
-    // overriding default theme
-    //gui.bDrawHeader = false;
-    gui.config->toggleHeight = 16;
-    gui.config->buttonHeight = 18;
-    gui.config->sliderTextHeight = 18;
-    gui.config->titleHeight = 18;
-    //gui.config->fullActiveColor = 0x6B404B;
-    //gui.config->fullActiveColor = 0x5E4D3E;
-    gui.config->fullActiveColor = 0x648B96;
-    gui.config->textColor = 0xFFFFFF;
-    gui.config->textBGOverColor = 0xDB6800;
-    // adding controls
-    // first a general page for general controls and toggling surfaces on/off
-    for(int i = 0; i < 36; i++)
-    {
-        gui.addToggle("surface "+ofToString(i), quads[i].isOn);
-    }
-    gui.addTitle("General controls").setNewColumn(true);
-    gui.addToggle("surfaces corner snap", bSnapOn);
-    gui.addTitle("Shared videos");
-    gui.addButton("load shared video 1", bSharedVideoLoad0);
-    gui.addButton("load shared video 2", bSharedVideoLoad1);
-    gui.addButton("load shared video 3", bSharedVideoLoad2);
-    gui.addButton("load shared video 4", bSharedVideoLoad3);
-    gui.addButton("load shared video 5", bSharedVideoLoad4);
-    gui.addButton("load shared video 6", bSharedVideoLoad5);
-    gui.addButton("load shared video 7", bSharedVideoLoad6);
-    gui.addButton("load shared video 8", bSharedVideoLoad7);
-    #ifdef WITH_TIMELINE
-    gui.addTitle("Timeline");
-    gui.addToggle("use timeline", useTimeline);
-    gui.addSlider("timeline seconds", timelineDurationSeconds, 10.0, 1200.0);
-    #endif
-
-    // then three pages of settings for each quad surface
-    std::string blendModesArray[] = {"None", "Normal Alpha-Blending", "Additive (with Alpha)", "Subtractive (with Alpha)", "Multiply", "Screen"};
-    for(int i = 0; i < 36; i++)
-    {
-        gui.addPage("surface "+ofToString(i)+" - 1/3");
-        gui.addTitle("surface "+ofToString(i));
-        gui.addToggle("show/hide", quads[i].isOn);
-        #ifdef WITH_TIMELINE
-        gui.addToggle("use timeline", useTimeline);
-        gui.addSlider("timeline seconds", timelineDurationSeconds, 10.0, 1200.0);
-        gui.addToggle("use timeline tint", quads[i].bTimelineTint);
-        gui.addToggle("use timeline color", quads[i].bTimelineColor);
-        gui.addToggle("use timeline alpha", quads[i].bTimelineAlpha);
-        gui.addToggle("use timeline for slides", quads[i].bTimelineSlideChange);
-        #endif
-        #ifdef WITH_SYPHON
-        gui.addToggle("use Syphon", quads[i].bSyphon);
-		gui.addSlider("syphon origin X", quads[i].syphonPosX, -1600, 1600);
-        gui.addSlider("syphon origin Y", quads[i].syphonPosY, -1600, 1600);
-		gui.addSlider("syphon scale X", quads[i].syphonScaleX, 0.1, 10.0);
-        gui.addSlider("syphon scale Y", quads[i].syphonScaleY, 0.1, 10.0);
-        #endif
-        gui.addToggle("image on/off", quads[i].imgBg);
-        gui.addButton("load image", bImageLoad);
-        gui.addSlider("img scale X", quads[i].imgMultX, 0.1, 10.0);
-        gui.addSlider("img scale Y", quads[i].imgMultY, 0.1, 10.0);
-        gui.addToggle("H mirror", quads[i].imgHFlip);
-        gui.addToggle("V mirror", quads[i].imgVFlip);
-        gui.addColorPicker("img color", &quads[i].imgColorize.r);
-        gui.addTitle("Blending modes");
-        gui.addToggle("blending on/off", quads[i].bBlendModes);
-
-        gui.addComboBox("blending mode", quads[i].blendMode, 6, blendModesArray);
-        gui.addTitle("Solid color").setNewColumn(true);
-        gui.addToggle("solid bg on/off", quads[i].colorBg);
-        gui.addColorPicker("Color", &quads[i].bgColor.r);
-        gui.addToggle("transition color", quads[i].transBg);
-        gui.addColorPicker("second Color", &quads[i].secondColor.r);
-        gui.addSlider("trans duration", quads[i].transDuration, 0.1, 60.0);
-        gui.addTitle("Mask");
-        gui.addToggle("mask on/off", quads[i].bMask);
-        gui.addToggle("invert mask", quads[i].maskInvert);
-        gui.addTitle("Surface deformation");
-        gui.addToggle("surface deform.", quads[i].bDeform);
-        gui.addToggle("use bezier", quads[i].bBezier);
-        gui.addToggle("use grid", quads[i].bGrid);
-        gui.addSlider("grid rows", quads[i].gridRows, 2, 15);
-        gui.addSlider("grid columns", quads[i].gridColumns, 2, 20);
-        gui.addButton("spherize light", bQuadBezierSpherize);
-        gui.addButton("spherize strong", bQuadBezierSpherizeStrong);
-        gui.addButton("reset bezier warp", bQuadBezierReset);
-        gui.addTitle("Edge blending").setNewColumn(true);
-        gui.addToggle("edge blend on/off", quads[i].edgeBlendBool);
-        gui.addSlider("power", quads[i].edgeBlendExponent, 0.0, 4.0);
-        gui.addSlider("gamma", quads[i].edgeBlendGamma, 0.0, 4.0);
-        gui.addSlider("luminance", quads[i].edgeBlendLuminance, -4.0, 4.0);
-        gui.addSlider("left edge", quads[i].edgeBlendAmountSin, 0.0, 0.5);
-        gui.addSlider("right edge", quads[i].edgeBlendAmountDx, 0.0, 0.5);
-        gui.addSlider("top edge", quads[i].edgeBlendAmountTop, 0.0, 0.5);
-        gui.addSlider("bottom edge", quads[i].edgeBlendAmountBottom, 0.0, 0.5);
-        gui.addTitle("Content placement");
-        gui.addSlider("X displacement", quads[i].quadDispX, -1600, 1600);
-        gui.addSlider("Y displacement", quads[i].quadDispY, -1600, 1600);
-        gui.addSlider("Width", quads[i].quadW, 0, 2400);
-        gui.addSlider("Height", quads[i].quadH, 0, 2400);
-        gui.addButton("Reset", bQuadReset);
-
-        gui.addPage("surface "+ofToString(i)+" - 2/3");
-        gui.addTitle("Video");
-        gui.addToggle("video on/off", quads[i].videoBg);
-        //gui.addComboBox("video bg", quads[i].bgVideo, videoFiles.size(), videos);
-        gui.addButton("load video", bVideoLoad);
-        gui.addSlider("video scale X", quads[i].videoMultX, 0.1, 10.0);
-        gui.addSlider("video scale Y", quads[i].videoMultY, 0.1, 10.0);
-        gui.addToggle("H mirror", quads[i].videoHFlip);
-        gui.addToggle("V mirror", quads[i].videoVFlip);
-        gui.addColorPicker("video color", &quads[i].videoColorize.r);
-        gui.addSlider("video sound vol", quads[i].videoVolume, 0, 10);
-        gui.addSlider("video speed", quads[i].videoSpeed, -2.0, 4.0);
-        gui.addToggle("video loop", quads[i].videoLoop);
-        gui.addToggle("video greenscreen", quads[i].videoGreenscreen);
-        gui.addToggle("shared video on/off", quads[i].sharedVideoBg);
-        gui.addSlider("shared video", quads[i].sharedVideoNum, 1, 8);
-        if (m_cameras.size() > 0)
-        {
-            gui.addTitle("Camera").setNewColumn(true);
-            gui.addToggle("cam on/off", quads[i].camBg);
-            if(m_cameras.size() > 1)
-            {
-               gui.addComboBox("select camera", quads[i].camNumber, m_cameras.size(), &m_cameraIds[0]);
-            }
-            gui.addSlider("camera scale X", quads[i].camMultX, 0.1, 10.0);
-            gui.addSlider("camera scale Y", quads[i].camMultY, 0.1, 10.0);
-            gui.addToggle("H mirror", quads[i].camHFlip);
-            gui.addToggle("V mirror", quads[i].camVFlip);
-            gui.addColorPicker("cam color", &quads[i].camColorize.r);
-            gui.addToggle("camera greenscreen", quads[i].camGreenscreen);
-            gui.addTitle("Greenscreen");
-        }
-        else
-        {
-        gui.addTitle("Greenscreen").setNewColumn(true);
-        }
-        gui.addSlider("g-screen threshold", quads[i].thresholdGreenscreen, 0.0, 255.0);
-        gui.addColorPicker("greenscreen col", &quads[i].colorGreenscreen.r);
-        gui.addTitle("Slideshow").setNewColumn(false);
-        gui.addToggle("slideshow on/off", quads[i].slideshowBg);
-        gui.addButton("load slideshow", bSlideshowLoad);
-        gui.addSlider("slide duration", quads[i].slideshowSpeed, 0.1, 15.0);
-        gui.addToggle("slides to quad size", quads[i].slideFit);
-        gui.addToggle("keep aspect ratio", quads[i].slideKeepAspect);
-        #ifdef WITH_KINECT
-        if(m_isKinectInitialized)
-        {
-            gui.addTitle("Kinect").setNewColumn(true);
-            gui.addToggle("use kinect", quads[i].kinectBg);
-            gui.addToggle("show kinect image", quads[i].kinectImg);
-            gui.addToggle("show kinect gray image", quads[i].getKinectGrayImage);
-            gui.addToggle("use kinect as mask", quads[i].kinectMask);
-            gui.addToggle("kinect blob detection", quads[i].getKinectContours);
-            gui.addToggle("blob curved contour", quads[i].kinectContourCurved);
-            gui.addSlider("kinect scale X", quads[i].kinectMultX, 0.1, 10.0);
-            gui.addSlider("kinect scale Y", quads[i].kinectMultY, 0.1, 10.0);
-            gui.addColorPicker("kinect color", &quads[i].kinectColorize.r);
-            gui.addSlider("near threshold", quads[i].nearDepthTh, 0, 255);
-            gui.addSlider("far threshold", quads[i].farDepthTh, 0, 255);
-            gui.addSlider("kinect tilt angle", kinect.kinectAngle, -30, 30);
-            gui.addSlider("kinect image blur", quads[i].kinectBlur, 0, 10);
-            gui.addSlider("blob min area", quads[i].kinectContourMin, 0.01, 1.0);
-            gui.addSlider("blob max area", quads[i].kinectContourMax, 0.0, 1.0);
-            gui.addSlider("blob contour smooth", quads[i].kinectContourSmooth, 0, 20);
-            gui.addSlider("blob simplify", quads[i].kinectContourSimplify, 0.0, 2.0);
-            gui.addButton("close connection", bCloseKinect);
-            gui.addButton("reopen connection", bOpenKinect);
-
-        }
-        #endif
-        gui.addPage("surface "+ofToString(i)+" - 3/3");
-        gui.addTitle("Corner 0");
-        gui.addSlider("X", quads[i].corners[0].x, -1.0, 2.0);
-        gui.addSlider("Y", quads[i].corners[0].y, -1.0, 2.0);
-        gui.addTitle("Corner 3");
-        gui.addSlider("X", quads[i].corners[3].x, -1.0, 2.0);
-        gui.addSlider("Y", quads[i].corners[3].y, -1.0, 2.0);
-        gui.addTitle("Corner 1").setNewColumn(true);
-        gui.addSlider("X", quads[i].corners[1].x, -1.0, 2.0);
-        gui.addSlider("Y", quads[i].corners[1].y, -1.0, 2.0);
-        gui.addTitle("Corner 2");
-        gui.addSlider("X", quads[i].corners[2].x, -1.0, 2.0);
-        gui.addSlider("Y", quads[i].corners[2].y, -1.0, 2.0);
-        gui.addTitle("Crop").setNewColumn(true);
-        gui.addToggle("mask on/off", quads[i].bMask);
-        gui.addTitle("Rectangular crop");
-        gui.addSlider("top", quads[i].crop[0], 0, 1.0);
-        gui.addSlider("right", quads[i].crop[1], 0, 1.0);
-        gui.addSlider("bottom", quads[i].crop[2], 0, 1.0);
-        gui.addSlider("left", quads[i].crop[3], 0, 1.0);
-        gui.addTitle("Circular crop");
-        gui.addSlider("center X", quads[i].circularCrop[0], 0, 1.0);
-        gui.addSlider("center Y", quads[i].circularCrop[1], 0, 1.0);
-        gui.addSlider("radius", quads[i].circularCrop[2], 0, 2.0);
-    }
-
-    // then we set displayed gui page to the one corresponding to active quad and show the gui
-    gui.setPage((activeQuad*3)+2);
-    gui.show();
     // timeline off at start
     bTimeline = false;
     #ifdef WITH_TIMELINE
@@ -581,7 +402,8 @@ void testApp::setup()
     if(autoStart)
     {
         loadSettingsFromXMLFile("_lpmt_settings.xml");
-        gui.setPage((activeQuad*3)+2);
+        m_gui.updatePages(quads[activeQuad]);
+        gui.setPage(2);
 
         isSetup = false;
         gui.hide();
@@ -642,9 +464,9 @@ void testApp::prepare()
 
 
         //check if quad dimensions reset button on GUI is pressed
-        if(bQuadReset)
+        if(m_resetCurrentQuadFlag)
         {
-            bQuadReset = false;
+            m_resetCurrentQuadFlag = false;
             quadDimensionsReset(activeQuad);
             quadPlacementReset(activeQuad);
         }
@@ -672,64 +494,64 @@ void testApp::prepare()
 
 
         // check if image load button on GUI is pressed
-        if(bImageLoad)
+        if(m_loadImageFlag)
         {
-            bImageLoad = false;
+            m_loadImageFlag = false;
             openImageFile();
         }
 
         // check if video load button on GUI is pressed
-        if(bVideoLoad)
+        if(m_loadVideoFlag)
         {
-            bVideoLoad = false;
+            m_loadVideoFlag = false;
             openVideoFile();
         }
 
         // check if video load button on GUI is pressed
-        if(bSharedVideoLoad0)
+        if(m_loadSharedVideo0Flag)
         {
-            bSharedVideoLoad0 = false;
+            m_loadSharedVideo0Flag = false;
             openSharedVideoFile(0);
         }
-        else if(bSharedVideoLoad1)
+        else if(m_loadSharedVideo1Flag)
         {
-            bSharedVideoLoad1 = false;
+            m_loadSharedVideo1Flag = false;
             openSharedVideoFile(1);
         }
-        else if(bSharedVideoLoad2)
+        else if(m_loadSharedVideo2Flag)
         {
-            bSharedVideoLoad2 = false;
+            m_loadSharedVideo2Flag = false;
             openSharedVideoFile(2);
         }
-        else if(bSharedVideoLoad3)
+        else if(m_loadSharedVideo3Flag)
         {
-            bSharedVideoLoad3 = false;
+            m_loadSharedVideo3Flag = false;
             openSharedVideoFile(3);
         }
-        else if(bSharedVideoLoad4)
+        else if(m_loadSharedVideo4Flag)
         {
-            bSharedVideoLoad4 = false;
+            m_loadSharedVideo4Flag = false;
             openSharedVideoFile(4);
         }
-        else if(bSharedVideoLoad5)
+        else if(m_loadSharedVideo5Flag)
         {
-            bSharedVideoLoad5 = false;
+            m_loadSharedVideo5Flag = false;
             openSharedVideoFile(5);
         }
-        else if(bSharedVideoLoad6)
+        else if(m_loadSharedVideo6Flag)
         {
-            bSharedVideoLoad6 = false;
+            m_loadSharedVideo6Flag = false;
             openSharedVideoFile(6);
         }
-        else if(bSharedVideoLoad7)
+        else if(m_loadSharedVideo7Flag)
         {
-            bSharedVideoLoad7 = false;
+            m_loadSharedVideo7Flag = false;
             openSharedVideoFile(7);
         }
         // check if image load button on GUI is pressed
-       if(bSlideshowLoad)
+       if(m_loadSlideshowFlag)
        {
-            bSlideshowLoad = false;
+            m_loadSlideshowFlag = false;
             string ssname = loadSlideshow();
             cout << ssname;
             quads[activeQuad].slideshowName = ssname;
@@ -1044,7 +866,8 @@ void testApp::keyPressed(int key)
         if(dialog_result.bSuccess)
         {
             loadSettingsFromXMLFile(dialog_result.getPath());
-            gui.setPage((activeQuad*3)+2);
+            m_gui.updatePages(quads[activeQuad]);
+            gui.setPage(2);
         }
     }
 
@@ -1102,7 +925,8 @@ void testApp::keyPressed(int key)
             }
             quads[activeQuad].isActive = true;
         }
-        gui.setPage((activeQuad*3)+2);
+        m_gui.updatePages(quads[activeQuad]);
+        gui.setPage(2);
     }
 
     // activates prev quad
@@ -1118,7 +942,8 @@ void testApp::keyPressed(int key)
             }
             quads[activeQuad].isActive = true;
         }
-        gui.setPage((activeQuad*3)+2);
+        m_gui.updatePages(quads[activeQuad]);
+        gui.setPage(2);
     }
 
     // goes to first page of gui for active quad or, in mask edit mode, delete last drawn point
@@ -1130,13 +955,13 @@ void testApp::keyPressed(int key)
         }
         else
         {
-            gui.setPage((activeQuad*3)+2);
+            gui.setPage(2);
         }
     }
 
     if ( key == OF_KEY_F1)
     {
-        gui.setPage((activeQuad*3)+2);
+        gui.setPage(2);
     }
 
 
@@ -1156,10 +981,10 @@ void testApp::keyPressed(int key)
     // goes to second page of gui for active quad
     if ( (key == 'x' || key == 'X' || key == OF_KEY_F2) && !bTimeline)
     {
-        gui.setPage((activeQuad*3)+3);
+        gui.setPage(3);
     }
 
-    // goes to second page of gui for active quad or, in edit mask mode, clears mask
+    // goes to third page of gui for active quad or, in edit mask mode, clears mask
     if ( (key == 'c' || key == 'C') && !bTimeline)
     {
         if(maskSetup)
@@ -1168,13 +993,13 @@ void testApp::keyPressed(int key)
         }
         else
         {
-            gui.setPage((activeQuad*3)+4);
+            gui.setPage(4);
         }
     }
 
     if (key == OF_KEY_F3)
     {
-        gui.setPage((activeQuad*3)+4);
+        gui.setPage(4);
     }
 
     // make currently active quad the source quad for copying
@@ -1218,7 +1043,8 @@ void testApp::keyPressed(int key)
                 quads[nOfQuads].isActive = true;
                 activeQuad = nOfQuads;
                 ++nOfQuads;
-                gui.setPage((activeQuad*3)+2);
+                m_gui.updatePages(quads[activeQuad]);
+                gui.setPage(2);
                 // add timeline page for new quad
                 #ifdef WITH_TIMELINE
                 timelineAddQuadPage(activeQuad);
@@ -2006,6 +1832,7 @@ void testApp::activateClosestQuad(ofPoint point)
         quads[activeQuad].isActive = false;
         activeQuad = closestQuad;
         quads[activeQuad].isActive = true;
-        gui.setPage((activeQuad*3)+2);
+        m_gui.updatePages(quads[activeQuad]);
+        gui.setPage(2);
     }
 }
