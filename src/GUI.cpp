@@ -21,6 +21,7 @@ GUI::GUI(testApp* app) : m_app(app),
 
     // initializing gui (sets up header page etc.)
     m_gui.setup();
+    m_gui.setAutoSave(false); // turn auto save off
 
     defaultSimpleGuiConfig.toggleHeight = 16;
     defaultSimpleGuiConfig.buttonHeight = 18;
