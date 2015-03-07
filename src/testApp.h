@@ -134,8 +134,12 @@ public:
     // gui elements
     bool showGui;
 
+    // gui button flags
+    bool m_loadProjectFlag;
+    bool m_saveProjectFlag;
     bool m_loadImageFlag;
     bool m_loadVideoFlag;
+    bool m_loadSlideshowFlag;
     bool m_loadSharedVideo0Flag;
     bool m_loadSharedVideo1Flag;
     bool m_loadSharedVideo2Flag;
@@ -145,15 +149,16 @@ public:
     bool m_loadSharedVideo6Flag;
     bool m_loadSharedVideo7Flag;
     bool m_resetCurrentQuadFlag;
-    bool bQuadBezierSpherize;
-    bool bQuadBezierSpherizeStrong;
-    bool bQuadBezierReset;
+    bool m_bezierSpherizeQuadFlag;
+    bool m_bezierSpherizeQuadStrongFlag;
+    bool m_bezierResetQuadFlag;
     bool bMidiHotkeyCoupling;
     bool bMidiHotkeyLearning;
     int midiHotkeyPressed;
 
     void openImageFile();
     void openVideoFile();
+    void loadSlideshow();
     void openSharedVideoFile(int i);
     void openSharedVideoFile(string path, int i);
     void quadDimensionsReset(int q);
@@ -161,6 +166,8 @@ public:
     void quadBezierSpherize(int q);
     void quadBezierSpherizeStrong(int q);
     void quadBezierReset(int q);
+    void loadProject();
+    void saveProject();
 
     float totRotationAngle;
     ofPolyline rotationSector;
@@ -193,9 +200,6 @@ public:
 
     // snapshot loading
     ofImage loadImageFromFile();
-
-    string loadSlideshow();
-    bool m_loadSlideshowFlag;
 
     #ifdef WITH_KINECT
     kinectManager kinect;

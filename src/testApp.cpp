@@ -463,51 +463,35 @@ void testApp::prepare()
         }
 
 
-        //check if quad dimensions reset button on GUI is pressed
-        if(m_resetCurrentQuadFlag)
+        //check if load project button in the GUI was pressed
+        if(m_loadProjectFlag)
         {
-            m_resetCurrentQuadFlag = false;
-            quadDimensionsReset(activeQuad);
-            quadPlacementReset(activeQuad);
+            m_loadProjectFlag = false;
+            loadProject();
         }
 
-        //check if quad bezier spherize button on GUI is pressed
-        if(bQuadBezierSpherize)
+        //check if save project button in the GUI was pressed
+        if(m_saveProjectFlag)
         {
-            bQuadBezierSpherize = false;
-            quadBezierSpherize(activeQuad);
+            m_saveProjectFlag = false;
+            saveProject();
         }
 
-        //check if quad bezier spherize strong button on GUI is pressed
-        if(bQuadBezierSpherizeStrong)
-        {
-            bQuadBezierSpherizeStrong = false;
-            quadBezierSpherizeStrong(activeQuad);
-        }
-
-        //check if quad bezier reset button on GUI is pressed
-        if(bQuadBezierReset)
-        {
-            bQuadBezierReset = false;
-            quadBezierReset(activeQuad);
-        }
-
-
-        // check if image load button on GUI is pressed
+        // check if image load button in the GUI was pressed
         if(m_loadImageFlag)
         {
             m_loadImageFlag = false;
             openImageFile();
         }
 
-        // check if video load button on GUI is pressed
+        // check if video load button in the GUI was pressed
         if(m_loadVideoFlag)
         {
             m_loadVideoFlag = false;
             openVideoFile();
         }
 
-        // check if video load button on GUI is pressed
+        // check if shared video load buttons in the GUI were pressed
         if(m_loadSharedVideo0Flag)
         {
             m_loadSharedVideo0Flag = false;
@@ -548,16 +532,43 @@ void testApp::prepare()
             m_loadSharedVideo7Flag = false;
             openSharedVideoFile(7);
         }
-        // check if image load button on GUI is pressed
+        // check if slide show load button in the GUI was pressed
        if(m_loadSlideshowFlag)
        {
             m_loadSlideshowFlag = false;
-            string ssname = loadSlideshow();
-            cout << ssname;
-            quads[activeQuad].slideshowName = ssname;
+            loadSlideshow();
         }
 
-        // check if kinect close button on GUI is pressed
+        //check if quad dimensions reset button in the GUI was pressed
+        if(m_resetCurrentQuadFlag)
+        {
+            m_resetCurrentQuadFlag = false;
+            quadDimensionsReset(activeQuad);
+            quadPlacementReset(activeQuad);
+        }
+
+        //check if quad bezier spherize button in the GUI was pressed
+        if(m_bezierSpherizeQuadFlag)
+        {
+            m_bezierSpherizeQuadFlag = false;
+            quadBezierSpherize(activeQuad);
+        }
+
+        //check if quad bezier spherize strong button in the GUI was pressed
+        if(m_bezierSpherizeQuadStrongFlag)
+        {
+            m_bezierSpherizeQuadStrongFlag = false;
+            quadBezierSpherizeStrong(activeQuad);
+        }
+
+        //check if quad bezier reset button in the GUI was pressed
+        if(m_bezierResetQuadFlag)
+        {
+            m_bezierResetQuadFlag = false;
+            quadBezierReset(activeQuad);
+        }
+
+        // check if kinect close button in the GUI was pressed
         #ifdef WITH_KINECT
         if(bCloseKinect)
         {
@@ -566,7 +577,7 @@ void testApp::prepare()
             kinect.kinect.close();
         }
 
-        // check if kinect close button on GUI is pressed
+        // check if kinect close button in the GUI was pressed
         if(bOpenKinect)
         {
             bOpenKinect = false;
@@ -847,28 +858,16 @@ void testApp::keyPressed(int key)
     }
 
 
-    // saves quads settings to an xml file in data directory
+    // saves quads settings to an .xml project file in data directory
     if ( (key == 's' || key == 'S') && !bTimeline)
     {
-        ofFileDialogResult dialog_result = ofSystemSaveDialog("lpmt_settings.xml", "Save settings file (.xml)");
-
-        if(dialog_result.bSuccess)
-        {
-            saveCurrentSettingsToXMLFile(dialog_result.getPath());
-        }
+        saveProject();
     }
 
-    // let the user choose an xml settings file and load it
+    // let the user choose an .xml project file with all the quads settings and loads it
     if ((key == 'l') && !bTimeline)
     {
-        ofFileDialogResult dialog_result = ofSystemLoadDialog("Load settings file (.xml)");
-
-        if(dialog_result.bSuccess)
-        {
-            loadSettingsFromXMLFile(dialog_result.getPath());
-            m_gui.updatePages(quads[activeQuad]);
-            m_gui.showPage(2);
-        }
+        loadProject();
     }
 
     // if cameras are connected, take a snapshot of the specified camera and uses it as window background
@@ -1834,5 +1833,31 @@ void testApp::activateClosestQuad(ofPoint point)
         quads[activeQuad].isActive = true;
         m_gui.updatePages(quads[activeQuad]);
         m_gui.showPage(2);
+    }
+}
+
+
+// let the user choose an .xml project file with all the quads settings and loads it
+void testApp::loadProject()
+{
+    ofFileDialogResult dialogResult = ofSystemLoadDialog("Load project file (.xml)");
+
+    if(dialogResult.bSuccess)
+    {
+        loadSettingsFromXMLFile(dialogResult.getPath());
+        m_gui.updatePages(quads[activeQuad]);
+        m_gui.showPage(2);
+    }
+}
+
+
+// saves quads settings to an .xml project file in data directory
+void testApp::saveProject()
+{
+    ofFileDialogResult dialog_result = ofSystemSaveDialog("lpmt_settings.xml", "Save project file (.xml)");
+
+    if(dialog_result.bSuccess)
+    {
+        saveCurrentSettingsToXMLFile(dialog_result.getPath());
     }
 }

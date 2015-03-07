@@ -25,6 +25,19 @@ void testApp::openVideoFile()
 }
 
 //-----------------------------------------------------------
+void testApp::loadSlideshow()
+{
+    ofFileDialogResult dialog_result = ofSystemLoadDialog("Find slideshow folder", true, "data"); // TODO: test if the default path works on linux, it doesn't seem to on windows
+
+    if(dialog_result.bSuccess)
+    {
+        const std::string slideshowFolderName = dialog_result.getPath();
+        quads[activeQuad].slideshowName = slideshowFolderName;
+        std::cout << "Set slide show folder: \"" << slideshowFolderName << "\"" << std::endl;
+   }
+}
+
+//-----------------------------------------------------------
 void testApp::openSharedVideoFile(int i)
 {
     ofFileDialogResult dialog_result = ofSystemLoadDialog("Load shared video file");
@@ -94,18 +107,6 @@ ofImage testApp::loadImageFromFile()
         return img;
     }
 
-}
-
-//-----------------------------------------------------------
-
-string testApp::loadSlideshow()
-{
-   ofFileDialogResult dialog_result = ofSystemLoadDialog("Find slideshow folder", true);
-    if(dialog_result.bSuccess)
-    {
-        string slideshowPath = dialog_result.getPath();
-        return slideshowPath;
-   }
 }
 
 //--------------------------------------------------------------

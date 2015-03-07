@@ -42,8 +42,12 @@ GUI::GUI(testApp* app) : m_app(app),
 void GUI::setupPages()
 {
     // general page
+    m_gui.addTitle("Project");
+    m_gui.addButton("Load Project", m_app->m_loadProjectFlag);
+    m_gui.addButton("Save Project", m_app->m_saveProjectFlag);
+
     m_gui.addTitle("show/hide quads");
-    // first the default page for general controls and toggling surfaces on/off
+    // toggling surfaces on/off
     for(int i = 0; i < 36; i++)
     {
         m_gui.addToggle("surface " + ofToString(i), m_app->quads[i].isOn);
@@ -111,9 +115,9 @@ void GUI::setupPages()
     m_gui.addToggle("use grid", m_dummyBool);
     m_gui.addSlider("grid rows", m_dummyInt, 2, 15);
     m_gui.addSlider("grid columns", m_dummyInt, 2, 20);
-    m_gui.addButton("spherize light", m_app->bQuadBezierSpherize);
-    m_gui.addButton("spherize strong", m_app->bQuadBezierSpherizeStrong);
-    m_gui.addButton("reset bezier warp", m_app->bQuadBezierReset);
+    m_gui.addButton("spherize light", m_app->m_bezierSpherizeQuadFlag);
+    m_gui.addButton("spherize strong", m_app->m_bezierSpherizeQuadStrongFlag);
+    m_gui.addButton("reset bezier warp", m_app->m_bezierResetQuadFlag);
 
     m_gui.addTitle("Edge blending").setNewColumn(true);
     m_gui.addToggle("edge blend on/off", m_dummyBool);
