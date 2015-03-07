@@ -1,37 +1,64 @@
 LPMT - Little Projection-Mapping Tool
----------------------------------------
-(C) 2011, HVA - Hermanitos Verdes Architetti / Modena, Italy
+=====================================
 
-[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=hv_francesco&url=https://github.com/hvfrancesco/lpmt&title=LPMT Little Projection-Mapping Tool&language=&tags=github&category=software)
-
-
-LPMT is a little projection-mapping tool for use in our office,
-it is developed in C++ using OpenFrameworks.
+LPMT is a little projection-mapping tool, which was initially developed at the Hermanitos Verdes Architetti office in Modena, Italy. 
+It is developed in C++ using OpenFrameworks. 
 It’s based on simple quad warping paradigm, and, though rather simple, can
 be used to achieve complex and professional projection-mapping sets.
 
-This is the up-to-date version of lpmt, based on OpenFrameworks 007
-
-DOWNLOAD:
-----------
-
-At the moment LPMT is only available as source code, and we've only tested it on linux systems
-but thanks to the multi-platform nature of OpenFrameworks it should work out-of-the-box on
-Windows and OsX too.
-
-up-to-date code (git repository):
-http://gitorious.org/projection-mapping
-
-for the github fans, the repository is mirrored here:
-https://github.com/hvfrancesco/ProjectionMapping
-
-if you don't like git, you can find a rarely updated zip file:
-http://www.hv-a.com/projectTiles/projection-mapping.zip
+Since the original repo seems to be discontinued I forked the repo and started to add my own modifications.
 
 
+Highlights of this Fork:
+========================
 
-MAIN FEATURES:
---------------
+ * Completely rewrote the GUI code
+   * Instead of 3 pages for each of the 36 quads (108 pages!) we only have 3 pages now, whos content gets updated when the selected quad changes
+   * A nice header bar with a tab for each page was added (currently selected page is highlighted)
+   * Lots of bugfixes in the GUI controls (ComboBox works again, improved selection in ColorPicker and ComboBox, ...)
+ * Reviewed all the blend modes to look like GIMP/Photoshop and also added some new ones (see `docs/blendmodes.md`)
+ * Fixed a nasty bug, where the mask markers where not displayed correctly after being loaded from a project file to a screen with a different size
+ * Let the user choose which camera to use for the snapshot background via the config.xml file (see `docs/config file format.md`)
+ * Compiles  with the latest version of openframeworks and all the addons it depends on
+
+ * A ton of bugfixes and code refactoring for example:
+   * refactored load and save project
+   * reworked camera initialization code to be less error prone
+   * fixed a bug where LPMT would crash if "w" was pressed when no camera was connected
+   * lots of small refactors
+   * for a more complete list check the commit log and the issues
+
+ * LOTS of code clean up 
+
+
+Download:
+=========
+
+At the moment LPMT is only available as source code. It is tested and known to work on linux und windows systems. 
+Thanks to the multi-platform nature of OpenFrameworks it should work out-of-the-box OSX too.
+
+Up-to-date code of this repository:
+https://github.com/Foaly/lpmt
+
+For reference the original repository is here:
+https://github.com/hvfrancesco/lpmt
+
+
+Dependencies:
+=============
+If you want to compile the program from source, you need to download the following dependencies. Simply download the repos to your `your_openframworks_root_directory/addons` directory.
+ * ofxMostPixelsEver (https://github.com/obviousjim/ofxMostPixelsEver)
+ * my fork (important!) of ofxSimpleGuiToo (https://github.com/Foaly/ofxSimpleGuiToo)
+   * its dependencies:
+   * ofxTextInputField (https://github.com/Flightphase/ofxTextInputField)
+   * ofxMSAInteractiveObject (https://github.com/memo/ofxMSAInteractiveObject)
+ * ofxTimeline (https://github.com/YCAMInterlab/ofxTimeline/)
+   * make sure to run the `clone_addons.sh` file to install all of it's dependencies (ofxTween, ofxRange, ofxMSATimer, ofxTimecode, ofxTextInputField)
+ * ofxMidi (https://github.com/danomatika/ofxMidi) 
+
+
+Main Features:
+==============
 
 * up to 36 independent projection surfaces (remember you can use a solid black quad even as a mask)
 * possible content: solid color, images, video, live-cam, slideshows, smoothly changing solid colors, and more …
@@ -47,74 +74,30 @@ MAIN FEATURES:
 * realtime live-masking with Kinect
 * customizable video speed and volume
 * save/load project set to/from xml file
-* syncronized start for video elements
+* synchronized start for video elements
 * vertex snap function for adjacent quads
-* cam snapshot background for rough positioning of projection surfaces
+* camera snapshot background for rough positioning of projection surfaces
 * customizable speed for slideshows and color transitions
 * synced multi-projectors shows with adjustable edge-blending
 * control and setup through a rich set of OSC messages
 * a powerful timeline to trigger events and control LPMT projections
 
 
+Documentation:
+==============
 
-KEY COMMANDS:
--------------
-
-’s' – saves settings to xml (projection_settings.xml in data folder)
-‘l’ – loads settings from xml file
-
-‘a’ – adds new quad
-‘>’ – go to next quad
-‘<’ – go to previous quad
-'+' - raise active quad position in layers pile
-'-' - lower active quad position in layers pile
-‘z’ – selects first gui page for active quad settings
-‘x’ – selects second gui page for active quad settings
-‘c’ – selects gui page for active quad corner position fine-tuning
-‘q’ – fills window with active quad
-‘1’ – shows general settings page of gui
-
-‘g’ – toggles gui (for quad warping with mouse gui must be switched off)
-‘f’ – toggles fullscreen mode
-‘w’ – toggles cam snapshot window background
-‘m’ – toggles mask-editing mode
-‘b’ – toggles surface bezier/grid warping editing mode
-
-‘spacebar’ – toggles projection/setup modes
-‘r’ – resyncs all videos and slideshows in all quads to starting point
-‘p’ – starts projection
-‘o’ – stops projection
-
-‘n’ – connects to a MostPixelsEver sync server
-
-‘F10’ – toggles timeline interface
-‘F9’ – toggles timeline BPM reference grid
-‘F11’ – toggles stage visibility under timeline
-‘F12’ – play/stop timeline
+* Key Commands: take a look at the `bin/data/help_keys.txt` file
+* Files in the `doc/` directory
 
 
+Contact:
+========
 
-TODO:
-----------
+Contact to me:
+ * Just write and issue here on this repo
+ * https://github.com/Foaly/lpmt
 
-- midi control
-- DMX control
-- timeline sync with MTC midi
-
-
-CONTACT:
-----------
-
-you can contact us at:
-francesco[at]hv-a.com
-
--------------------------------------------------------------------------------
-
-this README was last edited by hv_francesco on Wed Feb 23, 2011 19:54 GMT+1,
-edited 1 times in total.
-
-__________________________________
-
-HVA - hermanitos verdes architetti
-modena - italy
-www.hv-a.com
+Contact to the owner of the original repo:
+ * francesco[at]hv-a.com
+ * www.hv-a.com
+ * https://github.com/hvfrancesco/lpmt
