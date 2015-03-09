@@ -6,31 +6,21 @@ GUI::GUI(testApp* app) : m_app(app),
                          m_dummyFloat(0.f),
                          m_dummyInt(0)
 {
-    // replace default config with this. That requires some change in the lib tough
-//    // overriding default theme
-//    m_config.toggleHeight = 16;
-//    m_config.buttonHeight = 18;
-//    m_config.sliderTextHeight = 18;
-//    m_config.titleHeight = 18;
-//
-//    m_config.fullActiveColor = 0x648B96; // bluish-grey
-//    m_config.textColor = 0xFFFFFF;       // white
-//    m_config.textBGOverColor = 0xDB6800; // orange
-//
-//    m_gui.config = &m_config;
-
     // initializing gui (sets up header page etc.)
     m_gui.setup();
     m_gui.setAutoSave(false); // turn auto save off
 
-    defaultSimpleGuiConfig.toggleHeight = 16;
-    defaultSimpleGuiConfig.buttonHeight = 18;
-    defaultSimpleGuiConfig.sliderTextHeight = 18;
-    defaultSimpleGuiConfig.titleHeight = 18;
+    // overriding default theme
+    m_config.toggleHeight = 16;
+    m_config.buttonHeight = 18;
+    m_config.sliderTextHeight = 18;
+    m_config.titleHeight = 18;
 
-    defaultSimpleGuiConfig.fullActiveColor = 0x648B96;
-    defaultSimpleGuiConfig.textColor = 0xFFFFFF;
-    defaultSimpleGuiConfig.textBGOverColor = 0xDB6800;
+    m_config.fullActiveColor = 0x648B96; // bluish-grey
+    m_config.textColor = 0xFFFFFF;       // white
+    m_config.textBGOverColor = 0xDB6800; // orange
+
+    defaultSimpleGuiConfig = m_config;
 }
 
 

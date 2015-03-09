@@ -19,10 +19,10 @@ Highlights of this Fork:
  * Reviewed all the blend modes to look like GIMP/Photoshop and also added some new ones (see `docs/blendmodes.md`)
  * Fixed a nasty bug, where the mask markers where not displayed correctly after being loaded from a project file to a screen with a different size
  * Let the user choose which camera to use for the snapshot background via the config.xml file (see `docs/config file format.md`)
- * Compiles  with the latest version of openframeworks and all the addons it depends on
+ * Compiles  with the latest version of openframeworks (0.8.4) and all the addons it depends on
 
  * A ton of bugfixes and code refactoring for example:
-   * refactored load and save project
+   * refactored load and save project (also added GUI buttons)
    * reworked camera initialization code to be less error prone
    * fixed a bug where LPMT would crash if "w" was pressed when no camera was connected
    * lots of small refactors
