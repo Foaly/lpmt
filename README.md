@@ -35,7 +35,7 @@ Download:
 =========
 
 At the moment LPMT is only available as source code. It is tested and known to work on linux und windows systems. 
-Thanks to the multi-platform nature of OpenFrameworks it should work out-of-the-box OSX too.
+Thanks to the multi-platform nature of OpenFrameworks it should work out-of-the-box on OSX too.
 
 Up-to-date code of this repository:
 https://github.com/Foaly/lpmt
@@ -49,9 +49,7 @@ Dependencies:
 If you want to compile the program from source, you need to download the following dependencies. Simply download the repos to your `your_openframworks_root_directory/addons` directory.
  * ofxMostPixelsEver (https://github.com/obviousjim/ofxMostPixelsEver)
  * my fork (important!) of ofxSimpleGuiToo (https://github.com/Foaly/ofxSimpleGuiToo)
-   * its dependencies:
-   * ofxTextInputField (https://github.com/Flightphase/ofxTextInputField)
-   * ofxMSAInteractiveObject (https://github.com/memo/ofxMSAInteractiveObject)
+   * make sure to run the `clone_dependencies.sh` script to install all of it's dependencies (ofxTextInputField, ofxMSAInteractiveObject, ofxMidi)
  * ofxTimeline (https://github.com/YCAMInterlab/ofxTimeline/)
    * make sure to run the `clone_addons.sh` file to install all of it's dependencies (ofxTween, ofxRange, ofxMSATimer, ofxTimecode, ofxTextInputField)
  * ofxMidi (https://github.com/danomatika/ofxMidi) 
