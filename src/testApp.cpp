@@ -873,10 +873,10 @@ void testApp::keyPressed(int key)
     // if cameras are connected, take a snapshot of the specified camera and uses it as window background
     if (key == 'w' && !bTimeline)
     {
-        m_isSnapshotTextureOn = !m_isSnapshotTextureOn;
-        if (m_isSnapshotTextureOn)
+        if (m_cameras.size() > 0)
         {
-            if (m_cameras.size() > 0)
+            m_isSnapshotTextureOn = !m_isSnapshotTextureOn;
+            if (m_isSnapshotTextureOn)
             {
                 const int width = m_snapshotBackgroundCamera->getWidth();
                 const int height = m_snapshotBackgroundCamera->getHeight();
@@ -884,6 +884,10 @@ void testApp::keyPressed(int key)
                 m_snapshotBackgroundTexture.allocate(width, height, GL_RGB);
                 m_snapshotBackgroundTexture.loadData(m_snapshotBackgroundCamera->getPixels(), width, height, GL_RGB);
             }
+        }
+        else
+        {
+            std::cout << "Can't take a snapshot background picture. No camera connected." << std::endl;
         }
     }
 
