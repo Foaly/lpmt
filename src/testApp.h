@@ -160,7 +160,7 @@ public:
     void openVideoFile();
     void loadSlideshow();
     void openSharedVideoFile(int i);
-    void openSharedVideoFile(string path, int i);
+    void openSharedVideoFile(std::string path, int i);
     void quadDimensionsReset(int q);
     void quadPlacementReset(int q);
     void quadBezierSpherize(int q);

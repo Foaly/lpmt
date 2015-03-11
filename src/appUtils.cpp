@@ -40,56 +40,36 @@ void testApp::loadSlideshow()
 //-----------------------------------------------------------
 void testApp::openSharedVideoFile(int i)
 {
-    ofFileDialogResult dialog_result = ofSystemLoadDialog("Load shared video file");
-    if(dialog_result.bSuccess)
+    ofFileDialogResult dialogResult = ofSystemLoadDialog("Load shared video file");
+    if(dialogResult.bSuccess)
     {
-        if (sharedVideos[i].isLoaded())
-        {
-            sharedVideos[i].closeMovie();
-        }
-        std::string path = dialog_result.getPath();
-        sharedVideos[i].loadMovie(path);
-        if(sharedVideos[i].isLoaded())
-        {
-            std::cout << "Loaded shared video #" << i + 1 << ": \"" << path << "\"" << std::endl;
-            sharedVideosFiles[i] = path;
-            sharedVideos[i].setLoopState(OF_LOOP_NORMAL);
-            sharedVideos[i].play();
-            sharedVideos[i].setVolume(0);
-            for(int j=0; j<36; j++)
-            {
-                if (quads[j].initialized)
-                {
-                    quads[j].vids[i] = sharedVideos[i];
-                }
-            }
-        }
+        openSharedVideoFile(dialogResult.getPath(), i);
     }
 }
 
 //-----------------------------------------------------------
 void testApp::openSharedVideoFile(std::string path, int i)
 {
-        if (sharedVideos[i].isLoaded())
+    if (sharedVideos[i].isLoaded())
+    {
+        sharedVideos[i].closeMovie();
+    }
+    sharedVideos[i].loadMovie(path);
+    if(sharedVideos[i].isLoaded())
+    {
+        std::cout << "Loaded shared video: #" << i + 1 << ": \"" << path << "\"" << std::endl;
+        sharedVideosFiles[i] = path;
+        sharedVideos[i].setLoopState(OF_LOOP_NORMAL);
+        sharedVideos[i].play();
+        sharedVideos[i].setVolume(0);
+        for(int j=0; j<36; j++)
         {
-            sharedVideos[i].closeMovie();
-        }
-        sharedVideos[i].loadMovie(path);
-        if(sharedVideos[i].isLoaded())
-        {
-            std::cout << "Loaded shared video: #" << i + 1 << ": \"" << path << "\"" << std::endl;
-            sharedVideosFiles[i] = path;
-            sharedVideos[i].setLoopState(OF_LOOP_NORMAL);
-            sharedVideos[i].play();
-            sharedVideos[i].setVolume(0);
-            for(int j=0; j<36; j++)
+            if (quads[j].initialized)
             {
-                if (quads[j].initialized)
-                {
-                    quads[j].vids[i] = sharedVideos[i];
-                }
+                quads[j].vids[i] = sharedVideos[i];
             }
         }
+    }
 }
 
 
