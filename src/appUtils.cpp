@@ -76,17 +76,14 @@ void testApp::openSharedVideoFile(std::string path, int i)
 //-----------------------------------------------------------
 ofImage testApp::loadImageFromFile()
 {
-    ofFileDialogResult dialog_result = ofSystemLoadDialog("Load image file", false);
-    if(dialog_result.bSuccess)
+    ofImage image;
+    ofFileDialogResult dialogResult = ofSystemLoadDialog("Load image file", false);
+    if(dialogResult.bSuccess)
     {
-        ofImage img;
-        string imgName = dialog_result.getName();
-        string imgPath = dialog_result.getPath();
-        ofFile image(imgPath);
-        img.loadImage(image);
-        return img;
+        std::string imagePath = dialogResult.getPath();
+        image.loadImage(imagePath);
     }
-
+    return image;
 }
 
 //--------------------------------------------------------------
