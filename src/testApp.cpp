@@ -116,7 +116,6 @@ void testApp::setup()
                 if (useForSnapshotBackground == 1 || cameraID == 0)
                 {
                     m_snapshotBackgroundCamera = m_cameras.end() - 1;
-                    m_snapshotBackgroundTexture.allocate(camera.getWidth(), camera.getHeight(), GL_RGB);
                 }
             }
         }
@@ -284,7 +283,7 @@ void testApp::setup()
     #endif
 
     // snapshot background texture is turned off by default
-    m_isSnapshotTextureOn = false;
+    m_isSnapshotBackgroundOn = false;
 
 
     // initializes layers array
@@ -666,11 +665,11 @@ void testApp::dostuff()
     {
 
         // if snapshot is on draws it as window background
-        if (isSetup && m_isSnapshotTextureOn)
+        if (isSetup && m_isSnapshotBackgroundOn)
         {
             ofEnableAlphaBlending();
             ofSetHexColor(0xFFFFFF);
-            m_snapshotBackgroundTexture.draw(0, 0, ofGetWidth(), ofGetHeight());
+            m_snapshotBackgroundImage.draw(0, 0, ofGetWidth(), ofGetHeight());
             ofDisableAlphaBlending();
         }
 
@@ -875,14 +874,13 @@ void testApp::keyPressed(int key)
     {
         if (m_cameras.size() > 0)
         {
-            m_isSnapshotTextureOn = !m_isSnapshotTextureOn;
-            if (m_isSnapshotTextureOn)
+            m_isSnapshotBackgroundOn = !m_isSnapshotBackgroundOn;
+            if (m_isSnapshotBackgroundOn)
             {
                 const int width = m_snapshotBackgroundCamera->getWidth();
                 const int height = m_snapshotBackgroundCamera->getHeight();
                 m_snapshotBackgroundCamera->update();
-                m_snapshotBackgroundTexture.allocate(width, height, GL_RGB);
-                m_snapshotBackgroundTexture.loadData(m_snapshotBackgroundCamera->getPixels(), width, height, GL_RGB);
+                m_snapshotBackgroundImage.setFromPixels(m_snapshotBackgroundCamera->getPixels(), width, height, OF_IMAGE_COLOR);
             }
         }
         else
@@ -894,12 +892,19 @@ void testApp::keyPressed(int key)
     // loads an image file and uses it as window background
     if (key == 'W' && !bTimeline)
     {
-        m_isSnapshotTextureOn = !m_isSnapshotTextureOn;
-        if (m_isSnapshotTextureOn)
+        m_isSnapshotBackgroundOn = !m_isSnapshotBackgroundOn;
+        if (m_isSnapshotBackgroundOn)
         {
-            ofImage image(loadImageFromFile());
-            m_snapshotBackgroundTexture.allocate(image.width, image.height, GL_RGB);
-            m_snapshotBackgroundTexture.loadData(image.getPixels(), image.width, image.height, GL_RGB);
+            ofImage image = loadImageFromFile();
+            if(image.isAllocated())
+            {
+                m_snapshotBackgroundImage = image;
+            }
+            else
+            {
+                // if there was no image loaded (dialog aborted) turn the snapshot background off
+                m_isSnapshotBackgroundOn = false;
+            }
         }
     }
 

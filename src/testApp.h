@@ -173,8 +173,8 @@ public:
     ofPolyline rotationSector;
 
     // snapshot background variables
-    bool m_isSnapshotTextureOn;
-    ofTexture m_snapshotBackgroundTexture;
+    bool m_isSnapshotBackgroundOn;
+    ofImage m_snapshotBackgroundImage;
 	std::vector<ofVideoGrabber> m_cameras;
 	std::vector<ofVideoGrabber>::iterator m_snapshotBackgroundCamera;
 	std::vector<string> m_cameraIds;
