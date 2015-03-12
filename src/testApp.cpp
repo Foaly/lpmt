@@ -1,4 +1,5 @@
 #include "testApp.h"
+#include "Util.hpp"
 #include "stdio.h"
 #include <iostream>
 
@@ -1805,38 +1806,34 @@ void testApp::quadBezierReset(int q)
 
 
 //---------------------------------------------------------------
-// This method activates the quad, whos center is closest to the given point.
-// Since we don't have a proper quad/point intersection test, the point must also be
-// within a radius the size of a 10th of the windows size, to get acceptable results.
-void testApp::activateClosestQuad(ofPoint point)
+// This method activates the topmost quad under the mouse
+void testApp::activateClosestQuad(ofPoint mouse)
 {
-    float smallestDistance = 1.0;
-    int closestQuad = activeQuad;
-
-    for(int i = 0; i < 36; i++)
+    // go through the layers from top to bottom
+    for(int j = 35; j >= 0; j--)
     {
-        if (quads[i].initialized)
+        int i = layers[j];
+        if (i >= 0)
         {
-            // find the quad closest to the point
-            const float distanceX = quads[i].center.x - static_cast<float>(point.x) / ofGetWidth();
-            const float distanceY = quads[i].center.y - static_cast<float>(point.y) / ofGetHeight();
-            const float distance  = distanceX * distanceX + distanceY * distanceY; // no square root needed, since we can simply square the value it's compared to
-
-            if(distance < smallestDistance && distance < 0.01)
+            if (quads[i].initialized)
             {
-                closestQuad = i;
-                smallestDistance = distance;
+                const ofPoint vertex0 = Util::scalePointToPixel(quads[i].corners[0]);
+                const ofPoint vertex1 = Util::scalePointToPixel(quads[i].corners[1]);
+                const ofPoint vertex2 = Util::scalePointToPixel(quads[i].corners[2]);
+                const ofPoint vertex3 = Util::scalePointToPixel(quads[i].corners[3]);
+
+                if((Util::pointInTriangle2D(vertex0, vertex1, vertex2, mouse)
+                   || Util::pointInTriangle2D(vertex2, vertex3, vertex0, mouse) )
+                   && (i != activeQuad))
+                {
+                    quads[activeQuad].isActive = false;
+                    activeQuad = i;
+                    quads[activeQuad].isActive = true;
+                    m_gui.updatePages(quads[activeQuad]);
+                    break;
+                }
             }
         }
-    }
-    // if the closest quad is not currently active, activate it
-    if (closestQuad != activeQuad)
-    {
-        quads[activeQuad].isActive = false;
-        activeQuad = closestQuad;
-        quads[activeQuad].isActive = true;
-        m_gui.updatePages(quads[activeQuad]);
-        m_gui.showPage(2);
     }
 }
 
