@@ -76,7 +76,7 @@ public:
     ofTrueTypeFont ttf;
     GUI m_gui;
 
-    quad quads[36];
+    Quad quads[36];
     int layers[36];
 
     int activeQuad;

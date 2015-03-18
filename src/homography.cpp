@@ -1,6 +1,6 @@
 #include "quad.h"
 
-void quad::gaussian_elimination(float *input, int n)
+void Quad::gaussian_elimination(float *input, int n)
 {
     // ported to c from pseudocode in
     // http://en.wikipedia.org/wiki/Gaussian_elimination
@@ -65,7 +65,7 @@ void quad::gaussian_elimination(float *input, int n)
     }
 }
 
-void quad::findHomography(ofPoint src[4], ofPoint dst[4], float homography[16])
+void Quad::findHomography(ofPoint src[4], ofPoint dst[4], float homography[16])
 {
 
     // create the equation system to be solved
@@ -115,7 +115,7 @@ void quad::findHomography(ofPoint src[4], ofPoint dst[4], float homography[16])
     for(int i=0; i<16; i++) homography[i] = aux_H[i];
 }
 
-ofMatrix4x4 quad::findVectorHomography(ofPoint src[4], ofPoint dst[4]){
+ofMatrix4x4 Quad::findVectorHomography(ofPoint src[4], ofPoint dst[4]){
 	ofMatrix4x4 matrix;
 
 	// create the equation system to be solved
@@ -176,7 +176,7 @@ ofMatrix4x4 quad::findVectorHomography(ofPoint src[4], ofPoint dst[4]){
 }
 
 
-ofPoint quad::findWarpedPoint(ofPoint src[4], ofPoint dst[4], ofPoint point) {
+ofPoint Quad::findWarpedPoint(ofPoint src[4], ofPoint dst[4], ofPoint point) {
 
     ofVec3f srcPoint;
     ofPoint warped;

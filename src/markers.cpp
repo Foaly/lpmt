@@ -3,7 +3,7 @@
 // Markers -----------------------------------------------------
 
 // Bezier markers ----------------------------------------------
-void quad::drawBezierMarkers()
+void Quad::drawBezierMarkers()
 {
     ofSetColor(220,200,0,255);
     ofSetLineWidth(1.5);
@@ -193,7 +193,7 @@ void quad::drawBezierMarkers()
 
 
 // Bezier markers ----------------------------------------------
-void quad::drawGridMarkers()
+void Quad::drawGridMarkers()
 {
     ofSetColor(0,200,220,255);
     ofSetLineWidth(1.5);
@@ -218,7 +218,7 @@ void quad::drawGridMarkers()
 }
 
 // Mask markers --------------------------------------
-void quad::drawMaskMarkers()
+void Quad::drawMaskMarkers()
 {
     if (m_maskPoints.size() > 0)
     {

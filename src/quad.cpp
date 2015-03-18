@@ -8,15 +8,15 @@
 
 #ifdef WITH_KINECT
     #ifdef WITH_SYPHON
-    void quad::setup(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, kinectManager &kinect, ofxSyphonClient &syphon, ofTrueTypeFont &font)
+    void Quad::setup(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, kinectManager &kinect, ofxSyphonClient &syphon, ofTrueTypeFont &font)
     #else
-    void quad::setup(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, kinectManager &kinect, ofTrueTypeFont &font)
+    void Quad::setup(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, kinectManager &kinect, ofTrueTypeFont &font)
     #endif
 #else
     #ifdef WITH_SYPHON
-    void quad::setup(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, ofxSyphonClient &syphon, ofTrueTypeFont &font)
+    void Quad::setup(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, ofxSyphonClient &syphon, ofTrueTypeFont &font)
     #else
-    void quad::setup(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, ofTrueTypeFont &font)
+    void Quad::setup(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, ofTrueTypeFont &font)
     #endif
 #endif
 {
@@ -248,7 +248,7 @@
 }
 
 
-void quad::update()
+void Quad::update()
 {
     if (isOn)
     {
@@ -435,7 +435,7 @@ void quad::update()
 
 
 // DRAW -----------------------------------------------------------------
-void quad::draw()
+void Quad::draw()
 {
     if (isOn)
     {
@@ -1295,7 +1295,7 @@ void quad::draw()
     }
 }
 
-void quad::applyBlendmode()
+void Quad::applyBlendmode()
 {
     switch(blendMode)
     {

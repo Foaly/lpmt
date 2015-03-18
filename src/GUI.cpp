@@ -232,7 +232,7 @@ void GUI::setupPages()
 }
 
 
-void GUI::updatePages(quad& activeQuad)
+void GUI::updatePages(Quad& activeQuad)
 {
     ofxSimpleGuiPage& firstPage = m_gui.page("Page 1");
 

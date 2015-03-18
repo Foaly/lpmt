@@ -2,7 +2,7 @@
 
 // Bezier helpers --------------------------------------
 // Bezier setup -------------------------------------
-void quad::bezierSurfaceSetup()
+void Quad::bezierSurfaceSetup()
 {
     float tmp_bezierPoints[4][4][3] =
     {
@@ -55,7 +55,7 @@ void quad::bezierSurfaceSetup()
     glShadeModel(GL_FLAT);
 }
 
-void quad::bezierSurfaceUpdate()
+void Quad::bezierSurfaceUpdate()
 {
     // TODO: to optimize this try to limit recalculation to cases when it's really needed
    float tmp_ctrlPoints[4][4][3]  =
@@ -95,7 +95,7 @@ void quad::bezierSurfaceUpdate()
 
 // Grid helpers --------------------------------------
 // grid setup -------------------------------------
-void quad::gridSurfaceSetup()
+void Quad::gridSurfaceSetup()
 {
 
     gridMesh.clearVertices();
@@ -151,7 +151,7 @@ void quad::gridSurfaceSetup()
 }
 
 
-void quad::gridSurfaceUpdate()
+void Quad::gridSurfaceUpdate()
 {
     // TODO: to optimize this try to limit recalculation to cases when it's really needed
     //This sets up my Grid Surface

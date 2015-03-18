@@ -15,11 +15,11 @@
 #include "ofxSyphon.h"
 #endif
 
-class quad: public ofNode
+class Quad: public ofNode
 {
 
 public:
-    quad()
+    Quad()
     {
     }
 

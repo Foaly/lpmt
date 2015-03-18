@@ -2,7 +2,7 @@
 #include <dirent.h>
 
 //--------------------------------------------------------------
-void quad::allocateFbo(int w, int h)
+void Quad::allocateFbo(int w, int h)
 {
     settings.width = w;
     settings.height = h;
@@ -13,7 +13,7 @@ void quad::allocateFbo(int w, int h)
 
 // adds a new point to the mask point vector
 // the given point has to be in non-normalized window pixel coordinates
-void quad::maskAddPoint(ofPoint point)
+void Quad::maskAddPoint(ofPoint point)
 {
     const ofPoint warpedPoint = getWarpedPoint(point);
     const ofPoint normalizedPoint(warpedPoint.x / ofGetWidth(), warpedPoint.y / ofGetHeight());
@@ -21,7 +21,7 @@ void quad::maskAddPoint(ofPoint point)
     m_maskPoints.push_back(normalizedPoint);
 }
 
-ofPoint quad::getWarpedPoint(ofPoint point)
+ofPoint Quad::getWarpedPoint(ofPoint point)
 {
     return findWarpedPoint(src, dst, point);
 }
@@ -29,7 +29,7 @@ ofPoint quad::getWarpedPoint(ofPoint point)
 
 
 //---------------------------------------------------------------
-void quad::loadImageFromFile(string imgName, string imgPath)
+void Quad::loadImageFromFile(string imgName, string imgPath)
 {
     ofFile image(imgPath);
     imgBg = true;
@@ -40,7 +40,7 @@ void quad::loadImageFromFile(string imgName, string imgPath)
 
 
 //---------------------------------------------------------------
-void quad::loadVideoFromFile(string videoName, string videoPath)
+void Quad::loadVideoFromFile(string videoName, string videoPath)
 {
     //ofFile movie(videoPath);
     videoBg = true;
@@ -59,7 +59,7 @@ void quad::loadVideoFromFile(string videoName, string videoPath)
 }
 
 // a func for reading a dir content to a vector of strings
-int quad::getdir (string dir, vector<string> &files)
+int Quad::getdir (string dir, vector<string> &files)
 {
     DIR *dp;
     struct dirent *dirp;
@@ -77,7 +77,7 @@ int quad::getdir (string dir, vector<string> &files)
     return 0;
 }
 
-void quad::setupCamera()
+void Quad::setupCamera()
 {
     camWidth = cams[camNumber].width;
     camHeight = cams[camNumber].height;
