@@ -321,7 +321,6 @@ void testApp::parseOsc()
             activeQuad = osc_activequad;
             quads[activeQuad].isActive = true;
             m_gui.updatePages(quads[activeQuad]);
-            m_gui.showPage(2);
         }
     }
 

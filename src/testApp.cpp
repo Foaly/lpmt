@@ -403,7 +403,6 @@ void testApp::setup()
     {
         loadSettingsFromXMLFile("_lpmt_settings.xml");
         m_gui.updatePages(quads[activeQuad]);
-        m_gui.showPage(2);
 
         isSetup = false;
         m_gui.hide();
@@ -929,7 +928,6 @@ void testApp::keyPressed(int key)
             quads[activeQuad].isActive = true;
         }
         m_gui.updatePages(quads[activeQuad]);
-        m_gui.showPage(2);
     }
 
     // activates prev quad
@@ -946,7 +944,6 @@ void testApp::keyPressed(int key)
             quads[activeQuad].isActive = true;
         }
         m_gui.updatePages(quads[activeQuad]);
-        m_gui.showPage(2);
     }
 
     // goes to first page of gui for active quad or, in mask edit mode, delete last drawn point
@@ -1047,7 +1044,6 @@ void testApp::keyPressed(int key)
                 activeQuad = nOfQuads;
                 ++nOfQuads;
                 m_gui.updatePages(quads[activeQuad]);
-                m_gui.showPage(2);
                 // add timeline page for new quad
                 #ifdef WITH_TIMELINE
                 timelineAddQuadPage(activeQuad);
@@ -1836,7 +1832,6 @@ void testApp::activateClosestQuad(ofPoint point)
         activeQuad = closestQuad;
         quads[activeQuad].isActive = true;
         m_gui.updatePages(quads[activeQuad]);
-        m_gui.showPage(2);
     }
 }
 
