@@ -75,8 +75,6 @@ public:
     int camNumber;
     int prevCamNumber;
 
-    int layer;
-
     float camMultX;
     float camMultY;
     float imgMultX;
@@ -206,10 +204,10 @@ public:
 
     ofFbo targetFbo;
 
-    int quadDispX;
-    int quadDispY;
-    int quadW;
-    int quadH;
+    float quadDispX;
+    float quadDispY;
+    float quadW;
+    float quadH;
 
     ofShader * greenscreenShader;
 
@@ -282,6 +280,13 @@ public:
     void drawBezierMarkers();
 
     void setupCamera();
+
+    void resetDimensions();
+    void resetPlacement();
+    void bezierSpherize();
+    void bezierSpherizeStrong();
+    void resetBezier();
+
 
 
 };

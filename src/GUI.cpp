@@ -38,9 +38,10 @@ void GUI::setupPages()
 
     m_gui.addTitle("show/hide quads");
     // toggling surfaces on/off
-    for(int i = 0; i < 36; i++)
+    for(std::vector<Quad>::iterator quad = m_app->m_quads.begin(); quad < m_app->m_quads.end(); quad++)
     {
-        m_gui.addToggle("surface " + ofToString(i), m_app->quads[i].isOn);
+        // TODO: this might potentially break on realloc
+        m_gui.addToggle("surface " + ofToString(quad->quadNumber), quad->isOn);
     }
     m_gui.addTitle("General controls").setNewColumn(true);
     m_gui.addToggle("surfaces corner snap", m_app->bSnapOn);
@@ -119,10 +120,10 @@ void GUI::setupPages()
     m_gui.addSlider("top edge", m_dummyFloat, 0.0, 0.5);
     m_gui.addSlider("bottom edge", m_dummyFloat, 0.0, 0.5);
     m_gui.addTitle("Content placement");
-    m_gui.addSlider("X displacement", m_dummyInt, -1600, 1600);
-    m_gui.addSlider("Y displacement", m_dummyInt, -1600, 1600);
-    m_gui.addSlider("Width", m_dummyInt, 0, 2400);
-    m_gui.addSlider("Height", m_dummyInt, 0, 2400);
+    m_gui.addSlider("X displacement", m_dummyFloat, -1600, 1600);
+    m_gui.addSlider("Y displacement", m_dummyFloat, -1600, 1600);
+    m_gui.addSlider("Width", m_dummyFloat, 0, 2400);
+    m_gui.addSlider("Height", m_dummyFloat, 0, 2400);
     m_gui.addButton("Reset", m_app->m_resetCurrentQuadFlag);
 
     // Page Two
@@ -232,7 +233,7 @@ void GUI::setupPages()
 }
 
 
-void GUI::updatePages(Quad& activeQuad)
+void GUI::updatePages(Quad &activeQuad)
 {
     ofxSimpleGuiPage& firstPage = m_gui.page("Page 1");
 
@@ -281,10 +282,10 @@ void GUI::updatePages(Quad& activeQuad)
     dynamic_cast<ofxSimpleGuiSliderFloat*>(firstPage.findControlByName("right edge"))->value = &activeQuad.edgeBlendAmountDx;
     dynamic_cast<ofxSimpleGuiSliderFloat*>(firstPage.findControlByName("top edge"))->value = &activeQuad.edgeBlendAmountTop;
     dynamic_cast<ofxSimpleGuiSliderFloat*>(firstPage.findControlByName("bottom edge"))->value = &activeQuad.edgeBlendAmountBottom;
-    dynamic_cast<ofxSimpleGuiSliderInt*>(firstPage.findControlByName("X displacement"))->value = &activeQuad.quadDispX;
-    dynamic_cast<ofxSimpleGuiSliderInt*>(firstPage.findControlByName("Y displacement"))->value = &activeQuad.quadDispY;
-    dynamic_cast<ofxSimpleGuiSliderInt*>(firstPage.findControlByName("Width"))->value = &activeQuad.quadW;
-    dynamic_cast<ofxSimpleGuiSliderInt*>(firstPage.findControlByName("Height"))->value = &activeQuad.quadH;
+    dynamic_cast<ofxSimpleGuiSliderFloat*>(firstPage.findControlByName("X displacement"))->value = &activeQuad.quadDispX;
+    dynamic_cast<ofxSimpleGuiSliderFloat*>(firstPage.findControlByName("Y displacement"))->value = &activeQuad.quadDispY;
+    dynamic_cast<ofxSimpleGuiSliderFloat*>(firstPage.findControlByName("Width"))->value = &activeQuad.quadW;
+    dynamic_cast<ofxSimpleGuiSliderFloat*>(firstPage.findControlByName("Height"))->value = &activeQuad.quadH;
 
     // Second Page
     ofxSimpleGuiPage& secondPage = m_gui.page("Page 2");

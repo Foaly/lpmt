@@ -286,82 +286,74 @@ void testApp::setup()
     m_isSnapshotTextureOn = false;
 
 
-    // initializes layers array
-    for(int i = 0; i < 36; i++)
+    // defines the first 4 default quads
+    m_quads.reserve(4);
+    Quad quad;
+    for(int i = 0; i < 4; i++)
     {
-        layers[i] = -1;
+        m_quads.push_back(quad);
     }
 
-    // defines the first 4 default quads
     #ifdef WITH_KINECT
         #ifdef WITH_SYPHON
-        quads[0].setup(ofPoint(0.0, 0.0), ofPoint(0.5, 0.0), ofPoint(0.5, 0.5), ofPoint(0.0, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
+        m_quads[0].setup(ofPoint(0.0, 0.0), ofPoint(0.5, 0.0), ofPoint(0.5, 0.5), ofPoint(0.0, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
         #else
-        quads[0].setup(ofPoint(0.0, 0.0), ofPoint(0.5, 0.0), ofPoint(0.5, 0.5), ofPoint(0.0, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
+        m_quads[0].setup(ofPoint(0.0, 0.0), ofPoint(0.5, 0.0), ofPoint(0.5, 0.5), ofPoint(0.0, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
         #endif
     #else
         #ifdef WITH_SYPHON
-        quads[0].setup(ofPoint(0.0, 0.0), ofPoint(0.5, 0.0), ofPoint(0.5, 0.5), ofPoint(0.0, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
+        m_quads[0].setup(ofPoint(0.0, 0.0), ofPoint(0.5, 0.0), ofPoint(0.5, 0.5), ofPoint(0.0, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
         #else
-        quads[0].setup(ofPoint(0.0, 0.0), ofPoint(0.5, 0.0), ofPoint(0.5, 0.5), ofPoint(0.0, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
+        m_quads[0].setup(ofPoint(0.0, 0.0), ofPoint(0.5, 0.0), ofPoint(0.5, 0.5), ofPoint(0.0, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
         #endif
     #endif
-    quads[0].quadNumber = 0;
+    m_quads[0].quadNumber = 0;
     #ifdef WITH_KINECT
         #ifdef WITH_SYPHON
-        quads[1].setup(ofPoint(0.5, 0.0), ofPoint(1.0, 0.0), ofPoint(1.0, 0.5), ofPoint(0.5, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
+        m_quads[1].setup(ofPoint(0.5, 0.0), ofPoint(1.0, 0.0), ofPoint(1.0, 0.5), ofPoint(0.5, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
         #else
-        quads[1].setup(ofPoint(0.5, 0.0), ofPoint(1.0, 0.0), ofPoint(1.0, 0.5), ofPoint(0.5, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
+        m_quads[1].setup(ofPoint(0.5, 0.0), ofPoint(1.0, 0.0), ofPoint(1.0, 0.5), ofPoint(0.5, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
         #endif
     #else
         #ifdef WITH_SYPHON
-        quads[1].setup(ofPoint(0.5, 0.0), ofPoint(1.0, 0.0), ofPoint(1.0, 0.5), ofPoint(0.5, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
+        m_quads[1].setup(ofPoint(0.5, 0.0), ofPoint(1.0, 0.0), ofPoint(1.0, 0.5), ofPoint(0.5, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
         #else
-        quads[1].setup(ofPoint(0.5, 0.0), ofPoint(1.0, 0.0), ofPoint(1.0, 0.5), ofPoint(0.5, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
+        m_quads[1].setup(ofPoint(0.5, 0.0), ofPoint(1.0, 0.0), ofPoint(1.0, 0.5), ofPoint(0.5, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
         #endif
     #endif
-    quads[1].quadNumber = 1;
+    m_quads[1].quadNumber = 1;
     #ifdef WITH_KINECT
         #ifdef WITH_SYPHON
-        quads[2].setup(ofPoint(0.0, 0.5), ofPoint(0.5, 0.5), ofPoint(0.5, 1.0), ofPoint(0.0, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
+        m_quads[2].setup(ofPoint(0.0, 0.5), ofPoint(0.5, 0.5), ofPoint(0.5, 1.0), ofPoint(0.0, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
         #else
-        quads[2].setup(ofPoint(0.0, 0.5), ofPoint(0.5, 0.5), ofPoint(0.5, 1.0), ofPoint(0.0, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
+        m_quads[2].setup(ofPoint(0.0, 0.5), ofPoint(0.5, 0.5), ofPoint(0.5, 1.0), ofPoint(0.0, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
         #endif
     #else
         #ifdef WITH_SYPHON
-        quads[2].setup(ofPoint(0.0, 0.5), ofPoint(0.5, 0.5), ofPoint(0.5, 1.0), ofPoint(0.0, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
+        m_quads[2].setup(ofPoint(0.0, 0.5), ofPoint(0.5, 0.5), ofPoint(0.5, 1.0), ofPoint(0.0, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
         #else
-        quads[2].setup(ofPoint(0.0, 0.5), ofPoint(0.5, 0.5), ofPoint(0.5, 1.0), ofPoint(0.0, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
+        m_quads[2].setup(ofPoint(0.0, 0.5), ofPoint(0.5, 0.5), ofPoint(0.5, 1.0), ofPoint(0.0, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
         #endif
     #endif
-    quads[2].quadNumber = 2;
+    m_quads[2].quadNumber = 2;
     #ifdef WITH_KINECT
         #ifdef WITH_SYPHON
-        quads[3].setup(ofPoint(0.5, 0.5), ofPoint(1.0, 0.5) ,ofPoint(1.0, 1.0), ofPoint(0.5, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
+        m_quads[3].setup(ofPoint(0.5, 0.5), ofPoint(1.0, 0.5) ,ofPoint(1.0, 1.0), ofPoint(0.5, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
         #else
-        quads[3].setup(ofPoint(0.5, 0.5), ofPoint(1.0, 0.5) ,ofPoint(1.0, 1.0), ofPoint(0.5, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
+        m_quads[3].setup(ofPoint(0.5, 0.5), ofPoint(1.0, 0.5) ,ofPoint(1.0, 1.0), ofPoint(0.5, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
         #endif
     #else
         #ifdef WITH_SYPHON
-        quads[3].setup(ofPoint(0.5, 0.5), ofPoint(1.0, 0.5) ,ofPoint(1.0, 1.0), ofPoint(0.5, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
+        m_quads[3].setup(ofPoint(0.5, 0.5), ofPoint(1.0, 0.5) ,ofPoint(1.0, 1.0), ofPoint(0.5, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
         #else
-        quads[3].setup(ofPoint(0.5, 0.5), ofPoint(1.0, 0.5) ,ofPoint(1.0, 1.0), ofPoint(0.5, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
+        m_quads[3].setup(ofPoint(0.5, 0.5), ofPoint(1.0, 0.5) ,ofPoint(1.0, 1.0), ofPoint(0.5, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
         #endif
     #endif
-    quads[3].quadNumber = 3;
+    m_quads[3].quadNumber = 3;
+
     // define last one as active quad
-    activeQuad = 3;
-    quads[activeQuad].isActive = true;
-    // number of total quads, to be modified later at each quad insertion
-    nOfQuads = 4;
-    layers[0] = 0;
-    quads[0].layer = 0;
-    layers[1] = 1;
-    quads[1].layer = 1;
-    layers[2] = 2;
-    quads[2].layer = 2;
-    layers[3] = 3;
-    quads[3].layer = 3;
+    m_activeQuad = m_quads.end() - 1;
+    m_activeQuad->isActive = true;
 
     // timeline stuff initialization
     #ifdef WITH_TIMELINE
@@ -370,13 +362,13 @@ void testApp::setup()
 
     // GUI STUFF ---------------------------------------------------
     m_gui.setupPages();
-    m_gui.updatePages(quads[activeQuad]);
+    m_gui.updatePages(*m_activeQuad);
     m_gui.showPage(2);
 
     // timeline off at start
     bTimeline = false;
     #ifdef WITH_TIMELINE
-    timeline.setCurrentPage(ofToString(activeQuad));
+    timeline.setCurrentPage(ofToString(m_activeQuad->quadNumber));
     timeline.hide();
     timeline.disable();
     // if timeline autostart is defined in timeline it starts timeline playing
@@ -402,17 +394,14 @@ void testApp::setup()
     if(autoStart)
     {
         loadSettingsFromXMLFile("_lpmt_settings.xml");
-        m_gui.updatePages(quads[activeQuad]);
+        m_gui.updatePages(*m_activeQuad);
 
         isSetup = false;
         m_gui.hide();
         bGui = false;
-        for(int i = 0; i < 36; i++)
+        for(std::vector<Quad>::iterator quad = m_quads.begin(); quad < m_quads.end(); quad++)
         {
-            if (quads[i].initialized)
-            {
-                quads[i].isSetup = false;
-            }
+            quad->isSetup = false;
         }
         bFullscreen = true;
         ofSetFullscreen(true);
@@ -542,29 +531,29 @@ void testApp::prepare()
         if(m_resetCurrentQuadFlag)
         {
             m_resetCurrentQuadFlag = false;
-            quadDimensionsReset(activeQuad);
-            quadPlacementReset(activeQuad);
+            m_activeQuad->resetDimensions();
+            m_activeQuad->resetPlacement();
         }
 
         //check if quad bezier spherize button in the GUI was pressed
         if(m_bezierSpherizeQuadFlag)
         {
             m_bezierSpherizeQuadFlag = false;
-            quadBezierSpherize(activeQuad);
+            m_activeQuad->bezierSpherize();
         }
 
         //check if quad bezier spherize strong button in the GUI was pressed
         if(m_bezierSpherizeQuadStrongFlag)
         {
             m_bezierSpherizeQuadStrongFlag = false;
-            quadBezierSpherizeStrong(activeQuad);
+            m_activeQuad->bezierSpherizeStrong();
         }
 
         //check if quad bezier reset button in the GUI was pressed
         if(m_bezierResetQuadFlag)
         {
             m_bezierResetQuadFlag = false;
-            quadBezierReset(activeQuad);
+            m_activeQuad->resetBezier();
         }
 
         // check if kinect close button in the GUI was pressed
@@ -626,29 +615,22 @@ void testApp::prepare()
         #endif
 
         // loops through initialized quads and runs update, setting the border color as well
-        for(int j = 0; j < 36; j++)
+        for(std::vector<Quad>::iterator quad = m_quads.begin(); quad < m_quads.end(); quad++)
         {
-            int i = layers[j];
-            if (i >= 0)
+            quad->update();
+            // frame delay correction for Mpe sync
+            if(bMpe)
             {
-                if (quads[i].initialized)
+                if(quad->videoBg && quad->video.isLoaded())
                 {
-                    quads[i].update();
-                    // frame delay correction for Mpe sync
-                    if(bMpe)
+                    int mpeFrame = client.getFrameCount();
+                    int totFrames = quad->video.getTotalNumFrames();
+                    int videoFrame = quad->video.getCurrentFrame();
+                    //quad->video.setFrame(mpeFrame%totFrames);
+                    if(abs((mpeFrame%totFrames) - videoFrame) > 2) // TODO: testing different values
                     {
-                        if(quads[i].videoBg && quads[i].video.isLoaded())
-                        {
-                            int mpeFrame = client.getFrameCount();
-                            int totFrames = quads[i].video.getTotalNumFrames();
-                            int videoFrame = quads[i].video.getCurrentFrame();
-                            //quads[i].video.setFrame(mpeFrame%totFrames);
-                            if(abs((mpeFrame%totFrames) - videoFrame) > 2) // TODO: testing different values
-                            {
-                                //cout << mpeFrame%totFrames << endl;
-                                quads[i].video.setFrame(mpeFrame%totFrames);
-                            }
-                        }
+                        //cout << mpeFrame%totFrames << endl;
+                        quad->video.setFrame(mpeFrame%totFrames);
                     }
                 }
             }
@@ -674,16 +656,9 @@ void testApp::dostuff()
         }
 
         // loops through initialized quads and calls their draw function
-        for(int j = 0; j < 36; j++)
+        for(std::vector<Quad>::iterator quad = m_quads.begin(); quad < m_quads.end(); quad++)
         {
-            int i = layers[j];
-            if (i >= 0)
-            {
-                if (quads[i].initialized)
-                {
-                    quads[i].draw();
-                }
-            }
+            quad->draw();
         }
     }
 }
@@ -727,7 +702,7 @@ void testApp::draw()
 
             // in setup mode writes the number of the active quad at the bottom of the window
             ofSetHexColor(0xFFFFFF); // white
-            ttf.drawString("active surface: " + ofToString(activeQuad), 30, ofGetHeight() - 25);
+            ttf.drawString("active surface: " + ofToString(m_activeQuad->quadNumber), 30, ofGetHeight() - 25);
 
             if(maskSetup) {
                 ofSetHexColor(0xFF0000);
@@ -802,57 +777,25 @@ void testApp::keyPressed(int key)
 {
 
     if(!bMidiHotkeyCoupling){
-    // moves active layer one position up
+    // moves active quad one position up
     if ( key == '+' && !bTimeline && !bGui)
     {
-        int position;
-        int target;
-
-        for(int i = 0; i < 35; i++)
+        if(m_activeQuad + 1 < m_quads.end())
         {
-            if (layers[i] == quads[activeQuad].quadNumber)
-            {
-                position = i;
-                target = i+1;
-            }
-
-        }
-        if (layers[target] != -1)
-        {
-            int target_content = layers[target];
-            layers[target] = quads[activeQuad].quadNumber;
-            layers[position] = target_content;
-            quads[activeQuad].layer = target;
-            quads[target_content].layer = position;
+            // TODO: remove console error
+            iter_swap(m_activeQuad, m_activeQuad + 1);
+            m_activeQuad++;
         }
     }
 
 
-    // moves active layer one position down
+    // moves active quad one position down
     if ( key == '-' && !bTimeline && !bGui)
     {
-        int position;
-        int target;
-
-        for(int i = 0; i < 36; i++)
+        if(m_activeQuad > m_quads.begin())
         {
-            if (layers[i] == quads[activeQuad].quadNumber)
-            {
-                position = i;
-                target = i-1;
-            }
-
-        }
-        if (target >= 0)
-        {
-            if (layers[target] != -1)
-            {
-                int target_content = layers[target];
-                layers[target] = quads[activeQuad].quadNumber;
-                layers[position] = target_content;
-                quads[activeQuad].layer = target;
-                quads[target_content].layer = position;
-            }
+            iter_swap(m_activeQuad, m_activeQuad - 1);
+            m_activeQuad--;
         }
     }
 
@@ -907,10 +850,10 @@ void testApp::keyPressed(int key)
     {
         if (isSetup)
         {
-            quads[activeQuad].corners[0] = ofPoint(0.0, 0.0);
-            quads[activeQuad].corners[1] = ofPoint(1.0, 0.0);
-            quads[activeQuad].corners[2] = ofPoint(1.0, 1.0);
-            quads[activeQuad].corners[3] = ofPoint(0.0, 1.0);
+            m_activeQuad->corners[0] = ofPoint(0.0, 0.0);
+            m_activeQuad->corners[1] = ofPoint(1.0, 0.0);
+            m_activeQuad->corners[2] = ofPoint(1.0, 1.0);
+            m_activeQuad->corners[3] = ofPoint(0.0, 1.0);
         }
     }
 
@@ -919,15 +862,14 @@ void testApp::keyPressed(int key)
     {
         if (isSetup)
         {
-            quads[activeQuad].isActive = false;
-            activeQuad += 1;
-            if (activeQuad > nOfQuads-1)
-            {
-                activeQuad = 0;
-            }
-            quads[activeQuad].isActive = true;
+            m_activeQuad->isActive = false;
+            m_activeQuad++;
+            if(m_activeQuad == m_quads.end())
+                m_activeQuad = m_quads.begin();
+
+            m_activeQuad->isActive = true;
         }
-        m_gui.updatePages(quads[activeQuad]);
+        m_gui.updatePages(*m_activeQuad);
     }
 
     // activates prev quad
@@ -935,23 +877,22 @@ void testApp::keyPressed(int key)
     {
         if (isSetup)
         {
-            quads[activeQuad].isActive = false;
-            activeQuad -= 1;
-            if (activeQuad < 0)
-            {
-                activeQuad = nOfQuads-1;
-            }
-            quads[activeQuad].isActive = true;
+            m_activeQuad->isActive = false;
+            m_activeQuad--;
+            if(m_activeQuad < m_quads.begin())
+                m_activeQuad = m_quads.end() - 1;
+
+            m_activeQuad->isActive = true;
         }
-        m_gui.updatePages(quads[activeQuad]);
+        m_gui.updatePages(*m_activeQuad);
     }
 
     // goes to first page of gui for active quad or, in mask edit mode, delete last drawn point
     if ( (key == 'z' || key == 'Z') && !bTimeline)
     {
-        if(maskSetup && quads[activeQuad].m_maskPoints.size() > 0)
+        if(maskSetup && m_activeQuad->m_maskPoints.size() > 0)
         {
-            quads[activeQuad].m_maskPoints.pop_back();
+            m_activeQuad->m_maskPoints.pop_back();
         }
         else
         {
@@ -964,14 +905,14 @@ void testApp::keyPressed(int key)
         m_gui.showPage(2);
     }
 
-
+    // when in mask edit mode remove the highlighted mask point
     if ( (key == 'd' || key == 'D') && !bTimeline)
     {
-        if(maskSetup && quads[activeQuad].m_maskPoints.size() > 0)
+        if(maskSetup && m_activeQuad->m_maskPoints.size() > 0)
         {
-            if (quads[activeQuad].bHighlightMaskPoint)
+            if (m_activeQuad->bHighlightMaskPoint)
             {
-                quads[activeQuad].m_maskPoints.erase(quads[activeQuad].m_maskPoints.begin() + quads[activeQuad].highlightedMaskPoint);
+                m_activeQuad->m_maskPoints.erase(m_activeQuad->m_maskPoints.begin() + m_activeQuad->highlightedMaskPoint);
             }
 
         }
@@ -989,7 +930,7 @@ void testApp::keyPressed(int key)
     {
         if(maskSetup)
         {
-            quads[activeQuad].m_maskPoints.clear();
+            m_activeQuad->m_maskPoints.clear();
         }
         else
         {
@@ -1006,14 +947,15 @@ void testApp::keyPressed(int key)
     // (3 corresponds to CTRL + C)
     if ( (key == 3) && !bTimeline)
     {
-        m_sourceQuadForCopying = activeQuad;
+        // TODO use a copy constructor for this!
+        //m_sourceQuadForCopying = activeQuad;
     }
 
     // paste settings from source surface to currently active surface
     // (22 corresponds to CTRL + V)
     if ( (key == 22) && !bTimeline)
     {
-        copyQuadSettings(m_sourceQuadForCopying);
+//        copyQuadSettings(m_sourceQuadForCopying);
     }
 
     // adds a new quad in the middle of the screen
@@ -1021,37 +963,36 @@ void testApp::keyPressed(int key)
     {
         if (isSetup)
         {
-            if (nOfQuads < 36)
-            {
-                #ifdef WITH_KINECT
-                    #ifdef WITH_SYPHON
-                    quads[nOfQuads].setup(ofPoint(0.25, 0.25), ofPoint(0.75, 0.25), ofPoint(0.75, 0.75), ofPoint(0.25, 0.75), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
-                    #else
-                    quads[nOfQuads].setup(ofPoint(0.25, 0.25), ofPoint(0.75, 0.25), ofPoint(0.75, 0.75), ofPoint(0.25, 0.75), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
-                    #endif
+            Quad quad;
+            #ifdef WITH_KINECT
+                #ifdef WITH_SYPHON
+                quad.setup(ofPoint(0.25, 0.25), ofPoint(0.75, 0.25), ofPoint(0.75, 0.75), ofPoint(0.25, 0.75), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
                 #else
-                    #ifdef WITH_SYPHON
-                    quads[nOfQuads].setup(ofPoint(0.25, 0.25), ofPoint(0.75, 0.25), ofPoint(0.75, 0.75), ofPoint(0.25, 0.75), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
-                    #else
-                    quads[nOfQuads].setup(ofPoint(0.25, 0.25), ofPoint(0.75, 0.25), ofPoint(0.75, 0.75), ofPoint(0.25, 0.75), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
-                    #endif
+                quad.setup(ofPoint(0.25, 0.25), ofPoint(0.75, 0.25), ofPoint(0.75, 0.75), ofPoint(0.25, 0.75), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
                 #endif
-                quads[nOfQuads].quadNumber = nOfQuads;
-                layers[nOfQuads] = nOfQuads;
-                quads[nOfQuads].layer = nOfQuads;
-                quads[activeQuad].isActive = false;
-                quads[nOfQuads].isActive = true;
-                activeQuad = nOfQuads;
-                ++nOfQuads;
-                m_gui.updatePages(quads[activeQuad]);
-                // add timeline page for new quad
-                #ifdef WITH_TIMELINE
-                timelineAddQuadPage(activeQuad);
+            #else
+                #ifdef WITH_SYPHON
+                quad.setup(ofPoint(0.25, 0.25), ofPoint(0.75, 0.25), ofPoint(0.75, 0.75), ofPoint(0.25, 0.75), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
+                #else
+                quad.setup(ofPoint(0.25, 0.25), ofPoint(0.75, 0.25), ofPoint(0.75, 0.75), ofPoint(0.25, 0.75), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
                 #endif
-                // next line fixes a bug i've been tracking down for a looong time
-                glDisable(GL_DEPTH_TEST);
+            #endif
+            quad.quadNumber = m_quads.size();
 
-            }
+            m_activeQuad->isActive = false;
+            quad.isActive = true;
+
+            m_quads.push_back(quad);
+            m_activeQuad = m_quads.end() - 1;
+
+            m_gui.updatePages(*m_activeQuad);
+
+            // add timeline page for new quad
+            #ifdef WITH_TIMELINE
+            timelineAddQuadPage(m_activeQuad->quadNumber);
+            #endif
+            // next line fixes a bug i've been tracking down for a looong time
+            glDisable(GL_DEPTH_TEST);
         }
     }
 
@@ -1063,12 +1004,9 @@ void testApp::keyPressed(int key)
             isSetup = false;
             m_gui.hide();
             bGui = false;
-            for(int i = 0; i < 36; i++)
+            for(std::vector<Quad>::iterator quad = m_quads.begin(); quad < m_quads.end(); quad++)
             {
-                if (quads[i].initialized)
-                {
-                    quads[i].isSetup = false;
-                }
+                quad->isSetup = false;
             }
         }
         else
@@ -1076,12 +1014,9 @@ void testApp::keyPressed(int key)
             isSetup = true;
             m_gui.show();
             bGui = true;
-            for(int i = 0; i < 36; i++)
+            for(std::vector<Quad>::iterator quad = m_quads.begin(); quad < m_quads.end(); quad++)
             {
-                if (quads[i].initialized)
-                {
-                    quads[i].isSetup = true;
-                }
+                quad->isSetup = true;
             }
         }
     }
@@ -1110,15 +1045,14 @@ void testApp::keyPressed(int key)
     // toggles gui
     if(key == 'g' && !bTimeline)
     {
-        if (maskSetup) {
+        if (maskSetup)
+        {
             maskSetup = false;
-            for(int i = 0; i < 36; i++)
-                {
-                    if (quads[i].initialized)
-                    {
-                        quads[i].isMaskSetup = false;
-                    }
-                }
+            for(std::vector<Quad>::iterator quad = m_quads.begin(); quad < m_quads.end(); quad++)
+            {
+                quad->isMaskSetup = false;
+            }
+
         }
         m_gui.toggleDraw();
         bGui = !bGui;
@@ -1127,14 +1061,12 @@ void testApp::keyPressed(int key)
     // toggles mask editing
     if(key == 'm' && !bTimeline)
     {
-        if (!bGui){
-        maskSetup = !maskSetup;
-        for(int i = 0; i < 36; i++)
+        if (!bGui)
+        {
+            maskSetup = !maskSetup;
+            for(std::vector<Quad>::iterator quad = m_quads.begin(); quad < m_quads.end(); quad++)
             {
-                if (quads[i].initialized)
-                {
-                    quads[i].isMaskSetup = !quads[i].isMaskSetup;
-                }
+                quad->isMaskSetup = !quad->isMaskSetup;
             }
         }
     }
@@ -1142,14 +1074,12 @@ void testApp::keyPressed(int key)
     // toggles bezier deformation editing
     if(key == 'b' && !bTimeline)
     {
-        if (!bGui){
-        gridSetup = !gridSetup;
-        for(int i = 0; i < 36; i++)
+        if (!bGui)
+        {
+            gridSetup = !gridSetup;
+            for(std::vector<Quad>::iterator quad = m_quads.begin(); quad < m_quads.end(); quad++)
             {
-                if (quads[i].initialized)
-                {
-                    quads[i].isBezierSetup = !quads[i].isBezierSetup;
-                }
+                quad->isBezierSetup = !quad->isBezierSetup;
             }
         }
     }
@@ -1207,32 +1137,26 @@ void testApp::keyPressed(int key)
         if(bStarted)
         {
             bStarted = false;
-            for(int i = 0; i < 36; i++)
+            for(std::vector<Quad>::iterator quad = m_quads.begin(); quad < m_quads.end(); quad++)
             {
-                if (quads[i].initialized)
+                quad->isOn = false;
+                if (quad->videoBg && quad->video.isLoaded())
                 {
-                quads[i].isOn = false;
-                    if (quads[i].videoBg && quads[i].video.isLoaded())
-                    {
-                        quads[i].video.setVolume(0);
-                        quads[i].video.stop();
-                    }
+                    quad->video.setVolume(0);
+                    quad->video.stop();
                 }
             }
         }
         else if(!bStarted)
         {
             bStarted = true;
-            for(int i = 0; i < 36; i++)
+            for(std::vector<Quad>::iterator quad = m_quads.begin(); quad < m_quads.end(); quad++)
             {
-                if (quads[i].initialized)
+                quad->isOn = true;
+                if (quad->videoBg && quad->video.isLoaded())
                 {
-                    quads[i].isOn = true;
-                    if (quads[i].videoBg && quads[i].video.isLoaded())
-                    {
-                        quads[i].video.setVolume(quads[i].videoVolume);
-                        quads[i].video.play();
-                    }
+                    quad->video.setVolume(quad->videoVolume);
+                    quad->video.play();
                 }
             }
         }
@@ -1272,13 +1196,13 @@ void testApp::keyPressed(int key)
 
     if(key == '*' && !bTimeline)
     {
-        if(m_cameras[quads[activeQuad].camNumber].getPixelFormat() == OF_PIXELS_RGBA)
+        if(m_cameras[m_activeQuad->camNumber].getPixelFormat() == OF_PIXELS_RGBA)
         {
-            m_cameras[quads[activeQuad].camNumber].setPixelFormat(OF_PIXELS_BGRA);
+            m_cameras[m_activeQuad->camNumber].setPixelFormat(OF_PIXELS_BGRA);
         }
-        else if(m_cameras[quads[activeQuad].camNumber].getPixelFormat() == OF_PIXELS_BGRA)
+        else if(m_cameras[m_activeQuad->camNumber].getPixelFormat() == OF_PIXELS_BGRA)
         {
-            m_cameras[quads[activeQuad].camNumber].setPixelFormat(OF_PIXELS_RGBA);
+            m_cameras[m_activeQuad->camNumber].setPixelFormat(OF_PIXELS_RGBA);
         }
 
     }
@@ -1290,13 +1214,13 @@ void testApp::keyPressed(int key)
         ofMatrix4x4 centerToOrigin;
         ofMatrix4x4 originToCenter;
         ofMatrix4x4 resultingMatrix;
-        centerToOrigin.makeTranslationMatrix(-quads[activeQuad].center);
-        originToCenter.makeTranslationMatrix(quads[activeQuad].center);
+        centerToOrigin.makeTranslationMatrix(-m_activeQuad->center);
+        originToCenter.makeTranslationMatrix(m_activeQuad->center);
         rotation.makeRotationMatrix(-5.0,0,0,1);
         resultingMatrix = centerToOrigin * rotation * originToCenter;
         for(int i=0; i<4; i++)
         {
-            quads[activeQuad].corners[i] = quads[activeQuad].corners[i] * resultingMatrix;
+            m_activeQuad->corners[i] = m_activeQuad->corners[i] * resultingMatrix;
         }
     }
 
@@ -1306,22 +1230,22 @@ void testApp::keyPressed(int key)
         ofMatrix4x4 centerToOrigin;
         ofMatrix4x4 originToCenter;
         ofMatrix4x4 resultingMatrix;
-        centerToOrigin.makeTranslationMatrix(-quads[activeQuad].center);
-        originToCenter.makeTranslationMatrix(quads[activeQuad].center);
+        centerToOrigin.makeTranslationMatrix(-m_activeQuad->center);
+        originToCenter.makeTranslationMatrix(m_activeQuad->center);
         rotation.makeRotationMatrix(5.0,0,0,1);
         resultingMatrix = centerToOrigin * rotation * originToCenter;
         for(int i=0; i<4; i++)
         {
-            quads[activeQuad].corners[i] = quads[activeQuad].corners[i] * resultingMatrix;
+            m_activeQuad->corners[i] = m_activeQuad->corners[i] * resultingMatrix;
         }
     }
     }
 
     else
-        {
-            bMidiHotkeyLearning = true;
-            midiHotkeyPressed = key;
-        }
+    {
+        bMidiHotkeyLearning = true;
+        midiHotkeyPressed = key;
+    }
 
     if ( key == OF_KEY_F4)
     {
@@ -1350,8 +1274,8 @@ void testApp::mouseMoved(int x, int y)
 
         for(int i = 0; i < 4; i++)
         {
-            float distx = quads[activeQuad].corners[i].x - (float)x/ofGetWidth();
-            float disty = quads[activeQuad].corners[i].y - (float)y/ofGetHeight();
+            float distx = m_activeQuad->corners[i].x - (float)x/ofGetWidth();
+            float disty = m_activeQuad->corners[i].y - (float)y/ofGetHeight();
             float dist  = sqrt( distx * distx + disty * disty);
 
             if(dist < smallestDist && dist < 0.05) // value for dist threshold can vary between 0.1-0.05, fine tune it
@@ -1362,41 +1286,47 @@ void testApp::mouseMoved(int x, int y)
         }
 
         if(m_selectedCorner >= 0)
-            {
-                quads[activeQuad].bHighlightCorner = true;
-                quads[activeQuad].highlightedCorner = m_selectedCorner;
-            }
+        {
+            m_activeQuad->bHighlightCorner = true;
+            m_activeQuad->highlightedCorner = m_selectedCorner;
+        }
         else
+        {
+            m_activeQuad->bHighlightCorner = false;
+            m_activeQuad->highlightedCorner = -1;
+
+            // distance from center
+            float distx = m_activeQuad->center.x - (float)x / ofGetWidth();
+            float disty = m_activeQuad->center.y - (float)y/ofGetHeight();
+            float dist  = sqrt( distx * distx + disty * disty);
+            if(dist < 0.05)
             {
-                quads[activeQuad].bHighlightCorner = false;
-                quads[activeQuad].highlightedCorner = -1;
-
-                // distance from center
-                float distx = quads[activeQuad].center.x - (float)x / ofGetWidth();
-                float disty = quads[activeQuad].center.y - (float)y/ofGetHeight();
-                float dist  = sqrt( distx * distx + disty * disty);
-                if(dist < 0.05)
-                {
-                    quads[activeQuad].bHighlightCenter = true;
-                }
-                else {quads[activeQuad].bHighlightCenter = false;}
-
-                // distance from rotation grab point
-                ofPoint rotationGrabPoint;
-                //rotationGrabPoint.x = (quads[activeQuad].corners[2].x - quads[activeQuad].corners[1].x)/2 + quads[activeQuad].corners[1].x;
-                //rotationGrabPoint.y = (quads[activeQuad].corners[2].y - quads[activeQuad].corners[1].y)/2 + quads[activeQuad].corners[1].y;
-                //rotationGrabPoint = ((quads[activeQuad].corners[2]+quads[activeQuad].corners[1])/2+quads[activeQuad].center)/2;
-                rotationGrabPoint = (quads[activeQuad].center);
-                rotationGrabPoint.x = rotationGrabPoint.x + 0.1;
-                float rotationDistx = rotationGrabPoint.x - (float)x / ofGetWidth();
-                float rotationDisty = rotationGrabPoint.y - (float)y/ofGetHeight();
-                float rotationDist = sqrt(rotationDistx*rotationDistx + rotationDisty*rotationDisty);
-                if(rotationDist < 0.05)
-                {
-                    quads[activeQuad].bHighlightRotation = true;
-                }
-                else {quads[activeQuad].bHighlightRotation = false;}
+                m_activeQuad->bHighlightCenter = true;
             }
+            else
+            {
+                m_activeQuad->bHighlightCenter = false;
+            }
+
+            // distance from rotation grab point
+            ofPoint rotationGrabPoint;
+            //rotationGrabPoint.x = (quads[activeQuad].corners[2].x - quads[activeQuad].corners[1].x)/2 + quads[activeQuad].corners[1].x;
+            //rotationGrabPoint.y = (quads[activeQuad].corners[2].y - quads[activeQuad].corners[1].y)/2 + quads[activeQuad].corners[1].y;
+            //rotationGrabPoint = ((quads[activeQuad].corners[2]+quads[activeQuad].corners[1])/2+quads[activeQuad].center)/2;
+            rotationGrabPoint = (m_activeQuad->center);
+            rotationGrabPoint.x = rotationGrabPoint.x + 0.1;
+            float rotationDistx = rotationGrabPoint.x - (float)x / ofGetWidth();
+            float rotationDisty = rotationGrabPoint.y - (float)y / ofGetHeight();
+            float rotationDist = sqrt(rotationDistx * rotationDistx + rotationDisty * rotationDisty);
+            if(rotationDist < 0.05)
+            {
+                m_activeQuad->bHighlightRotation = true;
+            }
+            else
+            {
+                m_activeQuad->bHighlightRotation = false;
+            }
+        }
     }
 
     else if (maskSetup && !gridSetup && !bTimeline)
@@ -1404,11 +1334,11 @@ void testApp::mouseMoved(int x, int y)
         float smallestDist = sqrt( ofGetWidth() * ofGetWidth() + ofGetHeight() * ofGetHeight());;
         int whichPoint = -1;
         ofVec3f warped;
-        for(int i = 0; i < quads[activeQuad].m_maskPoints.size(); i++)
+        for(int i = 0; i < m_activeQuad->m_maskPoints.size(); i++)
         {
-            warped = quads[activeQuad].getWarpedPoint(mousePosition);
-            float distx = (float)quads[activeQuad].m_maskPoints[i].x * ofGetWidth() - (float)warped.x;
-            float disty = (float)quads[activeQuad].m_maskPoints[i].y * ofGetHeight()- (float)warped.y;
+            warped = m_activeQuad->getWarpedPoint(mousePosition);
+            float distx = (float)m_activeQuad->m_maskPoints[i].x * ofGetWidth() - (float)warped.x;
+            float disty = (float)m_activeQuad->m_maskPoints[i].y * ofGetHeight()- (float)warped.y;
             float dist  = sqrt( distx * distx + disty * disty);
 
             if(dist < smallestDist && dist < 20.0)
@@ -1418,15 +1348,15 @@ void testApp::mouseMoved(int x, int y)
             }
         }
         if(whichPoint >= 0)
-            {
-                quads[activeQuad].bHighlightMaskPoint = true;
-                quads[activeQuad].highlightedMaskPoint = whichPoint;
-            }
+        {
+            m_activeQuad->bHighlightMaskPoint = true;
+            m_activeQuad->highlightedMaskPoint = whichPoint;
+        }
         else
-            {
-                quads[activeQuad].bHighlightMaskPoint = false;
-                quads[activeQuad].highlightedMaskPoint = -1;
-            }
+        {
+            m_activeQuad->bHighlightMaskPoint = false;
+            m_activeQuad->highlightedMaskPoint = -1;
+        }
     }
 
     else if (gridSetup && !maskSetup && !bTimeline)
@@ -1436,15 +1366,15 @@ void testApp::mouseMoved(int x, int y)
         int whichPointCol = -1;
         ofVec3f warped;
 
-        if(quads[activeQuad].bBezier)
+        if(m_activeQuad->bBezier)
         {
         for(int i = 0; i < 4; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                warped = quads[activeQuad].getWarpedPoint(mousePosition);
-                float distx = (float)quads[activeQuad].bezierPoints[i][j][0] * ofGetWidth() - (float)warped.x;
-                float disty = (float)quads[activeQuad].bezierPoints[i][j][1] * ofGetHeight() - (float)warped.y;
+                warped = m_activeQuad->getWarpedPoint(mousePosition);
+                float distx = (float)m_activeQuad->bezierPoints[i][j][0] * ofGetWidth() - (float)warped.x;
+                float disty = (float)m_activeQuad->bezierPoints[i][j][1] * ofGetHeight() - (float)warped.y;
                 float dist  = sqrt( distx * distx + disty * disty);
 
                 if(dist < smallestDist && dist < 20.0)
@@ -1457,15 +1387,15 @@ void testApp::mouseMoved(int x, int y)
         }
         }
 
-        else if(quads[activeQuad].bGrid)
+        else if(m_activeQuad->bGrid)
         {
-        for(int i = 0; i <= quads[activeQuad].gridRows; i++)
+        for(int i = 0; i <= m_activeQuad->gridRows; i++)
         {
-            for (int j = 0; j <= quads[activeQuad].gridColumns; j++)
+            for (int j = 0; j <= m_activeQuad->gridColumns; j++)
             {
-                warped = quads[activeQuad].getWarpedPoint(mousePosition);
-                float distx = (float)quads[activeQuad].gridPoints[i][j][0] * ofGetWidth() - (float)warped.x;
-                float disty = (float)quads[activeQuad].gridPoints[i][j][1] * ofGetHeight() - (float)warped.y;
+                warped = m_activeQuad->getWarpedPoint(mousePosition);
+                float distx = (float)m_activeQuad->gridPoints[i][j][0] * ofGetWidth() - (float)warped.x;
+                float disty = (float)m_activeQuad->gridPoints[i][j][1] * ofGetHeight() - (float)warped.y;
                 float dist  = sqrt( distx * distx + disty * disty);
 
                 if(dist < smallestDist && dist < 20.0)
@@ -1479,17 +1409,17 @@ void testApp::mouseMoved(int x, int y)
         }
 
         if(whichPointRow >= 0)
-            {
-                quads[activeQuad].bHighlightCtrlPoint = true;
-                quads[activeQuad].highlightedCtrlPointRow = whichPointRow;
-                quads[activeQuad].highlightedCtrlPointCol = whichPointCol;
-            }
+        {
+            m_activeQuad->bHighlightCtrlPoint = true;
+            m_activeQuad->highlightedCtrlPointRow = whichPointRow;
+            m_activeQuad->highlightedCtrlPointCol = whichPointCol;
+        }
         else
-            {
-                quads[activeQuad].bHighlightCtrlPoint = false;
-                quads[activeQuad].highlightedCtrlPointRow = -1;
-                quads[activeQuad].highlightedCtrlPointCol = -1;
-            }
+        {
+            m_activeQuad->bHighlightCtrlPoint = false;
+            m_activeQuad->highlightedCtrlPointRow = -1;
+            m_activeQuad->highlightedCtrlPointCol = -1;
+        }
     }
 }
 
@@ -1508,30 +1438,30 @@ void testApp::mouseDragged(int x, int y, int button)
             float normalizedY = (float)y / ofGetHeight();
 
             // move the selected corner
-            quads[activeQuad].corners[m_selectedCorner] = ofPoint(normalizedX, normalizedY);
+            m_activeQuad->corners[m_selectedCorner] = ofPoint(normalizedX, normalizedY);
         }
         else
         {
             // if no corner is selected, check if we can move or rotate whole quad
             //by dragging its center and rotation mark
-            if(quads[activeQuad].bHighlightCenter) // TODO: verifiy if threshold value is good for distance
+            if(m_activeQuad->bHighlightCenter) // TODO: verifiy if threshold value is good for distance
             {
                 ofPoint movement(mousePosition - startDrag);
 
                 // move the entire quad
                 for(int i = 0; i < 4; i++)
                 {
-                    quads[activeQuad].corners[i].x += ((float)movement.x / ofGetWidth());
-                    quads[activeQuad].corners[i].y += ((float)movement.y / ofGetHeight());
+                    m_activeQuad->corners[i].x += ((float)movement.x / ofGetWidth());
+                    m_activeQuad->corners[i].y += ((float)movement.y / ofGetHeight());
                 }
                 startDrag = mousePosition;
             }
             // rotate the quad
-            else if(quads[activeQuad].bHighlightRotation)
+            else if(m_activeQuad->bHighlightRotation)
             {
                 float angle;
                 // quad center in pixel coordinates
-                ofPoint center(quads[activeQuad].center.x * ofGetWidth(), quads[activeQuad].center.y * ofGetHeight());
+                ofPoint center(m_activeQuad->center.x * ofGetWidth(), m_activeQuad->center.y * ofGetHeight());
                 ofPoint vec1 = (startDrag - center);
                 ofPoint vec2 = (mousePosition - center);
                 angle = ofRadToDeg(std::atan2(vec2.y, vec2.x) - std::atan2(vec1.y, vec1.x));
@@ -1547,42 +1477,42 @@ void testApp::mouseDragged(int x, int y, int button)
                 ofMatrix4x4 centerToOrigin;
                 ofMatrix4x4 originToCenter;
                 ofMatrix4x4 resultingMatrix;
-                centerToOrigin.makeTranslationMatrix(-quads[activeQuad].center);
-                originToCenter.makeTranslationMatrix(quads[activeQuad].center);
+                centerToOrigin.makeTranslationMatrix(-m_activeQuad->center);
+                originToCenter.makeTranslationMatrix(m_activeQuad->center);
                 rotation.makeRotationMatrix(angle, 0, 0, 1);
                 resultingMatrix = centerToOrigin * rotation * originToCenter;
                 for(int i=0; i<4; i++)
                 {
-                    quads[activeQuad].corners[i] = quads[activeQuad].corners[i] * resultingMatrix;
+                    m_activeQuad->corners[i] = m_activeQuad->corners[i] * resultingMatrix;
                 }
                 startDrag = mousePosition;
             }
         }
     }
-    else if(maskSetup && quads[activeQuad].bHighlightMaskPoint && !bTimeline)
+    else if(maskSetup && m_activeQuad->bHighlightMaskPoint && !bTimeline)
     {
         // in mask setup mode, move the selected mask point
-        const ofPoint warpedPoint = quads[activeQuad].getWarpedPoint(mousePosition);
+        const ofPoint warpedPoint = m_activeQuad->getWarpedPoint(mousePosition);
         const ofPoint normalizedPoint(warpedPoint.x / ofGetWidth(), warpedPoint.y / ofGetHeight());
 
-        quads[activeQuad].m_maskPoints[quads[activeQuad].highlightedMaskPoint] = normalizedPoint;
+        m_activeQuad->m_maskPoints[m_activeQuad->highlightedMaskPoint] = normalizedPoint;
     }
 
-    else if(gridSetup && quads[activeQuad].bHighlightCtrlPoint && !bTimeline)
+    else if(gridSetup && m_activeQuad->bHighlightCtrlPoint && !bTimeline)
     {
-        const int currentRow = quads[activeQuad].highlightedCtrlPointRow;
-        const int currentCol = quads[activeQuad].highlightedCtrlPointCol;
-        const ofPoint warpedPoint = quads[activeQuad].getWarpedPoint(mousePosition);
+        const int currentRow = m_activeQuad->highlightedCtrlPointRow;
+        const int currentCol = m_activeQuad->highlightedCtrlPointCol;
+        const ofPoint warpedPoint = m_activeQuad->getWarpedPoint(mousePosition);
 
-        if(quads[activeQuad].bBezier)
+        if(m_activeQuad->bBezier)
         {
-            quads[activeQuad].bezierPoints[currentRow][currentCol][0] = (float)warpedPoint.x / ofGetWidth();
-            quads[activeQuad].bezierPoints[currentRow][currentCol][1] = (float)warpedPoint.y / ofGetHeight();
+            m_activeQuad->bezierPoints[currentRow][currentCol][0] = (float)warpedPoint.x / ofGetWidth();
+            m_activeQuad->bezierPoints[currentRow][currentCol][1] = (float)warpedPoint.y / ofGetHeight();
         }
-        else if(quads[activeQuad].bGrid)
+        else if(m_activeQuad->bGrid)
         {
-            quads[activeQuad].gridPoints[currentRow][currentCol][0] = (float)warpedPoint.x / ofGetWidth();
-            quads[activeQuad].gridPoints[currentRow][currentCol][1] = (float)warpedPoint.y / ofGetHeight();
+            m_activeQuad->gridPoints[currentRow][currentCol][0] = (float)warpedPoint.x / ofGetWidth();
+            m_activeQuad->gridPoints[currentRow][currentCol][1] = (float)warpedPoint.y / ofGetHeight();
         }
     }
 }
@@ -1608,9 +1538,9 @@ void testApp::mousePressed(int x, int y, int button)
         if(maskSetup && !gridSetup)
         {
             // if we are in mask setup mode and no mask point is selected, add a new mask point
-            if (!quads[activeQuad].bHighlightMaskPoint)
+            if (!m_activeQuad->bHighlightMaskPoint)
             {
-                quads[activeQuad].maskAddPoint(mousePosition);
+                m_activeQuad->maskAddPoint(mousePosition);
             }
         }
 
@@ -1630,8 +1560,8 @@ void testApp::mousePressed(int x, int y, int button)
 
             for(int i = 0; i < 4; i++)
             {
-                float distx = quads[activeQuad].corners[i].x - (float)x/ofGetWidth();
-                float disty = quads[activeQuad].corners[i].y - (float)y/ofGetHeight();
+                float distx = m_activeQuad->corners[i].x - (float)x/ofGetWidth();
+                float disty = m_activeQuad->corners[i].y - (float)y/ofGetHeight();
                 float dist  = sqrt( distx * distx + disty * disty);
 
                 if(dist < smallestDist && dist < 0.05)
@@ -1651,152 +1581,53 @@ void testApp::mouseReleased()
     rotationSector.clear();
     if (isSetup && !bGui && !bTimeline)
     {
-
-    if (m_selectedCorner >= 0)
-    {
-        // snap detection for near quads
-        float smallestDist = 1.0;
-        int snapQuad = -1;
-        int snapCorner = -1;
-        for (int i = 0; i < 36; i++)
+        if (m_selectedCorner >= 0)
         {
-            if ( i != activeQuad && quads[i].initialized)
+            // snap detection for near quads
+            float smallestDist = 1.0;
+            std::vector<Quad>::iterator snapQuad = m_quads.end();
+            int snapCorner = -1;
+
+            for(std::vector<Quad>::iterator quad = m_quads.begin(); quad < m_quads.end(); quad++)
             {
                 for(int j = 0; j < 4; j++)
                 {
-                    float distx = quads[activeQuad].corners[m_selectedCorner].x - quads[i].corners[j].x;
-                    float disty = quads[activeQuad].corners[m_selectedCorner].y - quads[i].corners[j].y;
-                    float dist = sqrt( distx * distx + disty * disty);
+                    float distx = m_activeQuad->corners[m_selectedCorner].x - quad->corners[j].x;
+                    float disty = m_activeQuad->corners[m_selectedCorner].y - quad->corners[j].y;
+                    float dist = std::sqrt( distx * distx + disty * disty);
                     // to tune snapping change dist value inside next if statement
+                    // TODO: check out the value
                     if (dist < smallestDist && dist < 0.0075)
                     {
-                        snapQuad = i;
+                        snapQuad = quad;
                         snapCorner = j;
                         smallestDist = dist;
                     }
                 }
             }
+            if (snapQuad != m_quads.end() && snapCorner >= 0 && bSnapOn)
+            {
+                m_activeQuad->corners[m_selectedCorner].x = snapQuad->corners[snapCorner].x;
+                m_activeQuad->corners[m_selectedCorner].y = snapQuad->corners[snapCorner].y;
+            }
         }
-        if (snapQuad >= 0 && snapCorner >= 0 && bSnapOn)
-        {
-            quads[activeQuad].corners[m_selectedCorner].x = quads[snapQuad].corners[snapCorner].x;
-            quads[activeQuad].corners[m_selectedCorner].y = quads[snapQuad].corners[snapCorner].y;
-        }
-    }
-    m_selectedCorner = -1;
-    quads[activeQuad].bHighlightCorner = false;
+        m_selectedCorner = -1;
+        m_activeQuad->bHighlightCorner = false;
     }
 }
 
 
 void testApp::windowResized(int w, int h)
 {
-            #ifdef WITH_TIMELINE
-            timeline.setWidth(w);
-            #endif
-            for(int i = 0; i < 36; i++)
-            {
-                if (quads[i].initialized)
-                {
-                    quads[i].bHighlightCorner = false;
-                    quads[i].allocateFbo(ofGetWidth(),ofGetHeight());
-                    quadDimensionsReset(i);
-                }
-            }
-}
-
-
-
-//---------------------------------------------------------------
-void testApp::quadDimensionsReset(int q)
-{
-    quads[q].quadW = ofGetWidth();
-    quads[q].quadH = ofGetHeight();
-}
-
-//---------------------------------------------------------------
-void testApp::quadPlacementReset(int q)
-{
-    quads[q].quadDispX = 0;
-    quads[q].quadDispY = 0;
-}
-
-//---------------------------------------------------------------
-void testApp::quadBezierSpherize(int q)
-{
-    float w = (float)ofGetWidth();
-    float h = (float)ofGetHeight();
-    float k = (sqrt(2)-1)*4/3;
-    quads[q].bBezier = true;
-
-    float tmp_bezierPoints[4][4][3] =
+    #ifdef WITH_TIMELINE
+    timeline.setWidth(w);
+    #endif
+    for(std::vector<Quad>::iterator quad = m_quads.begin(); quad < m_quads.end(); quad++)
     {
-        {   {0*h/w+(0.5*(w/h-1))*h/w, 0, 0},{0.5*k*h/w+(0.5*(w/h-1))*h/w, -0.5*k, 0},    {(1.0*h/w)-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, -0.5*k, 0},    {1.0*h/w+(0.5*(w/h-1))*h/w, 0, 0}    },
-        {   {0*h/w-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 0.5*k, 0},        {0*h/w+(0.5*(w/h-1))*h/w, 0, 0},  {1.0*h/w+(0.5*(w/h-1))*h/w, 0, 0},  {1.0*h/w+(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 0.5*k, 0}  },
-        {   {0*h/w-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0-0.5*k, 0},        {0*h/w+(0.5*(w/h-1))*h/w, 1.0, 0},  {1.0*h/w+(0.5*(w/h-1))*h/w, 1.0, 0},  {1.0*h/w+(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0-0.5*k, 0}  },
-        {   {0*h/w+(0.5*(w/h-1))*h/w, 1.0, 0}, {0.5*k*h/w+(0.5*(w/h-1))*h/w, 1.0+0.5*k, 0},  {(1.0*h/w)-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0+0.5*k, 0},  {1.0*h/w+(0.5*(w/h-1))*h/w, 1.0, 0}  }
-    };
-
-	for (int i = 0; i < 4; ++i) {
-		for (int j = 0; j < 4; ++j) {
-			for (int k = 0; k < 3; ++k) {
-				 quads[q].bezierPoints [i][j][k] = tmp_bezierPoints[i][j][k];
-			}
-		}
-	}
-	/*  quads[q].bezierPoints =
-    {
-        {   {(0.5*w/h-0.5)*h/w, 0, 0},  {0.5*(k+w/h-1)*h/w, -0.5*k, 0},    {0.5*(1-k+w/h)*h/w, -0.5*k, 0},    {1.0*h/w+(0.5*(w/h-1))*h/w, 0, 0}    },
-        {   {0*h/w-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 0.5*k, 0},        {0*h/w+(0.5*(w/h-1))*h/w, 0, 0},  {1.0*h/w+(0.5*(w/h-1))*h/w, 0, 0},  {1.0*h/w+(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 0.5*k, 0}  },
-        {   {0*h/w-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0-0.5*k, 0},        {0*h/w+(0.5*(w/h-1))*h/w, 1.0, 0},  {1.0*h/w+(0.5*(w/h-1))*h/w, 1.0, 0},  {1.0*h/w+(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0-0.5*k, 0}  },
-        {   {0*h/w+(0.5*(w/h-1))*h/w, 1.0, 0},        {0.5*k*h/w+(0.5*(w/h-1))*h/w, 1.0+0.5*k, 0},  {(1.0*h/w)-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0+0.5*k, 0},  {1.0*h/w+(0.5*(w/h-1))*h/w, 1.0, 0}  }
-    }; */
-}
-
-//---------------------------------------------------------------
-void testApp::quadBezierSpherizeStrong(int q)
-{
-    float w = (float)ofGetWidth();
-    float h = (float)ofGetHeight();
-    float k = (sqrt(2)-1)*4/3;
-    quads[q].bBezier = true;
-
-    float tmp_bezierPoints[4][4][3] =
-    {
-        {   {0*h/w+(0.5*(w/h-1))*h/w, 0, 0},  {0.5*k*h/w+(0.5*(w/h-1))*h/w, -0.5*k, 0},    {(1.0*h/w)-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, -0.5*k, 0},    {1.0*h/w+(0.5*(w/h-1))*h/w, 0, 0}    },
-        {   {0*h/w-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 0.5*k, 0},        {0*h/w-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, -0.5*k, 0},  {1.0*h/w+(0.5*k*h/w)+(0.5*(w/h-1))*h/w, -0.5*k, 0},  {1.0*h/w+(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 0.5*k, 0}  },
-        {   {0*h/w-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0-0.5*k, 0},        {0*h/w-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0+0.5*k, 0},  {1.0*h/w+(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0+0.5*k, 0},  {1.0*h/w+(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0-0.5*k, 0}  },
-        {   {0*h/w+(0.5*(w/h-1))*h/w, 1.0, 0},        {0.5*k*h/w+(0.5*(w/h-1))*h/w, 1.0+0.5*k, 0},  {(1.0*h/w)-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0+0.5*k, 0},  {1.0*h/w+(0.5*(w/h-1))*h/w, 1.0, 0}  }
-    };
-
-	for (int i = 0; i < 4; ++i) {
-		for (int j = 0; j < 4; ++j) {
-			for (int k = 0; k < 3; ++k) {
-				quads[q].bezierPoints [i][j][k] = tmp_bezierPoints[i][j][k];
-			}
-		}
-	}
-}
-
-//---------------------------------------------------------------
-void testApp::quadBezierReset(int q)
-{
-    quads[q].bBezier = true;
-    float tmp_bezierPoints[4][4][3] =
-    {
-        {   {0, 0, 0},          {0.333, 0, 0},    {0.667, 0, 0},    {1.0, 0, 0}    },
-        {   {0, 0.333, 0},        {0.333, 0.333, 0},  {0.667, 0.333, 0},  {1.0, 0.333, 0}  },
-        {   {0, 0.667, 0},        {0.333, 0.667, 0},  {0.667, 0.667, 0},  {1.0, 0.667, 0}  },
-        {   {0, 1.0, 0},        {0.333, 1.0, 0},  {0.667, 1.0, 0},  {1.0, 1.0, 0}  }
-    };
-
-	for (int i = 0; i < 4; ++i) {
-		for (int j = 0; j < 4; ++j) {
-			for (int k = 0; k < 3; ++k) {
-				quads[q].bezierPoints [i][j][k] = tmp_bezierPoints[i][j][k];
-			}
-		}
-	}
+        quad->bHighlightCorner = false;
+        quad->allocateFbo(ofGetWidth(),ofGetHeight());
+        quad->resetDimensions();
+    }
 }
 
 
@@ -1807,31 +1638,28 @@ void testApp::quadBezierReset(int q)
 void testApp::activateClosestQuad(ofPoint point)
 {
     float smallestDistance = 1.0;
-    int closestQuad = activeQuad;
+    std::vector<Quad>::iterator closestQuad = m_quads.end();
 
-    for(int i = 0; i < 36; i++)
+    for(std::vector<Quad>::iterator quad = m_quads.begin(); quad < m_quads.end(); quad++)
     {
-        if (quads[i].initialized)
-        {
-            // find the quad closest to the point
-            const float distanceX = quads[i].center.x - static_cast<float>(point.x) / ofGetWidth();
-            const float distanceY = quads[i].center.y - static_cast<float>(point.y) / ofGetHeight();
-            const float distance  = distanceX * distanceX + distanceY * distanceY; // no square root needed, since we can simply square the value it's compared to
+        // find the quad closest to the point
+        const float distanceX = quad->center.x - static_cast<float>(point.x) / ofGetWidth();
+        const float distanceY = quad->center.y - static_cast<float>(point.y) / ofGetHeight();
+        const float distance  = distanceX * distanceX + distanceY * distanceY; // no square root needed, since we can simply square the value it's compared to
 
-            if(distance < smallestDistance && distance < 0.01)
-            {
-                closestQuad = i;
-                smallestDistance = distance;
-            }
+        if(distance < smallestDistance && distance < 0.01)
+        {
+            closestQuad = quad;
+            smallestDistance = distance;
         }
     }
     // if the closest quad is not currently active, activate it
-    if (closestQuad != activeQuad)
+    if (closestQuad != m_activeQuad && closestQuad != m_quads.end())
     {
-        quads[activeQuad].isActive = false;
-        activeQuad = closestQuad;
-        quads[activeQuad].isActive = true;
-        m_gui.updatePages(quads[activeQuad]);
+        m_activeQuad->isActive = false;
+        m_activeQuad = closestQuad;
+        m_activeQuad->isActive = true;
+        m_gui.updatePages(*m_activeQuad);
     }
 }
 
@@ -1844,7 +1672,7 @@ void testApp::loadProject()
     if(dialogResult.bSuccess)
     {
         loadSettingsFromXMLFile(dialogResult.getPath());
-        m_gui.updatePages(quads[activeQuad]);
+        m_gui.updatePages(*m_activeQuad);
         m_gui.showPage(2);
     }
 }

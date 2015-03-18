@@ -12,7 +12,7 @@ public:
     GUI(testApp* app);
 
     void setupPages();
-    void updatePages(Quad& activeQuad);
+    void updatePages(Quad &activeQuad);
 
     void nextPage();
     void prevPage();

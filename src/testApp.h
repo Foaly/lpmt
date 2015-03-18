@@ -76,11 +76,9 @@ public:
     ofTrueTypeFont ttf;
     GUI m_gui;
 
-    Quad quads[36];
-    int layers[36];
+    std::vector<Quad> m_quads;
+    std::vector<Quad>::iterator m_activeQuad;
 
-    int activeQuad;
-    int nOfQuads;
     int m_sourceQuadForCopying;
 
     bool autoStart;
@@ -161,11 +159,6 @@ public:
     void loadSlideshow();
     void openSharedVideoFile(int i);
     void openSharedVideoFile(string path, int i);
-    void quadDimensionsReset(int q);
-    void quadPlacementReset(int q);
-    void quadBezierSpherize(int q);
-    void quadBezierSpherizeStrong(int q);
-    void quadBezierReset(int q);
     void loadProject();
     void saveProject();
 

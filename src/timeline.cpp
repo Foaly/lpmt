@@ -26,27 +26,24 @@ void testApp::timelineSetup(float duration){
 //--------------------------------------------------------------
 void testApp::timelineUpdate()
 {
-            for(int j = 0; j < 36; j++)
-            {
-                if (quads[j].initialized)
-                {
-                    if(quads[j].bTimelineTint)
-                    {
-                        quads[j].timelineRed = timeline.getValue("red_"+ofToString(j));
-                        quads[j].timelineGreen = timeline.getValue("green_"+ofToString(j));
-                        quads[j].timelineBlu = timeline.getValue("blu_"+ofToString(j));
-                    }
-                    if(quads[j].bTimelineColor)
-                    {
-                        quads[j].timelineColor = timeline.getColor("color_"+ofToString(j));
-                        quads[j].bgColor = quads[j].timelineColor;
-                    }
-                    if(quads[j].bTimelineAlpha)
-                    {
-                        quads[j].timelineAlpha = timeline.getValue("alpha_"+ofToString(j));
-                    }
-                }
-            }
+    for(std::vector<Quad>::iterator quad = m_quads.begin(); quad < m_quads.end(); quad++)
+    {
+        if(quad->bTimelineTint)
+        {
+            quad->timelineRed = timeline.getValue("red_" + ofToString(quad->quadNumber));
+            quad->timelineGreen = timeline.getValue("green_" + ofToString(quad->quadNumber));
+            quad->timelineBlu = timeline.getValue("blu_" + ofToString(quad->quadNumber));
+        }
+        if(quad->bTimelineColor)
+        {
+            quad->timelineColor = timeline.getColor("color_" + ofToString(quad->quadNumber));
+            quad->bgColor = quad->timelineColor;
+        }
+        if(quad->bTimelineAlpha)
+        {
+            quad->timelineAlpha = timeline.getValue("alpha_" + ofToString(quad->quadNumber));
+        }
+    }
 }
 
 //--------------------------------------------------------------
@@ -56,16 +53,25 @@ void testApp::timelineTriggerReceived(ofxTLBangEventArgs& trigger){
 
     if(useTimeline)
     {
-	//cout << "Trigger from " << trigger.triggerGroupName << " says color " << trigger.triggerName << endl;
-	//cout << "Trigger from " << ofToInt(triggerParts[1]) << " says " << trigger.triggerName << endl;
+        //cout << "Trigger from " << trigger.triggerGroupName << " says color " << trigger.triggerName << endl;
+        //cout << "Trigger from " << ofToInt(triggerParts[1]) << " says " << trigger.triggerName << endl;
 
         //string tlMsg = trigger.triggerName;
-	string tlMsg = trigger.flag;
+        string tlMsg = trigger.flag;
         string tlMsgParameter = "";
 
         if(triggerParts[1] != "main")
         {
         int tlQuad = ofToInt(triggerParts[1]);
+
+        if(tlQuad >= m_quads.size())
+        {
+            tlQuad = m_quads.size() - 1;
+        }
+        else if(tlQuad < 0)
+        {
+            tlQuad = 0;
+        }
 
         //check if we have a message with a parameter, parameters are given using a colon ':' as separator
         if (ofIsStringInString(tlMsg,":"))
@@ -75,33 +81,33 @@ void testApp::timelineTriggerReceived(ofxTLBangEventArgs& trigger){
             tlMsgParameter = tlMsgParts[1];
         }
 
-	if (tlMsg == "on"){ quads[tlQuad].isOn=true; }
-        else if (tlMsg == "off"){ quads[tlQuad].isOn=false; }
-	else if(tlMsg == "img_on"){ quads[tlQuad].imgBg=true; }
-	else if (tlMsg == "img_off"){ quads[tlQuad].imgBg=false; }
-        else if (tlMsg == "col_on"){ quads[tlQuad].colorBg=true; }
-        else if (tlMsg == "col_off"){ quads[tlQuad].colorBg=false; }
-        else if (tlMsg == "video_on"){ quads[tlQuad].videoBg=true; }
-        else if (tlMsg == "video_off"){ quads[tlQuad].videoBg=false; }
-        else if (tlMsg == "video_stop"){ quads[tlQuad].video.stop(); }
-        else if (tlMsg == "video_play"){ quads[tlQuad].video.play(); }
-        else if (tlMsg == "video_reset"){ quads[tlQuad].video.setPosition(0.0); }
-        else if (tlMsg == "video_position" && tlMsgParameter != ""){ quads[tlQuad].video.setPosition(ofToFloat(tlMsgParameter));}
-        else if (tlMsg == "shared_video_on"){ quads[tlQuad].sharedVideoBg=true; }
-        else if (tlMsg == "shared_video_off"){ quads[tlQuad].sharedVideoBg=false; }
-        else if (tlMsg == "shared_video_num" && tlMsgParameter != ""){ quads[tlQuad].sharedVideoNum=ofToInt(tlMsgParameter); }
-        else if (tlMsg == "slide_on"){ quads[tlQuad].slideshowBg=true; }
-        else if (tlMsg == "slide_off"){ quads[tlQuad].slideshowBg=false; }
-        else if (tlMsg == "slide_new"){ quads[tlQuad].currentSlide+=1; }
-        else if (tlMsg == "slide_num" && tlMsgParameter != ""){ quads[tlQuad].currentSlide=ofToInt(tlMsgParameter); }
-        else if (tlMsg == "cam_on"){ quads[tlQuad].camBg=true; }
-        else if (tlMsg == "cam_off"){ quads[tlQuad].camBg=false; }
-        else if (tlMsg == "kinect_on"){ quads[tlQuad].kinectBg=true; }
-        else if (tlMsg == "kinect_off"){ quads[tlQuad].kinectBg=false; }
-        else if (tlMsg == "mask_on"){ quads[tlQuad].bMask=true; }
-        else if (tlMsg == "mask_off"){ quads[tlQuad].bMask=false; }
-        else if (tlMsg == "mask_invert_on"){ quads[tlQuad].maskInvert=true; }
-        else if (tlMsg == "mask_invert_off"){ quads[tlQuad].maskInvert=false; }
+        if (tlMsg == "on"){ m_quads[tlQuad].isOn=true; }
+        else if (tlMsg == "off"){ m_quads[tlQuad].isOn=false; }
+        else if(tlMsg == "img_on"){ m_quads[tlQuad].imgBg=true; }
+        else if (tlMsg == "img_off"){ m_quads[tlQuad].imgBg=false; }
+        else if (tlMsg == "col_on"){ m_quads[tlQuad].colorBg=true; }
+        else if (tlMsg == "col_off"){ m_quads[tlQuad].colorBg=false; }
+        else if (tlMsg == "video_on"){ m_quads[tlQuad].videoBg=true; }
+        else if (tlMsg == "video_off"){ m_quads[tlQuad].videoBg=false; }
+        else if (tlMsg == "video_stop"){ m_quads[tlQuad].video.stop(); }
+        else if (tlMsg == "video_play"){ m_quads[tlQuad].video.play(); }
+        else if (tlMsg == "video_reset"){ m_quads[tlQuad].video.setPosition(0.0); }
+        else if (tlMsg == "video_position" && tlMsgParameter != ""){ m_quads[tlQuad].video.setPosition(ofToFloat(tlMsgParameter));}
+        else if (tlMsg == "shared_video_on"){ m_quads[tlQuad].sharedVideoBg=true; }
+        else if (tlMsg == "shared_video_off"){ m_quads[tlQuad].sharedVideoBg=false; }
+        else if (tlMsg == "shared_video_num" && tlMsgParameter != ""){ m_quads[tlQuad].sharedVideoNum=ofToInt(tlMsgParameter); }
+        else if (tlMsg == "slide_on"){ m_quads[tlQuad].slideshowBg=true; }
+        else if (tlMsg == "slide_off"){ m_quads[tlQuad].slideshowBg=false; }
+        else if (tlMsg == "slide_new"){ m_quads[tlQuad].currentSlide+=1; }
+        else if (tlMsg == "slide_num" && tlMsgParameter != ""){ m_quads[tlQuad].currentSlide=ofToInt(tlMsgParameter); }
+        else if (tlMsg == "cam_on"){ m_quads[tlQuad].camBg=true; }
+        else if (tlMsg == "cam_off"){ m_quads[tlQuad].camBg=false; }
+        else if (tlMsg == "kinect_on"){ m_quads[tlQuad].kinectBg=true; }
+        else if (tlMsg == "kinect_off"){ m_quads[tlQuad].kinectBg=false; }
+        else if (tlMsg == "mask_on"){ m_quads[tlQuad].bMask=true; }
+        else if (tlMsg == "mask_off"){ m_quads[tlQuad].bMask=false; }
+        else if (tlMsg == "mask_invert_on"){ m_quads[tlQuad].maskInvert=true; }
+        else if (tlMsg == "mask_invert_off"){ m_quads[tlQuad].maskInvert=false; }
         else { cout << "unknown trigger command '" << tlMsg << "' on surface " << tlQuad << endl;}
         }
         else
@@ -139,15 +145,14 @@ void testApp::timelineTriggerReceived(ofxTLBangEventArgs& trigger){
             }
             else if (tlMsg == "videos_reset")
             {
-                for(int j=0; j<36; j++)
+                for(std::vector<Quad>::iterator quad = m_quads.begin(); quad < m_quads.end(); quad++)
                 {
-                    if(quads[j].video.isLoaded())
+                    if(quad->video.isLoaded())
                     {
-                        quads[j].video.setPosition(0.0);
+                        quad->video.setPosition(0.0);
                     }
                 }
             }
-
         }
     }
 }

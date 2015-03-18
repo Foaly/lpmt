@@ -197,8 +197,8 @@
     maskFbo.allocate(settings);
     targetFbo.allocate(settings);
 
-    quadDispX = 0;
-    quadDispY = 0;
+    quadDispX = 0.f;
+    quadDispY = 0.f;
     quadW = ofGetWidth();
     quadH = ofGetHeight();
 
@@ -888,7 +888,7 @@ void Quad::draw()
                 }
                 if(!bDeform)
                 {
-                    quadFbo.draw(0+quadDispX,0+quadDispY,quadW,quadH);
+                    quadFbo.draw(0.f + quadDispX, 0.f + quadDispY, quadW, quadH);
                     shaderBlend->end();
                 }
                 else
@@ -897,7 +897,7 @@ void Quad::draw()
 
                     targetFbo.begin();
                     ofClear(0.0,0.0,0.0,0.0);
-                    quadFbo.draw(0+quadDispX,0+quadDispY,quadW,quadH);
+                    quadFbo.draw(0.f + quadDispX, 0.f + quadDispY, quadW, quadH);
                     shaderBlend->end();
                     targetFbo.end();
 
@@ -989,14 +989,14 @@ void Quad::draw()
                     }
                     if(!bDeform)
                     {
-                        quadFbo.draw(0+quadDispX,0+quadDispY,quadW,quadH);
+                        quadFbo.draw(0.f + quadDispX, 0.f + quadDispY, quadW, quadH);
                         maskShader->end();
                     }
                     else
                     {
                         targetFbo.begin();
                         ofClear(0.0,0.0,0.0,0.0);
-                        quadFbo.draw(0+quadDispX,0+quadDispY,quadW,quadH);
+                        quadFbo.draw(0.f + quadDispX, 0.f + quadDispY, quadW, quadH);
                         maskShader->end();
                         targetFbo.end();
 
@@ -1076,7 +1076,7 @@ void Quad::draw()
 
                     if(!bDeform)
                     {
-                        quadFbo.draw(0+quadDispX,0+quadDispY,quadW,quadH);
+                        quadFbo.draw(0.f + quadDispX, 0.f + quadDispY, quadW, quadH);
                     }
                     else
                     {
@@ -1145,7 +1145,7 @@ void Quad::draw()
             //set ofColor to red with alpha
             //ofSetColor(255,100,100,180);
             ofSetColor(100,139,150,160);
-            maskFbo.draw(0+quadDispX,0+quadDispY,quadW,quadH);
+            maskFbo.draw(0.f + quadDispX, 0.f + quadDispY, quadW, quadH);
             ofDisableAlphaBlending();
         }
 
@@ -1332,4 +1332,96 @@ void Quad::applyBlendmode()
         default:
             break;
     }
+}
+
+
+void Quad::resetDimensions()
+{
+    quadW = ofGetWidth();
+    quadH = ofGetHeight();
+}
+
+
+void Quad::resetPlacement()
+{
+    quadDispX = 0.f;
+    quadDispY = 0.f;
+}
+
+
+void Quad::bezierSpherize()
+{
+    float w = (float)ofGetWidth();
+    float h = (float)ofGetHeight();
+    float k = (sqrt(2)-1)*4/3;
+    bBezier = true;
+
+    float tmp_bezierPoints[4][4][3] =
+    {
+        {   {0*h/w+(0.5*(w/h-1))*h/w, 0, 0},{0.5*k*h/w+(0.5*(w/h-1))*h/w, -0.5*k, 0},    {(1.0*h/w)-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, -0.5*k, 0},    {1.0*h/w+(0.5*(w/h-1))*h/w, 0, 0}    },
+        {   {0*h/w-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 0.5*k, 0},        {0*h/w+(0.5*(w/h-1))*h/w, 0, 0},  {1.0*h/w+(0.5*(w/h-1))*h/w, 0, 0},  {1.0*h/w+(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 0.5*k, 0}  },
+        {   {0*h/w-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0-0.5*k, 0},        {0*h/w+(0.5*(w/h-1))*h/w, 1.0, 0},  {1.0*h/w+(0.5*(w/h-1))*h/w, 1.0, 0},  {1.0*h/w+(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0-0.5*k, 0}  },
+        {   {0*h/w+(0.5*(w/h-1))*h/w, 1.0, 0}, {0.5*k*h/w+(0.5*(w/h-1))*h/w, 1.0+0.5*k, 0},  {(1.0*h/w)-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0+0.5*k, 0},  {1.0*h/w+(0.5*(w/h-1))*h/w, 1.0, 0}  }
+    };
+
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 4; ++j) {
+			for (int k = 0; k < 3; ++k) {
+				 bezierPoints [i][j][k] = tmp_bezierPoints[i][j][k];
+			}
+		}
+	}
+	/*  bezierPoints =
+    {
+        {   {(0.5*w/h-0.5)*h/w, 0, 0},  {0.5*(k+w/h-1)*h/w, -0.5*k, 0},    {0.5*(1-k+w/h)*h/w, -0.5*k, 0},    {1.0*h/w+(0.5*(w/h-1))*h/w, 0, 0}    },
+        {   {0*h/w-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 0.5*k, 0},        {0*h/w+(0.5*(w/h-1))*h/w, 0, 0},  {1.0*h/w+(0.5*(w/h-1))*h/w, 0, 0},  {1.0*h/w+(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 0.5*k, 0}  },
+        {   {0*h/w-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0-0.5*k, 0},        {0*h/w+(0.5*(w/h-1))*h/w, 1.0, 0},  {1.0*h/w+(0.5*(w/h-1))*h/w, 1.0, 0},  {1.0*h/w+(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0-0.5*k, 0}  },
+        {   {0*h/w+(0.5*(w/h-1))*h/w, 1.0, 0},        {0.5*k*h/w+(0.5*(w/h-1))*h/w, 1.0+0.5*k, 0},  {(1.0*h/w)-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0+0.5*k, 0},  {1.0*h/w+(0.5*(w/h-1))*h/w, 1.0, 0}  }
+    }; */
+}
+
+
+void Quad::bezierSpherizeStrong()
+{
+    float w = (float)ofGetWidth();
+    float h = (float)ofGetHeight();
+    float k = (sqrt(2)-1)*4/3;
+    bBezier = true;
+
+    float tmp_bezierPoints[4][4][3] =
+    {
+        {   {0*h/w+(0.5*(w/h-1))*h/w, 0, 0},  {0.5*k*h/w+(0.5*(w/h-1))*h/w, -0.5*k, 0},    {(1.0*h/w)-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, -0.5*k, 0},    {1.0*h/w+(0.5*(w/h-1))*h/w, 0, 0}    },
+        {   {0*h/w-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 0.5*k, 0},        {0*h/w-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, -0.5*k, 0},  {1.0*h/w+(0.5*k*h/w)+(0.5*(w/h-1))*h/w, -0.5*k, 0},  {1.0*h/w+(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 0.5*k, 0}  },
+        {   {0*h/w-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0-0.5*k, 0},        {0*h/w-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0+0.5*k, 0},  {1.0*h/w+(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0+0.5*k, 0},  {1.0*h/w+(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0-0.5*k, 0}  },
+        {   {0*h/w+(0.5*(w/h-1))*h/w, 1.0, 0},        {0.5*k*h/w+(0.5*(w/h-1))*h/w, 1.0+0.5*k, 0},  {(1.0*h/w)-(0.5*k*h/w)+(0.5*(w/h-1))*h/w, 1.0+0.5*k, 0},  {1.0*h/w+(0.5*(w/h-1))*h/w, 1.0, 0}  }
+    };
+
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 4; ++j) {
+			for (int k = 0; k < 3; ++k) {
+				bezierPoints [i][j][k] = tmp_bezierPoints[i][j][k];
+			}
+		}
+	}
+}
+
+
+void Quad::resetBezier()
+{
+    bBezier = true;
+    float tmp_bezierPoints[4][4][3] =
+    {
+        {   {0.f, 0.f   , 0.f}, {0.333f, 0.f   , 0.f}, {0.667f, 0.f   , 0.f}, {1.f, 0.f   , 0.f} },
+        {   {0.f, 0.333f, 0.f}, {0.333f, 0.333f, 0.f}, {0.667f, 0.333f, 0.f}, {1.f, 0.333f, 0.f} },
+        {   {0.f, 0.667f, 0.f}, {0.333f, 0.667f, 0.f}, {0.667f, 0.667f, 0.f}, {1.f, 0.667f, 0.f} },
+        {   {0.f, 1.f   , 0.f}, {0.333f, 1.f   , 0.f}, {0.667f, 1.f   , 0.f}, {1.f, 1.f   , 0.f} }
+    };
+
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 4; ++j) {
+			for (int k = 0; k < 3; ++k) {
+				bezierPoints [i][j][k] = tmp_bezierPoints[i][j][k];
+			}
+		}
+	}
 }
