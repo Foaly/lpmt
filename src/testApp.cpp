@@ -230,6 +230,8 @@ void testApp::setup()
     */
 
     // initialize the load flags
+    m_loadProjectFlag = false;
+    m_saveProjectFlag = false;
     m_loadImageFlag = false;
     m_loadVideoFlag = false;
     m_loadSlideshowFlag = false;
