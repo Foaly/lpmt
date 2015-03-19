@@ -288,68 +288,70 @@ void testApp::setup()
 
     // defines the first 4 default quads
     m_quads.reserve(4);
-    Quad quad;
-    for(int i = 0; i < 4; i++)
-    {
-        m_quads.push_back(quad);
-    }
 
     #ifdef WITH_KINECT
         #ifdef WITH_SYPHON
-        m_quads[0].setup(ofPoint(0.0, 0.0), ofPoint(0.5, 0.0), ofPoint(0.5, 0.5), ofPoint(0.0, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
+        Quad quadOne(ofPoint(0.0, 0.0), ofPoint(0.5, 0.0), ofPoint(0.5, 0.5), ofPoint(0.0, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
         #else
-        m_quads[0].setup(ofPoint(0.0, 0.0), ofPoint(0.5, 0.0), ofPoint(0.5, 0.5), ofPoint(0.0, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
+        Quad quadOne(ofPoint(0.0, 0.0), ofPoint(0.5, 0.0), ofPoint(0.5, 0.5), ofPoint(0.0, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
         #endif
     #else
         #ifdef WITH_SYPHON
-        m_quads[0].setup(ofPoint(0.0, 0.0), ofPoint(0.5, 0.0), ofPoint(0.5, 0.5), ofPoint(0.0, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
+        Quad quadOne(ofPoint(0.0, 0.0), ofPoint(0.5, 0.0), ofPoint(0.5, 0.5), ofPoint(0.0, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
         #else
-        m_quads[0].setup(ofPoint(0.0, 0.0), ofPoint(0.5, 0.0), ofPoint(0.5, 0.5), ofPoint(0.0, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
+        Quad quadOne(ofPoint(0.0, 0.0), ofPoint(0.5, 0.0), ofPoint(0.5, 0.5), ofPoint(0.0, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
         #endif
     #endif
-    m_quads[0].quadNumber = 0;
+    quadOne.quadNumber = 0;
+    m_quads.push_back(quadOne);
+
     #ifdef WITH_KINECT
         #ifdef WITH_SYPHON
-        m_quads[1].setup(ofPoint(0.5, 0.0), ofPoint(1.0, 0.0), ofPoint(1.0, 0.5), ofPoint(0.5, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
+        Quad quadTwo(ofPoint(0.5, 0.0), ofPoint(1.0, 0.0), ofPoint(1.0, 0.5), ofPoint(0.5, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
         #else
-        m_quads[1].setup(ofPoint(0.5, 0.0), ofPoint(1.0, 0.0), ofPoint(1.0, 0.5), ofPoint(0.5, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
+        Quad quadTwo(ofPoint(0.5, 0.0), ofPoint(1.0, 0.0), ofPoint(1.0, 0.5), ofPoint(0.5, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
         #endif
     #else
         #ifdef WITH_SYPHON
-        m_quads[1].setup(ofPoint(0.5, 0.0), ofPoint(1.0, 0.0), ofPoint(1.0, 0.5), ofPoint(0.5, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
+        Quad quadTwo(ofPoint(0.5, 0.0), ofPoint(1.0, 0.0), ofPoint(1.0, 0.5), ofPoint(0.5, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
         #else
-        m_quads[1].setup(ofPoint(0.5, 0.0), ofPoint(1.0, 0.0), ofPoint(1.0, 0.5), ofPoint(0.5, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
+        Quad quadTwo(ofPoint(0.5, 0.0), ofPoint(1.0, 0.0), ofPoint(1.0, 0.5), ofPoint(0.5, 0.5), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
         #endif
     #endif
-    m_quads[1].quadNumber = 1;
+    quadTwo.quadNumber = 1;
+    m_quads.push_back(quadTwo);
+
     #ifdef WITH_KINECT
         #ifdef WITH_SYPHON
-        m_quads[2].setup(ofPoint(0.0, 0.5), ofPoint(0.5, 0.5), ofPoint(0.5, 1.0), ofPoint(0.0, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
+        Quad quadThree(ofPoint(0.0, 0.5), ofPoint(0.5, 0.5), ofPoint(0.5, 1.0), ofPoint(0.0, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
         #else
-        m_quads[2].setup(ofPoint(0.0, 0.5), ofPoint(0.5, 0.5), ofPoint(0.5, 1.0), ofPoint(0.0, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
+        Quad quadThree(ofPoint(0.0, 0.5), ofPoint(0.5, 0.5), ofPoint(0.5, 1.0), ofPoint(0.0, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
         #endif
     #else
         #ifdef WITH_SYPHON
-        m_quads[2].setup(ofPoint(0.0, 0.5), ofPoint(0.5, 0.5), ofPoint(0.5, 1.0), ofPoint(0.0, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
+        Quad quadThree(ofPoint(0.0, 0.5), ofPoint(0.5, 0.5), ofPoint(0.5, 1.0), ofPoint(0.0, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
         #else
-        m_quads[2].setup(ofPoint(0.0, 0.5), ofPoint(0.5, 0.5), ofPoint(0.5, 1.0), ofPoint(0.0, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
+        Quad quadThree(ofPoint(0.0, 0.5), ofPoint(0.5, 0.5), ofPoint(0.5, 1.0), ofPoint(0.0, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
         #endif
     #endif
-    m_quads[2].quadNumber = 2;
+    quadThree.quadNumber = 2;
+    m_quads.push_back(quadThree);
+
     #ifdef WITH_KINECT
         #ifdef WITH_SYPHON
-        m_quads[3].setup(ofPoint(0.5, 0.5), ofPoint(1.0, 0.5) ,ofPoint(1.0, 1.0), ofPoint(0.5, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
+        Quad quadFour(ofPoint(0.5, 0.5), ofPoint(1.0, 0.5) ,ofPoint(1.0, 1.0), ofPoint(0.5, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
         #else
-        m_quads[3].setup(ofPoint(0.5, 0.5), ofPoint(1.0, 0.5) ,ofPoint(1.0, 1.0), ofPoint(0.5, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
+        Quad quadFour(ofPoint(0.5, 0.5), ofPoint(1.0, 0.5) ,ofPoint(1.0, 1.0), ofPoint(0.5, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
         #endif
     #else
         #ifdef WITH_SYPHON
-        m_quads[3].setup(ofPoint(0.5, 0.5), ofPoint(1.0, 0.5) ,ofPoint(1.0, 1.0), ofPoint(0.5, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
+        Quad quadFour(ofPoint(0.5, 0.5), ofPoint(1.0, 0.5) ,ofPoint(1.0, 1.0), ofPoint(0.5, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
         #else
-        m_quads[3].setup(ofPoint(0.5, 0.5), ofPoint(1.0, 0.5) ,ofPoint(1.0, 1.0), ofPoint(0.5, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
+        Quad quadFour(ofPoint(0.5, 0.5), ofPoint(1.0, 0.5) ,ofPoint(1.0, 1.0), ofPoint(0.5, 1.0), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
         #endif
     #endif
-    m_quads[3].quadNumber = 3;
+    quadFour.quadNumber = 3;
+    m_quads.push_back(quadFour);
 
     // define last one as active quad
     m_activeQuad = m_quads.end() - 1;
@@ -963,18 +965,17 @@ void testApp::keyPressed(int key)
     {
         if (isSetup)
         {
-            Quad quad;
             #ifdef WITH_KINECT
                 #ifdef WITH_SYPHON
-                quad.setup(ofPoint(0.25, 0.25), ofPoint(0.75, 0.25), ofPoint(0.75, 0.75), ofPoint(0.25, 0.75), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
+                Quad quad(ofPoint(0.25, 0.25), ofPoint(0.75, 0.25), ofPoint(0.75, 0.75), ofPoint(0.25, 0.75), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
                 #else
-                quad.setup(ofPoint(0.25, 0.25), ofPoint(0.75, 0.25), ofPoint(0.75, 0.75), ofPoint(0.25, 0.75), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
+                Quad quad(ofPoint(0.25, 0.25), ofPoint(0.75, 0.25), ofPoint(0.75, 0.75), ofPoint(0.25, 0.75), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
                 #endif
             #else
                 #ifdef WITH_SYPHON
-                quad.setup(ofPoint(0.25, 0.25), ofPoint(0.75, 0.25), ofPoint(0.75, 0.75), ofPoint(0.25, 0.75), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
+                Quad quad(ofPoint(0.25, 0.25), ofPoint(0.75, 0.25), ofPoint(0.75, 0.75), ofPoint(0.25, 0.75), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
                 #else
-                quad.setup(ofPoint(0.25, 0.25), ofPoint(0.75, 0.25), ofPoint(0.75, 0.75), ofPoint(0.25, 0.75), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
+                Quad quad(ofPoint(0.25, 0.25), ofPoint(0.75, 0.25), ofPoint(0.75, 0.75), ofPoint(0.25, 0.75), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
                 #endif
             #endif
             quad.quadNumber = m_quads.size();

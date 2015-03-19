@@ -199,8 +199,6 @@ void testApp::loadSettingsFromXMLFile(std::string xmlFilePath)
 
         for(int i = 0; i < numberOfQuads; i++)
         {
-            Quad quad;
-
             const std::string number = ofToString(i);
 
             float x0 = xmlSettingsFile.getValue("QUADS:QUAD_" + number + ":CORNERS:CORNER_0:X",0.0);
@@ -214,15 +212,15 @@ void testApp::loadSettingsFromXMLFile(std::string xmlFilePath)
 
             #ifdef WITH_KINECT
                 #ifdef WITH_SYPHON
-                quad.setup(ofPoint(x0, y0), ofPoint(x1, y1), ofPoint(x2, y2), ofPoint(x3, y3), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
+                Quad quad(ofPoint(x0, y0), ofPoint(x1, y1), ofPoint(x2, y2), ofPoint(x3, y3), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, syphClient, ttf);
                 #else
-                quad.setup(ofPoint(x0, y0), ofPoint(x1, y1), ofPoint(x2, y2), ofPoint(x3, y3), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
+                Quad quad(ofPoint(x0, y0), ofPoint(x1, y1), ofPoint(x2, y2), ofPoint(x3, y3), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, kinect, ttf);
                 #endif
             #else
                 #ifdef WITH_SYPHON
-                quad.setup(ofPoint(x0, y0), ofPoint(x1, y1), ofPoint(x2, y2), ofPoint(x3, y3), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
+                Quad quad(ofPoint(x0, y0), ofPoint(x1, y1), ofPoint(x2, y2), ofPoint(x3, y3), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, syphClient, ttf);
                 #else
-                quad.setup(ofPoint(x0, y0), ofPoint(x1, y1), ofPoint(x2, y2), ofPoint(x3, y3), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
+                Quad quad(ofPoint(x0, y0), ofPoint(x1, y1), ofPoint(x2, y2), ofPoint(x3, y3), edgeBlendShader, quadMaskShader, chromaShader, m_cameras, sharedVideos, ttf);
                 #endif
             #endif
             quad.quadNumber = xmlSettingsFile.getValue("QUADS:QUAD_" + number + ":NUMBER", 0);

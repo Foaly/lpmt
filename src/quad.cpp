@@ -8,22 +8,21 @@
 
 #ifdef WITH_KINECT
     #ifdef WITH_SYPHON
-    void Quad::setup(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, kinectManager &kinect, ofxSyphonClient &syphon, ofTrueTypeFont &font)
+    Quad::Quad(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, kinectManager &kinect, ofxSyphonClient &syphon, ofTrueTypeFont &font) :
     #else
-    void Quad::setup(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, kinectManager &kinect, ofTrueTypeFont &font)
+    Quad::Quad(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, kinectManager &kinect, ofTrueTypeFont &font) :
     #endif
 #else
     #ifdef WITH_SYPHON
-    void Quad::setup(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, ofxSyphonClient &syphon, ofTrueTypeFont &font)
+    Quad::Quad(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, ofxSyphonClient &syphon, ofTrueTypeFont &font) :
     #else
-    void Quad::setup(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, ofTrueTypeFont &font)
+    Quad::Quad(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, ofTrueTypeFont &font) :
     #endif
 #endif
+    shaderBlend(&edgeBlendShader),
+    maskShader(&quadMaskShader),
+    greenscreenShader(&chromaShader)
 {
-
-    shaderBlend = &edgeBlendShader;
-    maskShader = &quadMaskShader;
-    greenscreenShader = &chromaShader;
     //camera = &camGrabber;
     #ifdef WITH_KINECT
     quadKinect = &kinect;
@@ -169,6 +168,15 @@
     getKinectGrayImage = false;
     kinectContourCurved = false;
 
+    #ifdef WITH_KINECT
+    // allocate the greyscale image, so we don't get an error about copying unallocated textures when copying the quad
+    kinectThreshImage.allocate(32, 32);
+    kinectContourImage.allocate(32, 32);
+    // we also have to call findContours once with bogus parameters to initialize its internal textures...
+    kinectContourFinder.findContours(kinectContourImage, 1, 32, 0, true);
+    #endif // WITH_KINECT
+
+
     #ifdef WITH_SYPHON
     // syphon variables
 	bSyphon = false;
@@ -244,7 +252,6 @@
     bTimelineColor = false;
     bTimelineAlpha = false;
     bTimelineSlideChange = false;
-
 }
 
 

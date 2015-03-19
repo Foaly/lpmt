@@ -15,14 +15,24 @@ bool kinectManager::setup()
     kinect.init(false,false,true);
     //kinect.init(true); // shows infrared instead of RGB video image
     //kinect.init(false, false); // disable video image (faster fps)
-    kinect.open();
 
-    //grayImage.allocate(kinect.width, kinect.height, OF_IMAGE_GRAYSCALE);
-    grayImage.allocate(kinect.width, kinect.height);
-    grayThreshNear.allocate(kinect.width, kinect.height);
-    grayThreshFar.allocate(kinect.width, kinect.height);
-    //thDepthImage.allocate(kinect.width, kinect.height, OF_IMAGE_GRAYSCALE);
-    thDepthImage.allocate(kinect.width, kinect.height);
+    // set the default size to a small power of two texture, so if there is no kinect we can allocate small textures
+    // to avoid the error about copying unallocated textures when copying the kinect manager
+    int width = 32;
+    int height = 32;
+
+    if(kinect.open())
+    {
+        width = kinect.width;
+        height = kinect.height;
+    }
+
+    //grayImage.allocate(width, height, OF_IMAGE_GRAYSCALE);
+    grayImage.allocate(width, height);
+    grayThreshNear.allocate(width, height);
+    grayThreshFar.allocate(width, height);
+    //thDepthImage.allocate(width, height, OF_IMAGE_GRAYSCALE);
+    thDepthImage.allocate(width, height);
 
     kinectOn = kinect.isConnected();
 

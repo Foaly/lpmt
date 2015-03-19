@@ -19,9 +19,20 @@ class Quad: public ofNode
 {
 
 public:
-    Quad()
-    {
-    }
+    #ifdef WITH_KINECT
+        #ifdef WITH_SYPHON
+        Quad(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, kinectManager &kinect, ofxSyphonClient &syphon, ofTrueTypeFont &font);
+        #else
+        Quad(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, kinectManager &kinect, ofTrueTypeFont &font);
+        #endif
+    #else
+        #ifdef WITH_SYPHON
+        Quad(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, ofxSyphonClient &syphon, ofTrueTypeFont &font);
+        #else
+        Quad(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, ofTrueTypeFont &font);
+        #endif
+    #endif
+
 
     ofPoint corners[4];
     ofPoint center;
@@ -177,7 +188,7 @@ public:
     string loadedSlideshow;
     string slideshowName;
 
-    ofShader * shaderBlend;
+    ofShader *shaderBlend;
     ofFbo   quadFbo;
     ofFbo::Settings settings;
 
@@ -213,21 +224,6 @@ public:
 
     // a func for reading a dir content to a vector of strings
     int getdir (string dir, vector<string> &files);
-
-    #ifdef WITH_KINECT
-        #ifdef WITH_SYPHON
-        void setup(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, kinectManager &kinect, ofxSyphonClient &syphon, ofTrueTypeFont &font);
-        #else
-        void setup(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, kinectManager &kinect, ofTrueTypeFont &font);
-        #endif
-    #else
-        #ifdef WITH_SYPHON
-        void setup(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, ofxSyphonClient &syphon, ofTrueTypeFont &font);
-        #else
-        void setup(ofPoint point1, ofPoint point2, ofPoint point3, ofPoint point4, ofShader &edgeBlendShader, ofShader &quadMaskShader, ofShader &chromaShader, vector<ofVideoGrabber> &cameras, vector<ofVideoPlayer> &sharedVideos, ofTrueTypeFont &font);
-        #endif
-    #endif
-
 
     void update();
 
