@@ -113,6 +113,8 @@
 
     m_isCameraBGSegmentationOn = false;
 
+    m_MOG2 = cv::BackgroundSubtractorMOG2(50, 16);
+
     imgMultX = 1.0;
     imgMultY = 1.0;
 
@@ -370,6 +372,21 @@ void quad::update()
                 m_cameraTextureHeight = m_cameras[m_currentCameraNumber].height;
 
                 m_previousCameraNumber = m_currentCameraNumber;
+            }
+
+            if(m_isCameraBGSegmentationOn)
+            {
+                m_cameraFGMask.allocate(m_cameras[m_currentCameraNumber].width, m_cameras[m_currentCameraNumber].height, OF_IMAGE_GRAYSCALE);
+                cv::Mat cameraMat = toCv(m_cameras[m_currentCameraNumber].getPixelsRef());
+                cv::cvtColor(cameraMat, cameraMat, cv::COLOR_RGB2GRAY);
+                cv::Mat outputMat = toCv(m_cameraFGMask);
+//                m_MOG2.backgroundRatio = 0.01;
+                m_MOG2(cameraMat, outputMat, -1);
+                // apply median Blur to get rid of noise
+                cv::medianBlur(outputMat, outputMat, 3);
+                // turn every non-black pixel into white
+                cv::threshold(outputMat, outputMat, 1, 255, cv::THRESH_BINARY);
+                m_cameraFGMask.update();
             }
         }
 
@@ -657,6 +674,26 @@ void quad::draw()
                 greenscreenShader->setUniform1f("greenscreenT", (float)thresholdGreenscreen/255.0);
                 m_cameras[m_currentCameraNumber].getTextureReference().draw(0, 0, m_cameraTextureWidth * camMultX, m_cameraTextureHeight * camMultY);
                 greenscreenShader->end();
+            }
+            else if(m_isCameraBGSegmentationOn)
+            {
+//                ofTexture maskTexture;
+//                maskTexture.loadData(m_cameraFGMask.getPixels(), m_cameraFGMask.width, m_cameraFGMask.height, GL_LUMINANCE);
+//                maskShader->begin();
+//                maskShader->setUniformTexture("tex", m_cameras[m_currentCameraNumber].getTextureReference(), 0);
+//                maskShader->setUniformTexture("mask", m_cameraFGMask.getTextureReference(), 1);
+//                maskShader->setUniform1i("mode", 1);
+//                m_cameras[m_currentCameraNumber].getTextureReference().draw(0, 0, m_cameraTextureWidth * camMultX, m_cameraTextureHeight * camMultY);
+//                maskShader->end();
+//                m_cameraFGMask.draw(0, 0, m_cameraTextureWidth * camMultX, m_cameraTextureHeight * camMultY);
+                ofxCvGrayscaleImage grayImage;
+                grayImage.setFromPixels(m_cameraFGMask);
+                kinectContourFinder.findContours(grayImage, 1, m_cameraTextureWidth * m_cameraTextureHeight, 50, false, true);
+                for (size_t i = 0; i < kinectContourFinder.blobs.size(); i++)
+                {
+                    kinectContourFinder.blobs[i].draw(0, 0);
+                }
+
             }
             else
             {

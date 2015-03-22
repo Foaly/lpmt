@@ -139,6 +139,7 @@
 			<Add library="../openFrameworks/addons/ofxOpenCv/libs/opencv/lib/win_cb/libopencv_objdetect231.a" />
 			<Add library="../openFrameworks/addons/ofxOpenCv/libs/opencv/lib/win_cb/libopencv_imgproc231.a" />
 			<Add library="../openFrameworks/addons/ofxOpenCv/libs/opencv/lib/win_cb/libopencv_core231.a" />
+			<Add library="../openFrameworks/addons/ofxOpenCv/libs/opencv/lib/win_cb/libopencv_video231.a" />
 			<Add library="../openFrameworks/addons/ofxTimeline/libs/openal/libs/win_cb/OpenAl32.lib" />
 			<Add library="../openFrameworks/addons/ofxTimeline/libs/sndfile/lib/win_cb/libsndfile-1.lib" />
 			<Add library="../openFrameworks/addons/ofxKinect/libs/libusb-win32/lib/win_cb/libusb.lib" />

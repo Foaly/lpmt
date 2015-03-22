@@ -6,8 +6,10 @@
 #include "ofMain.h"
 #include "ofGraphics.h"
 
-#ifdef WITH_KINECT
 #include "ofxOpenCv.h"
+#include <opencv2/video/background_segm.hpp>
+
+#ifdef WITH_KINECT
 #include "kinectManager.h"
 #endif
 
@@ -75,6 +77,8 @@ public:
     int m_cameraTextureHeight;
     int m_currentCameraNumber;
     int m_previousCameraNumber;
+    ofImage m_cameraFGMask;
+    cv::BackgroundSubtractorMOG2 m_MOG2;
 
 
     int layer;
@@ -278,6 +282,18 @@ public:
     void bezierSurfaceUpdate();
     void drawBezierMarkers();
 };
+
+inline int getCvImageType(int channels, int cvDepth = CV_8U) {
+    return CV_MAKETYPE(cvDepth, channels);
+}
+
+template <class T> inline cv::Mat toCv(ofPixels_<T>& pix) {
+    return cv::Mat(pix.getHeight(), pix.getWidth(), getCvImageType(pix.getNumChannels()), pix.getPixels(), 0);
+}
+
+template <class T> inline cv::Mat toCv(ofBaseHasPixels_<T>& img) {
+    return toCv(img.getPixelsRef());
+}
 
 #endif //QUAD_INCLUDE
 
