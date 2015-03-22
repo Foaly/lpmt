@@ -155,6 +155,7 @@ void GUI::setupPages()
         m_gui.addSlider("camera scale Y", m_dummyFloat, 0.1, 10.0);
         m_gui.addToggle("flip H", m_dummyBool);
         m_gui.addToggle("flip V", m_dummyBool);
+        m_gui.addToggle("Separate background", m_dummyBool);
         m_gui.addColorPicker("cam color", &m_dummyFloat);
         m_gui.addToggle("camera greenscreen", m_dummyBool);
         m_gui.addTitle("Greenscreen");
@@ -303,15 +304,16 @@ void GUI::updatePages(quad& activeQuad)
 
     if (m_app->m_cameras.size() > 0)
     {
-        dynamic_cast<ofxSimpleGuiToggle*>(secondPage.findControlByName("cam on/off"))->value = &activeQuad.camBg;
+        dynamic_cast<ofxSimpleGuiToggle*>(secondPage.findControlByName("cam on/off"))->value = &activeQuad.m_isCameraBGOn;
         if(m_app->m_cameras.size() > 1)
         {
-            dynamic_cast<ofxSimpleGuiComboBox*>(secondPage.findControlByName("select camera"))->m_selectedChoice = &activeQuad.camNumber;
+            dynamic_cast<ofxSimpleGuiComboBox*>(secondPage.findControlByName("select camera"))->m_selectedChoice = &activeQuad.m_currentCameraNumber;
         }
         dynamic_cast<ofxSimpleGuiSliderFloat*>(secondPage.findControlByName("camera scale X"))->value = &activeQuad.camMultX;
         dynamic_cast<ofxSimpleGuiSliderFloat*>(secondPage.findControlByName("camera scale Y"))->value = &activeQuad.camMultY;
         dynamic_cast<ofxSimpleGuiToggle*>(secondPage.findControlByName("flip H"))->value = &activeQuad.camHFlip;
         dynamic_cast<ofxSimpleGuiToggle*>(secondPage.findControlByName("flip V"))->value = &activeQuad.camVFlip;
+        dynamic_cast<ofxSimpleGuiToggle*>(secondPage.findControlByName("Separate background"))->value = &activeQuad.m_isCameraBGSegmentationOn;
         dynamic_cast<ofxSimpleGuiColorPicker*>(secondPage.findControlByName("cam color"))->value = &activeQuad.camColorize.r;
         dynamic_cast<ofxSimpleGuiToggle*>(secondPage.findControlByName("camera greenscreen"))->value = &activeQuad.camGreenscreen;
     }

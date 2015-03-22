@@ -584,7 +584,7 @@ void testApp::prepare()
         }
         #endif
 
-        for (int i=0; i < m_cameras.size(); i++)
+        for (size_t i = 0; i < m_cameras.size(); i++)
         {
             if (m_cameras[i].getHeight() > 0)  // isLoaded check
             {
@@ -1272,13 +1272,13 @@ void testApp::keyPressed(int key)
 
     if(key == '*' && !bTimeline)
     {
-        if(m_cameras[quads[activeQuad].camNumber].getPixelFormat() == OF_PIXELS_RGBA)
+        if(m_cameras[quads[activeQuad].m_currentCameraNumber].getPixelFormat() == OF_PIXELS_RGBA)
         {
-            m_cameras[quads[activeQuad].camNumber].setPixelFormat(OF_PIXELS_BGRA);
+            m_cameras[quads[activeQuad].m_currentCameraNumber].setPixelFormat(OF_PIXELS_BGRA);
         }
-        else if(m_cameras[quads[activeQuad].camNumber].getPixelFormat() == OF_PIXELS_BGRA)
+        else if(m_cameras[quads[activeQuad].m_currentCameraNumber].getPixelFormat() == OF_PIXELS_BGRA)
         {
-            m_cameras[quads[activeQuad].camNumber].setPixelFormat(OF_PIXELS_RGBA);
+            m_cameras[quads[activeQuad].m_currentCameraNumber].setPixelFormat(OF_PIXELS_RGBA);
         }
 
     }

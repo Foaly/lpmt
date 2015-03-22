@@ -32,15 +32,7 @@
     syphClientTex = &syphon;
     #endif
     vids = sharedVideos;
-    cams = cameras;
-    if(cams.size()>0)
-    {
-        camAvailable = true;
-    }
-    else
-    {
-        camAvailable = false;
-    }
+    m_cameras = cameras;
 
     //loads load in some truetype fonts
     //ttf.loadFont("type/frabk.ttf", 11);
@@ -87,8 +79,6 @@
     colorBg = false;
     transBg = false;
     transUp = true;
-    camBg = false;
-    camGreenscreen = false;
     imgBg = false;
     videoBg = false;
     videoLoop = true;
@@ -102,18 +92,26 @@
 
     videoHFlip = false;
     imgHFlip = false;
-    camHFlip = false;
     videoVFlip = false;
     imgVFlip = false;
+
+    // setup the cameras
+    m_isCameraBGOn = false;
+    camGreenscreen = false;
+
+    m_currentCameraNumber = m_previousCameraNumber = 0;
+    camHFlip = false;
     camVFlip = false;
 
-    camNumber = prevCamNumber = 0;
     camMultX = 1;
     camMultY = 1;
-    if (camAvailable)
+    if (m_cameras.size() > 0)
     {
-        setupCamera();
+        m_cameraTextureWidth = m_cameras[m_currentCameraNumber].width;
+        m_cameraTextureHeight = m_cameras[m_currentCameraNumber].height;
     }
+
+    m_isCameraBGSegmentationOn = false;
 
     imgMultX = 1.0;
     imgMultY = 1.0;
@@ -254,11 +252,6 @@ void quad::update()
     {
         sharedVideoId = sharedVideoNum - 1;
 
-        if(camAvailable && camNumber != prevCamNumber)
-        {
-            setupCamera();
-            prevCamNumber = camNumber;
-        }
         //recalculates center of quad
         center = (corners[0] + corners[1] + corners[2] + corners[3]) / 4;
 
@@ -366,6 +359,20 @@ void quad::update()
             slideFramesDuration = (slideshowSpeed * fps);
             slideshowBg = true;
         }
+
+        // camera
+        if(m_isCameraBGOn && m_cameras.size() > 0)
+        {
+            // has the user changed the used camera in the GUI
+            if(m_currentCameraNumber != m_previousCameraNumber)
+            {
+                m_cameraTextureWidth = m_cameras[m_currentCameraNumber].width;
+                m_cameraTextureHeight = m_cameras[m_currentCameraNumber].height;
+
+                m_previousCameraNumber = m_currentCameraNumber;
+            }
+        }
+
 
         // -------------------------
         // finds kinect blobs with OpenCV
@@ -614,24 +621,24 @@ void quad::draw()
 
         // camera ------------------------------------------------------------------------------
         // camera stuff
-        if (camAvailable && camBg && cams[camNumber].width > 0)
+        if (m_cameras.size() > 0 && m_isCameraBGOn && m_cameras[m_currentCameraNumber].width > 0)
         {
             if (camHFlip || camVFlip)
             {
                 glPushMatrix();
                 if(camHFlip && !camVFlip)
                 {
-                    ofTranslate(camWidth*camMultX,0);
+                    ofTranslate(m_cameraTextureWidth*camMultX,0);
                     glScalef(-1,1,1);
                 }
                 else if(camVFlip && !camHFlip)
                 {
-                    ofTranslate(0,camHeight*camMultY);
+                    ofTranslate(0,m_cameraTextureHeight*camMultY);
                     glScalef(1,-1,1);
                 }
                 else
                 {
-                    ofTranslate(camWidth*camMultX,camHeight*camMultY);
+                    ofTranslate(m_cameraTextureWidth*camMultX,m_cameraTextureHeight*camMultY);
                     glScalef(-1,-1,1);
                 }
             }
@@ -639,7 +646,7 @@ void quad::draw()
             if (camGreenscreen)
             {
                 greenscreenShader->begin();
-                greenscreenShader->setUniformTexture("tex", cams[camNumber].getTextureReference(),0 );
+                greenscreenShader->setUniformTexture("tex", m_cameras[m_currentCameraNumber].getTextureReference(),0 );
                 greenscreenShader->setUniform1f("greenscreenR", colorGreenscreen.r);
                 greenscreenShader->setUniform1f("greenscreenG", colorGreenscreen.g);
                 greenscreenShader->setUniform1f("greenscreenB", colorGreenscreen.b);
@@ -648,14 +655,12 @@ void quad::draw()
                 greenscreenShader->setUniform1f("tintG", camColorize.g);
                 greenscreenShader->setUniform1f("tintB", camColorize.b);
                 greenscreenShader->setUniform1f("greenscreenT", (float)thresholdGreenscreen/255.0);
-                cams[camNumber].getTextureReference().draw(0,0,camWidth*camMultX,camHeight*camMultY);
+                m_cameras[m_currentCameraNumber].getTextureReference().draw(0, 0, m_cameraTextureWidth * camMultX, m_cameraTextureHeight * camMultY);
                 greenscreenShader->end();
             }
             else
             {
-                //camTexture.draw(0,0,camWidth*camMultX,camHeight*camMultY); // orig
-                cams[camNumber].getTextureReference().draw(0,0,camWidth*camMultX,camHeight*camMultY);
-
+                m_cameras[m_currentCameraNumber].getTextureReference().draw(0, 0, m_cameraTextureWidth * camMultX, m_cameraTextureHeight * camMultY);
             }
             if (camHFlip || camVFlip)
             {

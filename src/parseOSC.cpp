@@ -1080,21 +1080,21 @@ void testApp::parseOsc()
 
     else if ( m.getAddress() == "/active/cam" )
     {
-        quads[activeQuad].camBg = !quads[activeQuad].camBg;
+        quads[activeQuad].m_isCameraBGOn = !quads[activeQuad].m_isCameraBGOn;
     }
 
     // video on/off
     else if ( m.getAddress() == "/active/cam/show" )
     {
         // argument is int32
-        int osc_quad_camBg = m.getArgAsInt32( 0 );
-        if(osc_quad_camBg == 0)
+        int osc_quad_isCameraBGOn = m.getArgAsInt32( 0 );
+        if(osc_quad_isCameraBGOn == 0)
         {
-            quads[activeQuad].camBg = false;
+            quads[activeQuad].m_isCameraBGOn = false;
         }
-        else if(osc_quad_camBg == 1)
+        else if(osc_quad_isCameraBGOn == 1)
         {
-            quads[activeQuad].camBg = true;
+            quads[activeQuad].m_isCameraBGOn = true;
         }
     }
 

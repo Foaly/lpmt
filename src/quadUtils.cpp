@@ -76,10 +76,3 @@ int quad::getdir (string dir, vector<string> &files)
     closedir(dp);
     return 0;
 }
-
-void quad::setupCamera()
-{
-    camWidth = cams[camNumber].width;
-    camHeight = cams[camNumber].height;
-
-}

@@ -251,9 +251,9 @@ void testApp::copyQuadSettings(int sourceQuad)
         quads[activeQuad].slideshowSpeed = quads[sourceQuad].slideshowSpeed;
         quads[activeQuad].slideFit = quads[sourceQuad].slideFit;
         quads[activeQuad].slideKeepAspect = quads[sourceQuad].slideKeepAspect;
-        quads[activeQuad].camBg = quads[sourceQuad].camBg;
-        quads[activeQuad].camWidth = quads[sourceQuad].camWidth;
-        quads[activeQuad].camHeight = quads[sourceQuad].camHeight;
+        quads[activeQuad].m_isCameraBGOn = quads[sourceQuad].m_isCameraBGOn;
+        quads[activeQuad].m_cameraTextureWidth = quads[sourceQuad].m_cameraTextureWidth;
+        quads[activeQuad].m_cameraTextureHeight = quads[sourceQuad].m_cameraTextureHeight;
         quads[activeQuad].camHFlip = quads[sourceQuad].camHFlip;
         quads[activeQuad].camVFlip = quads[sourceQuad].camVFlip;
         quads[activeQuad].camMultX = quads[sourceQuad].camMultX;

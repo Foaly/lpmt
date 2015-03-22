@@ -57,11 +57,11 @@ void testApp::saveCurrentSettingsToXMLFile(std::string xmlFilePath)
             xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":SLIDESHOW:SPEED",quads[i].slideshowSpeed);
             xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":SLIDESHOW:FIT",quads[i].slideFit);
             xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":SLIDESHOW:KEEP_ASPECT",quads[i].slideKeepAspect);
-            xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":CAM:ACTIVE",quads[i].camBg);
+            xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":CAM:ACTIVE",quads[i].m_isCameraBGOn);
             xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":IMG:ACTIVE",quads[i].imgBg);
             xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:ACTIVE",quads[i].videoBg);
-            xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":CAM:WIDTH",quads[i].camWidth);
-            xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":CAM:HEIGHT",quads[i].camHeight);
+            xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":CAM:WIDTH",quads[i].m_cameraTextureWidth);
+            xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":CAM:HEIGHT",quads[i].m_cameraTextureHeight);
             xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":CAM:MULT_X",quads[i].camMultX);
             xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":CAM:MULT_Y",quads[i].camMultY);
             xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":IMG:MULT_X",quads[i].imgMultX);
@@ -267,9 +267,9 @@ void testApp::loadSettingsFromXMLFile(std::string xmlFilePath)
             quads[i].slideFit = xmlSettingsFile.getValue("QUADS:QUAD_"+ofToString(i)+":SLIDESHOW:FIT", 0);
             quads[i].slideKeepAspect = xmlSettingsFile.getValue("QUADS:QUAD_"+ofToString(i)+":SLIDESHOW:KEEP_ASPECT", 1);
 
-            quads[i].camBg = xmlSettingsFile.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:ACTIVE",0);
-            quads[i].camWidth = xmlSettingsFile.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:WIDTH",0);
-            quads[i].camHeight = xmlSettingsFile.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:HEIGHT",0);
+            quads[i].m_isCameraBGOn = xmlSettingsFile.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:ACTIVE",0);
+            quads[i].m_cameraTextureWidth = xmlSettingsFile.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:WIDTH",0);
+            quads[i].m_cameraTextureHeight = xmlSettingsFile.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:HEIGHT",0);
             quads[i].camHFlip = xmlSettingsFile.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:FLIP:H", 0);
             quads[i].camVFlip = xmlSettingsFile.getValue("QUADS:QUAD_"+ofToString(i)+":CAM:FLIP:V", 0);
 

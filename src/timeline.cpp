@@ -94,8 +94,8 @@ void testApp::timelineTriggerReceived(ofxTLBangEventArgs& trigger){
         else if (tlMsg == "slide_off"){ quads[tlQuad].slideshowBg=false; }
         else if (tlMsg == "slide_new"){ quads[tlQuad].currentSlide+=1; }
         else if (tlMsg == "slide_num" && tlMsgParameter != ""){ quads[tlQuad].currentSlide=ofToInt(tlMsgParameter); }
-        else if (tlMsg == "cam_on"){ quads[tlQuad].camBg=true; }
-        else if (tlMsg == "cam_off"){ quads[tlQuad].camBg=false; }
+        else if (tlMsg == "cam_on"){ quads[tlQuad].m_isCameraBGOn=true; }
+        else if (tlMsg == "cam_off"){ quads[tlQuad].m_isCameraBGOn=false; }
         else if (tlMsg == "kinect_on"){ quads[tlQuad].kinectBg=true; }
         else if (tlMsg == "kinect_off"){ quads[tlQuad].kinectBg=false; }
         else if (tlMsg == "mask_on"){ quads[tlQuad].bMask=true; }

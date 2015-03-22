@@ -64,16 +64,18 @@ public:
     bool bTimelineAlpha;
     bool bTimelineSlideChange;
 
-    int bgAlpha;
-
     // camera stuff
-    bool camAvailable;
+    std::vector<ofVideoGrabber> m_cameras;
+    bool m_isCameraBGOn;
+    bool camGreenscreen;
+    bool m_isCameraBGSegmentationOn;
+    bool camVFlip;
+    bool camHFlip;
+    int m_cameraTextureWidth;
+    int m_cameraTextureHeight;
+    int m_currentCameraNumber;
+    int m_previousCameraNumber;
 
-    int camWidth;
-    int camHeight;
-
-    int camNumber;
-    int prevCamNumber;
 
     int layer;
 
@@ -107,8 +109,6 @@ public:
     bool colorBg;
     bool transBg;
     bool transUp;
-    bool camBg;
-    bool camGreenscreen;
     bool imgBg;
     bool videoBg;
     bool videoSound;
@@ -136,10 +136,8 @@ public:
 
     bool videoHFlip;
     bool imgHFlip;
-    bool camHFlip;
     bool videoVFlip;
     bool imgVFlip;
-    bool camVFlip;
     bool edgeBlendBool;
 
     bool bBlendModes;
@@ -169,7 +167,6 @@ public:
     //vector<string> slideshows;
     vector<string> slidesnames;
     vector<ofImage> slides;
-    vector<ofVideoGrabber> cams;
     vector<ofVideoPlayer> vids;
 
     string bgImg;
@@ -280,10 +277,6 @@ public:
     void bezierSurfaceSetup();
     void bezierSurfaceUpdate();
     void drawBezierMarkers();
-
-    void setupCamera();
-
-
 };
 
 #endif //QUAD_INCLUDE
