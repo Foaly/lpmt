@@ -8,9 +8,10 @@ class Util
 public:
     static const float EPSILON;
 
-    static bool pointInTriangle2D(ofPoint vertex1, ofPoint vertex2, ofPoint vertex3, ofPoint point);
-    static ofPoint scalePointToPixel(const ofPoint& point);
+    static bool pointInTriangle2D(const ofPoint& vertex1, const ofPoint& vertex2, const ofPoint& vertex3, const ofPoint& point);
 
+    static ofPoint scalePointToPixel(const ofPoint& point);
+    static ofPoint normalizePoint(const ofPoint& point);
 };
 
 #endif // UTIL_INCLUDE

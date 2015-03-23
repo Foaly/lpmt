@@ -1352,149 +1352,148 @@ void testApp::mouseMoved(int x, int y)
     {
         float smallestDist = 1.0;
         m_selectedCorner = -1;
+        const ofPoint normalizedMousePosition = Util::normalizePoint(mousePosition);
 
         for(int i = 0; i < 4; i++)
         {
-            float distx = quads[activeQuad].corners[i].x - (float)x/ofGetWidth();
-            float disty = quads[activeQuad].corners[i].y - (float)y/ofGetHeight();
-            float dist  = sqrt( distx * distx + disty * disty);
+            const ofPoint difference = quads[activeQuad].corners[i] - normalizedMousePosition;
+            const float distance = std::sqrt(difference.x * difference.x + difference.y * difference.y);
 
-            if(dist < smallestDist && dist < 0.05) // value for dist threshold can vary between 0.1-0.05, fine tune it
+            if(distance < smallestDist && distance < 0.05) // value for dist threshold can vary between 0.1-0.05, fine tune it
             {
                 m_selectedCorner = i;
-                smallestDist = dist;
+                smallestDist = distance;
             }
         }
 
         if(m_selectedCorner >= 0)
-            {
-                quads[activeQuad].bHighlightCorner = true;
-                quads[activeQuad].highlightedCorner = m_selectedCorner;
-            }
+        {
+            quads[activeQuad].bHighlightCorner = true;
+            quads[activeQuad].highlightedCorner = m_selectedCorner;
+        }
         else
+        {
+            quads[activeQuad].bHighlightCorner = false;
+            quads[activeQuad].highlightedCorner = -1;
+
+            // distance from center
+            const ofPoint differenceFromCenter = quads[activeQuad].center - normalizedMousePosition;
+            const float distanceFromCenter = std::sqrt(differenceFromCenter.x * differenceFromCenter.x + differenceFromCenter.y * differenceFromCenter.y);
+            if(distanceFromCenter < 0.05)
             {
-                quads[activeQuad].bHighlightCorner = false;
-                quads[activeQuad].highlightedCorner = -1;
-
-                // distance from center
-                float distx = quads[activeQuad].center.x - (float)x / ofGetWidth();
-                float disty = quads[activeQuad].center.y - (float)y/ofGetHeight();
-                float dist  = sqrt( distx * distx + disty * disty);
-                if(dist < 0.05)
-                {
-                    quads[activeQuad].bHighlightCenter = true;
-                }
-                else {quads[activeQuad].bHighlightCenter = false;}
-
-                // distance from rotation grab point
-                ofPoint rotationGrabPoint;
-                //rotationGrabPoint.x = (quads[activeQuad].corners[2].x - quads[activeQuad].corners[1].x)/2 + quads[activeQuad].corners[1].x;
-                //rotationGrabPoint.y = (quads[activeQuad].corners[2].y - quads[activeQuad].corners[1].y)/2 + quads[activeQuad].corners[1].y;
-                //rotationGrabPoint = ((quads[activeQuad].corners[2]+quads[activeQuad].corners[1])/2+quads[activeQuad].center)/2;
-                rotationGrabPoint = (quads[activeQuad].center);
-                rotationGrabPoint.x = rotationGrabPoint.x + 0.1;
-                float rotationDistx = rotationGrabPoint.x - (float)x / ofGetWidth();
-                float rotationDisty = rotationGrabPoint.y - (float)y/ofGetHeight();
-                float rotationDist = sqrt(rotationDistx*rotationDistx + rotationDisty*rotationDisty);
-                if(rotationDist < 0.05)
-                {
-                    quads[activeQuad].bHighlightRotation = true;
-                }
-                else {quads[activeQuad].bHighlightRotation = false;}
+                quads[activeQuad].bHighlightCenter = true;
             }
+            else
+            {
+                quads[activeQuad].bHighlightCenter = false;
+            }
+
+            // distance from rotation grab point
+            ofPoint rotationGrabPoint = quads[activeQuad].center;
+            rotationGrabPoint.x += 0.1;
+            const ofPoint rotationDifference = rotationGrabPoint - normalizedMousePosition;
+            const float rotationDistance = std::sqrt(rotationDifference.x * rotationDifference.x + rotationDifference.y * rotationDifference.y);
+            if(rotationDistance < 0.05)
+            {
+                quads[activeQuad].bHighlightRotation = true;
+            }
+            else
+            {
+                quads[activeQuad].bHighlightRotation = false;
+            }
+        }
     }
 
     else if (maskSetup && !gridSetup && !bTimeline)
     {
-        float smallestDist = sqrt( ofGetWidth() * ofGetWidth() + ofGetHeight() * ofGetHeight());;
+        float smallestDist = std::sqrt(ofGetWidth() * ofGetWidth() + ofGetHeight() * ofGetHeight());
         int whichPoint = -1;
-        ofVec3f warped;
+        const ofPoint warpedMousePosition = quads[activeQuad].getWarpedPoint(mousePosition);
+
         for(int i = 0; i < quads[activeQuad].m_maskPoints.size(); i++)
         {
-            warped = quads[activeQuad].getWarpedPoint(mousePosition);
-            float distx = (float)quads[activeQuad].m_maskPoints[i].x * ofGetWidth() - (float)warped.x;
-            float disty = (float)quads[activeQuad].m_maskPoints[i].y * ofGetHeight()- (float)warped.y;
-            float dist  = sqrt( distx * distx + disty * disty);
+            const ofPoint maskPointInPixel = Util::scalePointToPixel(quads[activeQuad].m_maskPoints[i]);
+            const ofPoint difference = maskPointInPixel - warpedMousePosition;
+            const float distance = std::sqrt(difference.x * difference.x + difference.y * difference.y);
 
-            if(dist < smallestDist && dist < 20.0)
+            if(distance < smallestDist && distance < 20.0)
             {
                 whichPoint = i;
-                smallestDist = dist;
+                smallestDist = distance;
             }
         }
+
         if(whichPoint >= 0)
-            {
-                quads[activeQuad].bHighlightMaskPoint = true;
-                quads[activeQuad].highlightedMaskPoint = whichPoint;
-            }
+        {
+            quads[activeQuad].bHighlightMaskPoint = true;
+            quads[activeQuad].highlightedMaskPoint = whichPoint;
+        }
         else
-            {
-                quads[activeQuad].bHighlightMaskPoint = false;
-                quads[activeQuad].highlightedMaskPoint = -1;
-            }
+        {
+            quads[activeQuad].bHighlightMaskPoint = false;
+            quads[activeQuad].highlightedMaskPoint = -1;
+        }
     }
 
     else if (gridSetup && !maskSetup && !bTimeline)
     {
-        float smallestDist = sqrt( ofGetWidth() * ofGetWidth() + ofGetHeight() * ofGetHeight());;
+        float smallestDist = std::sqrt(ofGetWidth() * ofGetWidth() + ofGetHeight() * ofGetHeight());
         int whichPointRow = -1;
         int whichPointCol = -1;
-        ofVec3f warped;
+        const ofPoint warpedMousePosition = quads[activeQuad].getWarpedPoint(mousePosition);
 
         if(quads[activeQuad].bBezier)
         {
-        for(int i = 0; i < 4; i++)
-        {
-            for (int j = 0; j < 4; j++)
+            for(int i = 0; i < 4; i++)
             {
-                warped = quads[activeQuad].getWarpedPoint(mousePosition);
-                float distx = (float)quads[activeQuad].bezierPoints[i][j][0] * ofGetWidth() - (float)warped.x;
-                float disty = (float)quads[activeQuad].bezierPoints[i][j][1] * ofGetHeight() - (float)warped.y;
-                float dist  = sqrt( distx * distx + disty * disty);
-
-                if(dist < smallestDist && dist < 20.0)
+                for (int j = 0; j < 4; j++)
                 {
-                    whichPointRow = i;
-                    whichPointCol = j;
-                    smallestDist = dist;
+                    const ofPoint bezierPointInPixel = Util::scalePointToPixel(ofPoint(quads[activeQuad].bezierPoints[i][j][0], quads[activeQuad].bezierPoints[i][j][1]));
+                    const ofPoint difference = bezierPointInPixel - warpedMousePosition;
+                    float distance = std::sqrt(difference.x * difference.x + difference.y * difference.y);
+
+                    if(distance < smallestDist && distance < 20.0)
+                    {
+                        whichPointRow = i;
+                        whichPointCol = j;
+                        smallestDist = distance;
+                    }
                 }
             }
-        }
         }
 
         else if(quads[activeQuad].bGrid)
         {
-        for(int i = 0; i <= quads[activeQuad].gridRows; i++)
-        {
-            for (int j = 0; j <= quads[activeQuad].gridColumns; j++)
+            for(int i = 0; i <= quads[activeQuad].gridRows; i++)
             {
-                warped = quads[activeQuad].getWarpedPoint(mousePosition);
-                float distx = (float)quads[activeQuad].gridPoints[i][j][0] * ofGetWidth() - (float)warped.x;
-                float disty = (float)quads[activeQuad].gridPoints[i][j][1] * ofGetHeight() - (float)warped.y;
-                float dist  = sqrt( distx * distx + disty * disty);
-
-                if(dist < smallestDist && dist < 20.0)
+                for (int j = 0; j <= quads[activeQuad].gridColumns; j++)
                 {
-                    whichPointRow = i;
-                    whichPointCol = j;
-                    smallestDist = dist;
+                    const ofPoint gridPointInPixel = Util::scalePointToPixel(ofPoint(quads[activeQuad].gridPoints[i][j][0], quads[activeQuad].gridPoints[i][j][1]));
+                    const ofPoint difference = gridPointInPixel - warpedMousePosition;
+                    const float distance = std::sqrt(difference.x * difference.x + difference.y * difference.y);
+
+                    if(distance < smallestDist && distance < 20.0)
+                    {
+                        whichPointRow = i;
+                        whichPointCol = j;
+                        smallestDist = distance;
+                    }
                 }
             }
         }
-        }
 
         if(whichPointRow >= 0)
-            {
-                quads[activeQuad].bHighlightCtrlPoint = true;
-                quads[activeQuad].highlightedCtrlPointRow = whichPointRow;
-                quads[activeQuad].highlightedCtrlPointCol = whichPointCol;
-            }
+        {
+            quads[activeQuad].bHighlightCtrlPoint = true;
+            quads[activeQuad].highlightedCtrlPointRow = whichPointRow;
+            quads[activeQuad].highlightedCtrlPointCol = whichPointCol;
+        }
         else
-            {
-                quads[activeQuad].bHighlightCtrlPoint = false;
-                quads[activeQuad].highlightedCtrlPointRow = -1;
-                quads[activeQuad].highlightedCtrlPointCol = -1;
-            }
+        {
+            quads[activeQuad].bHighlightCtrlPoint = false;
+            quads[activeQuad].highlightedCtrlPointRow = -1;
+            quads[activeQuad].highlightedCtrlPointCol = -1;
+        }
     }
 }
 
@@ -1509,25 +1508,23 @@ void testApp::mouseDragged(int x, int y, int button)
         // check if one of the corners is selected
         if(m_selectedCorner >= 0)
         {
-            float normalizedX = (float)x / ofGetWidth();
-            float normalizedY = (float)y / ofGetHeight();
+            const ofPoint normalizedMouseCoords = Util::normalizePoint(mousePosition);
 
             // move the selected corner
-            quads[activeQuad].corners[m_selectedCorner] = ofPoint(normalizedX, normalizedY);
+            quads[activeQuad].corners[m_selectedCorner] = normalizedMouseCoords;
         }
         else
         {
             // if no corner is selected, check if we can move or rotate whole quad
-            //by dragging its center and rotation mark
+            // by dragging its center and rotation mark
             if(quads[activeQuad].bHighlightCenter) // TODO: verifiy if threshold value is good for distance
             {
-                ofPoint movement(mousePosition - startDrag);
+                const ofPoint normalizedMouseMovement = Util::normalizePoint(mousePosition - startDrag);
 
                 // move the entire quad
                 for(int i = 0; i < 4; i++)
                 {
-                    quads[activeQuad].corners[i].x += ((float)movement.x / ofGetWidth());
-                    quads[activeQuad].corners[i].y += ((float)movement.y / ofGetHeight());
+                    quads[activeQuad].corners[i] += normalizedMouseMovement;
                 }
                 startDrag = mousePosition;
             }
@@ -1536,16 +1533,16 @@ void testApp::mouseDragged(int x, int y, int button)
             {
                 float angle;
                 // quad center in pixel coordinates
-                ofPoint center(quads[activeQuad].center.x * ofGetWidth(), quads[activeQuad].center.y * ofGetHeight());
-                ofPoint vec1 = (startDrag - center);
-                ofPoint vec2 = (mousePosition - center);
+                const ofPoint centerInPixel = Util::scalePointToPixel(quads[activeQuad].center);
+                ofPoint vec1 = (startDrag - centerInPixel);
+                ofPoint vec2 = (mousePosition - centerInPixel);
                 angle = ofRadToDeg(std::atan2(vec2.y, vec2.x) - std::atan2(vec1.y, vec1.x));
 
                 totRotationAngle += angle;
                 rotationSector.clear();
-                rotationSector.addVertex(center);
-                rotationSector.lineTo(center.x+(0.025*ofGetWidth()),center.y);
-                rotationSector.arc(center, 0.025*ofGetWidth(), 0.025*ofGetWidth(), 0, totRotationAngle, 40);
+                rotationSector.addVertex(centerInPixel);
+                rotationSector.lineTo(centerInPixel.x+(0.025*ofGetWidth()),centerInPixel.y);
+                rotationSector.arc(centerInPixel, 0.025*ofGetWidth(), 0.025*ofGetWidth(), 0, totRotationAngle, 40);
                 rotationSector.close();
 
                 ofMatrix4x4 rotation;
@@ -1568,9 +1565,9 @@ void testApp::mouseDragged(int x, int y, int button)
     {
         // in mask setup mode, move the selected mask point
         const ofPoint warpedPoint = quads[activeQuad].getWarpedPoint(mousePosition);
-        const ofPoint normalizedPoint(warpedPoint.x / ofGetWidth(), warpedPoint.y / ofGetHeight());
+        const ofPoint normalizedWarpedPoint = Util::normalizePoint(warpedPoint);
 
-        quads[activeQuad].m_maskPoints[quads[activeQuad].highlightedMaskPoint] = normalizedPoint;
+        quads[activeQuad].m_maskPoints[quads[activeQuad].highlightedMaskPoint] = normalizedWarpedPoint;
     }
 
     else if(gridSetup && quads[activeQuad].bHighlightCtrlPoint && !bTimeline)
@@ -1578,16 +1575,17 @@ void testApp::mouseDragged(int x, int y, int button)
         const int currentRow = quads[activeQuad].highlightedCtrlPointRow;
         const int currentCol = quads[activeQuad].highlightedCtrlPointCol;
         const ofPoint warpedPoint = quads[activeQuad].getWarpedPoint(mousePosition);
+        const ofPoint normalizedWarpedPoint = Util::normalizePoint(warpedPoint);
 
         if(quads[activeQuad].bBezier)
         {
-            quads[activeQuad].bezierPoints[currentRow][currentCol][0] = (float)warpedPoint.x / ofGetWidth();
-            quads[activeQuad].bezierPoints[currentRow][currentCol][1] = (float)warpedPoint.y / ofGetHeight();
+            quads[activeQuad].bezierPoints[currentRow][currentCol][0] = normalizedWarpedPoint.x;
+            quads[activeQuad].bezierPoints[currentRow][currentCol][1] = normalizedWarpedPoint.y;
         }
         else if(quads[activeQuad].bGrid)
         {
-            quads[activeQuad].gridPoints[currentRow][currentCol][0] = (float)warpedPoint.x / ofGetWidth();
-            quads[activeQuad].gridPoints[currentRow][currentCol][1] = (float)warpedPoint.y / ofGetHeight();
+            quads[activeQuad].gridPoints[currentRow][currentCol][0] = normalizedWarpedPoint.x;
+            quads[activeQuad].gridPoints[currentRow][currentCol][1] = normalizedWarpedPoint.y;
         }
     }
 }
@@ -1632,17 +1630,17 @@ void testApp::mousePressed(int x, int y, int button)
             // check if the user clicked on one of active quad's corners and select it
             float smallestDist = 1.0;
             m_selectedCorner = -1;
+            const ofPoint normalizedMousePosition = Util::normalizePoint(mousePosition);
 
             for(int i = 0; i < 4; i++)
             {
-                float distx = quads[activeQuad].corners[i].x - (float)x/ofGetWidth();
-                float disty = quads[activeQuad].corners[i].y - (float)y/ofGetHeight();
-                float dist  = sqrt( distx * distx + disty * disty);
+                const ofPoint difference = quads[activeQuad].corners[i] - normalizedMousePosition;
+                const float distance = std::sqrt(difference.x * difference.x + difference.y * difference.y);
 
-                if(dist < smallestDist && dist < 0.05)
+                if(distance < smallestDist && distance < 0.05)
                 {
                     m_selectedCorner = i;
-                    smallestDist = dist;
+                    smallestDist = distance;
                 }
             }
         }
