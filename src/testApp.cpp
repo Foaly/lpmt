@@ -1343,7 +1343,10 @@ void testApp::keyReleased(int key)
 }
 
 
-//--------------------------------------------------------------
+// The mouseMoved method checks if the mouse is over one of the active quads corners,
+// its center or its rotation mark. It also checks if the mouse is over a mask, bezier or
+// grid marker if the program is in that mode. If the mouse is over one of these markers,
+// the marker get selected.
 void testApp::mouseMoved(int x, int y)
 {
     const ofPoint mousePosition(x, y);
@@ -1497,7 +1500,9 @@ void testApp::mouseMoved(int x, int y)
     }
 }
 
-//--------------------------------------------------------------
+// The mouseDragged method moves or rotates the quad according to the currently
+// selected markers (corners, center, rotation, mask, grid or bezier marker).
+// The markers are selected in the mouseMoved method.
 void testApp::mouseDragged(int x, int y, int button)
 {
     const ofPoint mousePosition(x, y);
@@ -1621,28 +1626,11 @@ void testApp::mousePressed(int x, int y, int button)
         {
             // check if the user double-clicked on a different quad and make it the active one
             unsigned long now = ofGetElapsedTimeMillis();
-            if (m_timeLastClicked != 0 && now - m_timeLastClicked < m_doubleclickTime)
+            if ((now - m_timeLastClicked) < m_doubleclickTime)
             {
                 activateClosestQuad(mousePosition);
             }
             m_timeLastClicked = now;
-
-            // check if the user clicked on one of active quad's corners and select it
-            float smallestDist = 1.0;
-            m_selectedCorner = -1;
-            const ofPoint normalizedMousePosition = Util::normalizePoint(mousePosition);
-
-            for(int i = 0; i < 4; i++)
-            {
-                const ofPoint difference = quads[activeQuad].corners[i] - normalizedMousePosition;
-                const float distance = std::sqrt(difference.x * difference.x + difference.y * difference.y);
-
-                if(distance < smallestDist && distance < 0.05)
-                {
-                    m_selectedCorner = i;
-                    smallestDist = distance;
-                }
-            }
         }
     }
 }
@@ -1654,40 +1642,35 @@ void testApp::mouseReleased()
     rotationSector.clear();
     if (isSetup && !bGui && !bTimeline)
     {
-
-    if (m_selectedCorner >= 0)
-    {
-        // snap detection for near quads
-        float smallestDist = 1.0;
-        int snapQuad = -1;
-        int snapCorner = -1;
-        for (int i = 0; i < 36; i++)
+        if (m_selectedCorner >= 0)
         {
-            if ( i != activeQuad && quads[i].initialized)
+            // snap detection for near quads
+            float smallestDist = 1.0;
+            int snapQuad = -1;
+            int snapCorner = -1;
+            for (int i = 0; i < 36; i++)
             {
-                for(int j = 0; j < 4; j++)
+                if ( i != activeQuad && quads[i].initialized)
                 {
-                    float distx = quads[activeQuad].corners[m_selectedCorner].x - quads[i].corners[j].x;
-                    float disty = quads[activeQuad].corners[m_selectedCorner].y - quads[i].corners[j].y;
-                    float dist = sqrt( distx * distx + disty * disty);
-                    // to tune snapping change dist value inside next if statement
-                    if (dist < smallestDist && dist < 0.0075)
+                    for(int j = 0; j < 4; j++)
                     {
-                        snapQuad = i;
-                        snapCorner = j;
-                        smallestDist = dist;
+                        const ofPoint difference = quads[activeQuad].corners[m_selectedCorner] - quads[i].corners[j];
+                        const float distance = std::sqrt(difference.x * difference.x + difference.y * difference.y);
+                        // to tune snapping change distance value inside next if statement
+                        if (distance < smallestDist && distance < 0.0075)
+                        {
+                            snapQuad = i;
+                            snapCorner = j;
+                            smallestDist = distance;
+                        }
                     }
                 }
             }
+            if (snapQuad >= 0 && snapCorner >= 0 && bSnapOn)
+            {
+                quads[activeQuad].corners[m_selectedCorner] = quads[snapQuad].corners[snapCorner];
+            }
         }
-        if (snapQuad >= 0 && snapCorner >= 0 && bSnapOn)
-        {
-            quads[activeQuad].corners[m_selectedCorner].x = quads[snapQuad].corners[snapCorner].x;
-            quads[activeQuad].corners[m_selectedCorner].y = quads[snapQuad].corners[snapCorner].y;
-        }
-    }
-    m_selectedCorner = -1;
-    quads[activeQuad].bHighlightCorner = false;
     }
 }
 
