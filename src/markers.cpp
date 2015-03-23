@@ -1,4 +1,5 @@
 #include "quad.h"
+#include "Util.hpp"
 
 // Markers -----------------------------------------------------
 
@@ -226,7 +227,7 @@ void quad::drawMaskMarkers()
         ofPolyline contour;
         for(size_t i = 0; i < m_maskPoints.size(); i++)
         {
-            const ofPoint scaledPoint(m_maskPoints[i].x * ofGetWidth(), m_maskPoints[i].y * ofGetHeight());
+            const ofPoint scaledPoint = Util::scalePointToPixel(m_maskPoints[i]);
             const ofPoint warpedPoint = findWarpedPoint(dst, src, scaledPoint);
             contour.addVertex(warpedPoint);
         }
@@ -243,7 +244,7 @@ void quad::drawMaskMarkers()
             ofSetColor(100, 139, 150, 255); // blueish grey
             ofSetLineWidth(1.0);
 
-            const ofPoint scaledPoint(m_maskPoints[i].x * ofGetWidth(), m_maskPoints[i].y * ofGetHeight());
+            const ofPoint scaledPoint = Util::scalePointToPixel(m_maskPoints[i]);
             const ofPoint warpedPoint = findWarpedPoint(dst, src, scaledPoint);
 
             // if the mouse is over the handle fill the inner circle

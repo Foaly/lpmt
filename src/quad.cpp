@@ -1,4 +1,5 @@
 #include "quad.h"
+#include "Util.hpp"
 
 #include <sys/types.h>
 
@@ -824,7 +825,7 @@ void quad::draw()
             ofBeginShape();
             for(size_t i = 0; i < m_maskPoints.size(); i++)
             {
-                ofPoint scaledPoint = ofPoint(m_maskPoints[i].x * ofGetWidth(), m_maskPoints[i].y * ofGetHeight());
+                ofPoint scaledPoint = Util::scalePointToPixel(m_maskPoints[i]);
                 ofVertex(scaledPoint);
             }
             ofEndShape(true);
@@ -1211,7 +1212,7 @@ void quad::draw()
         if (isSetup)
         {
             // transform the normalized coordinates into window pixel coordinates
-            const ofPoint centerInPixel(center.x * ofGetWidth(), center.y * ofGetHeight());
+            const ofPoint centerInPixel = Util::scalePointToPixel(center);
 
             // draw the a string with the surface number a little offset in black, as a drop shadow
             ofSetHexColor(0x000000); // black
@@ -1224,8 +1225,9 @@ void quad::draw()
                     // if the mouse is over a corner, draw two orange circles around it, to show it is draggable
                     ofSetColor(219, 104, 0, 255);
                     ofEnableAlphaBlending();
-                    ofCircle(corners[highlightedCorner].x * ofGetWidth(), corners[highlightedCorner].y * ofGetHeight(), 5);
-                    ofCircle(corners[highlightedCorner].x * ofGetWidth(), corners[highlightedCorner].y * ofGetHeight(), 20);
+                    const ofPoint highlightedCornerInPixel = Util::scalePointToPixel(corners[highlightedCorner]);
+                    ofCircle(highlightedCornerInPixel, 5);
+                    ofCircle(highlightedCornerInPixel, 20);
                     ofDisableAlphaBlending();
                 }
 
