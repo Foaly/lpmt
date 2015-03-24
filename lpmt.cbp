@@ -6,7 +6,7 @@
 		<Option makefile_is_custom="1" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="addons/;src/;build config/;addons/ofxMSAInteractiveObject/src/;addons/ofxMostPixelsEver/src/;addons/ofxNetwork/src/;addons/ofxOsc/src/;addons/ofxSimpleGuiToo/src/Controls/;addons/ofxSimpleGuiToo/src/;addons/ofxThread/src/;addons/ofxXmlSettings/src/;shaders/;addons/ofxMidi/;addons/ofxOpenCv/libs/opencv/include/opencv2/flann/;addons/ofxTimeline/src/;addons/ofxOpenCv/libs/opencv/include/opencv2/core/;addons/ofxOsc/libs/oscpack/src/osc/;addons/ofxKinect/libs/libfreenect/;addons/ofxKinect/src/;addons/ofxOpenCv/src/;addons/ofxTween/src/Easings/;addons/ofxTimeline/libs/sndfile/include/AL/;addons/ofxTimeline/libs/kiss/include/;addons/ofxOpenCv/libs/opencv/include/opencv2/ts/;addons/ofxTween/src/;addons/ofxOpenCv/libs/opencv/include/opencv2/legacy/;addons/ofxXmlSettings/libs/;addons/ofxOpenCv/libs/opencv/include/opencv2/imgproc/;addons/ofxTimecode/src/;addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/;addons/ofxOsc/libs/oscpack/src/ip/;addons/ofxOpenCv/libs/opencv/include/opencv/;addons/ofxOpenCv/libs/opencv/include/opencv2/video/;addons/ofxTimeline/libs/ofOpenALSoundPlayer_TimelineAdditions/;addons/ofxTimeline/libs/kiss/src/;addons/ofxOpenCv/libs/opencv/include/opencv2/highgui/;addons/ofxTextInputField/src/;addons/ofxOpenCv/libs/opencv/include/opencv2/features2d/;addons/ofxOsc/libs/oscpack/src/ip/win32/;addons/ofxMSATimer/src/;addons/ofxOsc/libs/oscpack/src/ip/posix/;addons/ofxOpenCv/libs/opencv/include/opencv2/objdetect/;addons/ofxRange/src/;addons/ofxOpenCv/libs/opencv/include/opencv2/ml/;addons/ofxOpenCv/libs/opencv/include/opencv2/;addons/ofxTimeline/libs/sndfile/include/;addons/ofxOpenCv/libs/opencv/include/opencv2/calib3d/;addons/ofxMidi/src/rtmidi/;addons/ofxOpenCv/libs/opencv/include/opencv2/contrib/;addons/ofxKinect/libs/libusb/osx/include/libusb-1.0/;" />
+		<Option virtualFolders="addons/;src/;build config/;addons/ofxMSAInteractiveObject/src/;addons/ofxMostPixelsEver/src/;addons/ofxNetwork/src/;addons/ofxOsc/src/;addons/ofxSimpleGuiToo/src/Controls/;addons/ofxSimpleGuiToo/src/;addons/ofxXmlSettings/src/;shaders/;addons/ofxMidi/;addons/ofxOpenCv/libs/opencv/include/opencv2/flann/;addons/ofxTimeline/src/;addons/ofxOpenCv/libs/opencv/include/opencv2/core/;addons/ofxOsc/libs/oscpack/src/osc/;addons/ofxKinect/libs/libfreenect/;addons/ofxKinect/src/;addons/ofxOpenCv/src/;addons/ofxTween/src/Easings/;addons/ofxTimeline/libs/kiss/include/;addons/ofxOpenCv/libs/opencv/include/opencv2/ts/;addons/ofxTween/src/;addons/ofxOpenCv/libs/opencv/include/opencv2/legacy/;addons/ofxXmlSettings/libs/;addons/ofxOpenCv/libs/opencv/include/opencv2/imgproc/;addons/ofxTimecode/src/;addons/ofxOpenCv/libs/opencv/include/opencv2/gpu/;addons/ofxOsc/libs/oscpack/src/ip/;addons/ofxOpenCv/libs/opencv/include/opencv/;addons/ofxOpenCv/libs/opencv/include/opencv2/video/;addons/ofxTimeline/libs/ofOpenALSoundPlayer_TimelineAdditions/;addons/ofxTimeline/libs/kiss/src/;addons/ofxOpenCv/libs/opencv/include/opencv2/highgui/;addons/ofxTextInputField/src/;addons/ofxOpenCv/libs/opencv/include/opencv2/features2d/;addons/ofxOsc/libs/oscpack/src/ip/win32/;addons/ofxMSATimer/src/;addons/ofxOsc/libs/oscpack/src/ip/posix/;addons/ofxOpenCv/libs/opencv/include/opencv2/objdetect/;addons/ofxRange/src/;addons/ofxOpenCv/libs/opencv/include/opencv2/ml/;addons/ofxOpenCv/libs/opencv/include/opencv2/;addons/ofxTimeline/libs/sndfile/include/;addons/ofxOpenCv/libs/opencv/include/opencv2/calib3d/;addons/ofxMidi/src/rtmidi/;addons/ofxOpenCv/libs/opencv/include/opencv2/contrib/;addons/ofxKinect/libs/libusb-1.0/include/;addons/ofxTimeline/libs/openal/include/AL/;" />
 		<Build>
 			<Target title="Debug">
 				<Option output="bin/$(PROJECT_NAME)_debug" prefix_auto="1" extension_auto="1" />
@@ -27,46 +27,46 @@
 				<Option projectLinkerOptionsRelation="2" />
 			</Target>
 		</Build>
-		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/cameras.c">
+		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/include/libfreenect.h">
+			<Option virtualFolder="addons/ofxKinect/libs/libfreenect" />
+		</Unit>
+		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/include/libfreenect_registration.h">
+			<Option virtualFolder="addons/ofxKinect/libs/libfreenect" />
+		</Unit>
+		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/src/cameras.c">
 			<Option compilerVar="CC" />
 			<Option virtualFolder="addons/ofxKinect/libs/libfreenect" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/cameras.h">
+		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/src/cameras.h">
 			<Option virtualFolder="addons/ofxKinect/libs/libfreenect" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/core.c">
+		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/src/core.c">
 			<Option compilerVar="CC" />
 			<Option virtualFolder="addons/ofxKinect/libs/libfreenect" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/freenect_internal.h">
+		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/src/freenect_internal.h">
 			<Option virtualFolder="addons/ofxKinect/libs/libfreenect" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/libfreenect-registration.h">
-			<Option virtualFolder="addons/ofxKinect/libs/libfreenect" />
-		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/libfreenect.h">
-			<Option virtualFolder="addons/ofxKinect/libs/libfreenect" />
-		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/registration.c">
+		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/src/registration.c">
 			<Option compilerVar="CC" />
 			<Option virtualFolder="addons/ofxKinect/libs/libfreenect" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/registration.h">
+		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/src/registration.h">
 			<Option virtualFolder="addons/ofxKinect/libs/libfreenect" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/tilt.c">
+		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/src/tilt.c">
 			<Option compilerVar="CC" />
 			<Option virtualFolder="addons/ofxKinect/libs/libfreenect" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/usb_libusb10.c">
+		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/src/usb_libusb10.c">
 			<Option compilerVar="CC" />
 			<Option virtualFolder="addons/ofxKinect/libs/libfreenect" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/usb_libusb10.h">
+		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libfreenect/src/usb_libusb10.h">
 			<Option virtualFolder="addons/ofxKinect/libs/libfreenect" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libusb/osx/include/libusb-1.0/libusb.h">
-			<Option virtualFolder="addons/ofxKinect/libs/libusb/osx/include/libusb-1.0" />
+		<Unit filename="../openFrameworks/addons/ofxKinect/libs/libusb-1.0/include/libusb-1.0/libusb.h">
+			<Option virtualFolder="addons/ofxKinect/libs/libusb-1.0/include" />
 		</Unit>
 		<Unit filename="../openFrameworks/addons/ofxKinect/src/ofxBase3DVideo.h">
 			<Option virtualFolder="addons/ofxKinect/src" />
@@ -88,6 +88,15 @@
 		</Unit>
 		<Unit filename="../openFrameworks/addons/ofxMSATimer/src/ofxMSATimer.h">
 			<Option virtualFolder="addons/ofxMSATimer/src" />
+		</Unit>
+		<Unit filename="../openFrameworks/addons/ofxMidi/libs/rtmidi/RtMidi.cpp">
+			<Option virtualFolder="addons/ofxMidi/src/rtmidi" />
+		</Unit>
+		<Unit filename="../openFrameworks/addons/ofxMidi/libs/rtmidi/RtMidi.h">
+			<Option virtualFolder="addons/ofxMidi/src/rtmidi" />
+		</Unit>
+		<Unit filename="../openFrameworks/addons/ofxMidi/libs/rtmidi/readme">
+			<Option virtualFolder="addons/ofxMidi/src/rtmidi" />
 		</Unit>
 		<Unit filename="../openFrameworks/addons/ofxMidi/src/ofxMidi.h">
 			<Option virtualFolder="addons/ofxMidi/" />
@@ -115,18 +124,6 @@
 		</Unit>
 		<Unit filename="../openFrameworks/addons/ofxMidi/src/ofxMidiTypes.h">
 			<Option virtualFolder="addons/ofxMidi/" />
-		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxMidi/src/rtmidi/RtError.h">
-			<Option virtualFolder="addons/ofxMidi/src/rtmidi" />
-		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxMidi/src/rtmidi/RtMidi.cpp">
-			<Option virtualFolder="addons/ofxMidi/src/rtmidi" />
-		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxMidi/src/rtmidi/RtMidi.h">
-			<Option virtualFolder="addons/ofxMidi/src/rtmidi" />
-		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxMidi/src/rtmidi/readme">
-			<Option virtualFolder="addons/ofxMidi/src/rtmidi" />
 		</Unit>
 		<Unit filename="../openFrameworks/addons/ofxMostPixelsEver/src/ofxMPEClient.cpp">
 			<Option virtualFolder="addons/ofxMostPixelsEver/src" />
@@ -467,9 +464,6 @@
 		<Unit filename="../openFrameworks/addons/ofxOpenCv/src/ofxCvImage.h">
 			<Option virtualFolder="addons/ofxOpenCv/src" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxOpenCv/src/ofxCvMain.h">
-			<Option virtualFolder="addons/ofxOpenCv/src" />
-		</Unit>
 		<Unit filename="../openFrameworks/addons/ofxOpenCv/src/ofxCvShortImage.cpp">
 			<Option virtualFolder="addons/ofxOpenCv/src" />
 		</Unit>
@@ -503,10 +497,10 @@
 		<Unit filename="../openFrameworks/addons/ofxOsc/libs/oscpack/src/ip/posix/UdpSocket.cpp">
 			<Option virtualFolder="addons/ofxOsc/libs/oscpack/src/ip/posix" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxOsc/libs/oscpack/src/ip/win32/NetworkingUtilsWin.cpp">
+		<Unit filename="../openFrameworks/addons/ofxOsc/libs/oscpack/src/ip/win32/NetworkingUtils.cpp">
 			<Option virtualFolder="addons/ofxOsc/libs/oscpack/src/ip/win32" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxOsc/libs/oscpack/src/ip/win32/UdpSocketWin.cpp">
+		<Unit filename="../openFrameworks/addons/ofxOsc/libs/oscpack/src/ip/win32/UdpSocket.cpp">
 			<Option virtualFolder="addons/ofxOsc/libs/oscpack/src/ip/win32" />
 		</Unit>
 		<Unit filename="../openFrameworks/addons/ofxOsc/libs/oscpack/src/osc/MessageMappingOscPacketListener.h">
@@ -629,9 +623,6 @@
 		<Unit filename="../openFrameworks/addons/ofxSimpleGuiToo/src/Controls/ofxSimpleGuiSliderBase.h">
 			<Option virtualFolder="addons/ofxSimpleGuiToo/src/Controls" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxSimpleGuiToo/src/Controls/ofxSimpleGuiSliderBase.h~">
-			<Option virtualFolder="addons/ofxSimpleGuiToo/src/Controls" />
-		</Unit>
 		<Unit filename="../openFrameworks/addons/ofxSimpleGuiToo/src/Controls/ofxSimpleGuiSliderFloat.h">
 			<Option virtualFolder="addons/ofxSimpleGuiToo/src/Controls" />
 		</Unit>
@@ -689,9 +680,6 @@
 		<Unit filename="../openFrameworks/addons/ofxTextInputField/src/ofxTextInputField.h">
 			<Option virtualFolder="addons/ofxTextInputField/src" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxThread/src/ofxThread.h">
-			<Option virtualFolder="addons/ofxThread/src" />
-		</Unit>
 		<Unit filename="../openFrameworks/addons/ofxTimecode/src/ofxTimecode.cpp">
 			<Option virtualFolder="addons/ofxTimecode/src" />
 		</Unit>
@@ -715,29 +703,29 @@
 			<Option compilerVar="CC" />
 			<Option virtualFolder="addons/ofxTimeline/libs/kiss/src" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxTimeline/libs/ofOpenALSoundPlayer_TimelineAdditions/ofOpenALSoundPlayer_TimelineAdditions.cpp">
+		<Unit filename="../openFrameworks/addons/ofxTimeline/libs/ofOpenALSoundPlayer_TimelineAdditions/src/ofOpenALSoundPlayer_TimelineAdditions.cpp">
 			<Option virtualFolder="addons/ofxTimeline/libs/ofOpenALSoundPlayer_TimelineAdditions" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxTimeline/libs/ofOpenALSoundPlayer_TimelineAdditions/ofOpenALSoundPlayer_TimelineAdditions.h">
+		<Unit filename="../openFrameworks/addons/ofxTimeline/libs/ofOpenALSoundPlayer_TimelineAdditions/src/ofOpenALSoundPlayer_TimelineAdditions.h">
 			<Option virtualFolder="addons/ofxTimeline/libs/ofOpenALSoundPlayer_TimelineAdditions" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxTimeline/libs/sndfile/include/AL/al.h">
-			<Option virtualFolder="addons/ofxTimeline/libs/sndfile/include/AL" />
+		<Unit filename="../openFrameworks/addons/ofxTimeline/libs/openal/include/AL/EFX-Util.h">
+			<Option virtualFolder="addons/ofxTimeline/libs/openal/include/AL" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxTimeline/libs/sndfile/include/AL/alc.h">
-			<Option virtualFolder="addons/ofxTimeline/libs/sndfile/include/AL" />
+		<Unit filename="../openFrameworks/addons/ofxTimeline/libs/openal/include/AL/al.h">
+			<Option virtualFolder="addons/ofxTimeline/libs/openal/include/AL" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxTimeline/libs/sndfile/include/AL/alext.h">
-			<Option virtualFolder="addons/ofxTimeline/libs/sndfile/include/AL" />
+		<Unit filename="../openFrameworks/addons/ofxTimeline/libs/openal/include/AL/alc.h">
+			<Option virtualFolder="addons/ofxTimeline/libs/openal/include/AL" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxTimeline/libs/sndfile/include/AL/efx-creative.h">
-			<Option virtualFolder="addons/ofxTimeline/libs/sndfile/include/AL" />
+		<Unit filename="../openFrameworks/addons/ofxTimeline/libs/openal/include/AL/efx-creative.h">
+			<Option virtualFolder="addons/ofxTimeline/libs/openal/include/AL" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxTimeline/libs/sndfile/include/AL/efx-presets.h">
-			<Option virtualFolder="addons/ofxTimeline/libs/sndfile/include/AL" />
+		<Unit filename="../openFrameworks/addons/ofxTimeline/libs/openal/include/AL/efx.h">
+			<Option virtualFolder="addons/ofxTimeline/libs/openal/include/AL" />
 		</Unit>
-		<Unit filename="../openFrameworks/addons/ofxTimeline/libs/sndfile/include/AL/efx.h">
-			<Option virtualFolder="addons/ofxTimeline/libs/sndfile/include/AL" />
+		<Unit filename="../openFrameworks/addons/ofxTimeline/libs/openal/include/AL/xram.h">
+			<Option virtualFolder="addons/ofxTimeline/libs/openal/include/AL" />
 		</Unit>
 		<Unit filename="../openFrameworks/addons/ofxTimeline/libs/sndfile/include/sndfile.h">
 			<Option virtualFolder="addons/ofxTimeline/libs/sndfile/include" />
