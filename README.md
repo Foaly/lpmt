@@ -17,6 +17,7 @@ Highlights of this Fork:
    * A nice header bar with a tab for each page was added (currently selected page is highlighted)
    * Lots of bugfixes in the GUI controls (ComboBox works again, improved selection in ColorPicker and ComboBox, ...)
  * Reviewed all the blend modes to look like GIMP/Photoshop and also added some new ones (see `docs/blendmodes.md`)
+ * In non-gui mode doubleclick anywhere on a quad to activate/select it
  * Fixed a nasty bug, where the mask markers where not displayed correctly after being loaded from a project file to a screen with a different size
  * Let the user choose which camera to use for the snapshot background via the config.xml file (see `docs/config file format.md`)
  * Compiles  with the latest version of openframeworks (0.8.4) and all the addons it depends on
