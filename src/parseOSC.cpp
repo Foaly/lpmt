@@ -1041,9 +1041,10 @@ void testApp::parseOsc()
 
     else if ( m.getAddress() == "/active/video/volume" )
     {
-        // arguments are i
-        int video_volume = m.getArgAsInt32( 0 );
-        quads[activeQuad].videoVolume = video_volume;
+        // arguments are f
+        float videoVolume = m.getArgAsFloat( 0 );
+        ofClamp(videoVolume, 0.f, 1.f);
+        quads[activeQuad].videoVolume = videoVolume;
     }
 
     // video loop

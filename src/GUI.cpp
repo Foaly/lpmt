@@ -136,7 +136,7 @@ void GUI::setupPages()
     m_gui.addToggle("H mirror", m_dummyBool);
     m_gui.addToggle("V mirror", m_dummyBool);
     m_gui.addColorPicker("video color", &m_dummyFloat);
-    m_gui.addSlider("video sound vol", m_dummyInt, 0, 10);
+    m_gui.addSlider("video volume", m_dummyFloat, 0.0, 1.0);
     m_gui.addSlider("video speed", m_dummyFloat, -2.0, 4.0);
     m_gui.addToggle("video loop", m_dummyBool);
     m_gui.addToggle("video greenscreen", m_dummyBool);
@@ -294,7 +294,7 @@ void GUI::updatePages(quad& activeQuad)
     dynamic_cast<ofxSimpleGuiToggle*>(secondPage.findControlByName("H mirror"))->value = &activeQuad.videoHFlip;
     dynamic_cast<ofxSimpleGuiToggle*>(secondPage.findControlByName("V mirror"))->value = &activeQuad.videoVFlip;
     dynamic_cast<ofxSimpleGuiColorPicker*>(secondPage.findControlByName("video color"))->value = &activeQuad.videoColorize.r;
-    dynamic_cast<ofxSimpleGuiSliderInt*>(secondPage.findControlByName("video sound vol"))->value = &activeQuad.videoVolume;
+    dynamic_cast<ofxSimpleGuiSliderFloat*>(secondPage.findControlByName("video volume"))->value = &activeQuad.videoVolume;
     dynamic_cast<ofxSimpleGuiSliderFloat*>(secondPage.findControlByName("video speed"))->value = &activeQuad.videoSpeed;
     dynamic_cast<ofxSimpleGuiToggle*>(secondPage.findControlByName("video loop"))->value = &activeQuad.videoLoop;
     dynamic_cast<ofxSimpleGuiToggle*>(secondPage.findControlByName("video greenscreen"))->value = &activeQuad.videoGreenscreen;

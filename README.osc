@@ -133,6 +133,6 @@ In LPMT data folder you can find a PureData patch as an example, and a TouchOsc 
     /active/video/speed	f	video speed (-2.0 - 2.0)
 
     Video sound volume
-    /active/video/volume	int32	video volume (0-60)
+    /active/video/volume    float    video volume (0.0 - 1.0)
 
 

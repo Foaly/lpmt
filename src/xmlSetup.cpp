@@ -69,7 +69,8 @@ void testApp::saveCurrentSettingsToXMLFile(std::string xmlFilePath)
             xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:MULT_X",quads[i].videoMultX);
             xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:MULT_Y",quads[i].videoMultY);
             xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:SPEED",quads[i].videoSpeed);
-            xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:VOLUME",quads[i].videoVolume);
+            xmlSettingsFile.setValue("QUADS:QUAD_" + ofToString(i) + ":VIDEO:VOLUME", quads[i].videoVolume);
+            ofClamp(quads[i].videoVolume, 0.f, 1.f); // this is to avoid warnings and for backwards compatibility (the value used to be in range 0 - 10)
             xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":VIDEO:LOOP",quads[i].videoLoop);
 
             xmlSettingsFile.setValue("QUADS:QUAD_"+ofToString(i)+":COLOR:R",quads[i].bgColor.r);
