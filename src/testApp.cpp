@@ -137,7 +137,7 @@ void testApp::setup()
     m_timeLastClicked = 0;
 
     // rotation angle for surface-rotation visual feedback
-    totRotationAngle = 0;
+    m_totalRotationAngle = 0;
 
     if(ofGetScreenWidth()>1024 && ofGetScreenHeight()>800 )
     {
@@ -722,7 +722,7 @@ void testApp::draw()
             ofEnableAlphaBlending();
             ofFill();
             ofSetColor(219, 104, 0, 255); // orange
-            rotationSector.draw();
+            m_rotationSector.draw();
             ofNoFill();
             ofDisableAlphaBlending();
 
@@ -1502,6 +1502,7 @@ void testApp::mouseMoved(int x, int y)
 void testApp::mouseDragged(int x, int y, int button)
 {
     const ofPoint mousePosition(x, y);
+    const ofPoint normalizedMouseMovement = Util::normalizePoint(mousePosition - m_lastMousePosition);
 
     // quad movement code
     if (isSetup && !bGui && !maskSetup && !gridSetup && !bTimeline)
@@ -1509,10 +1510,8 @@ void testApp::mouseDragged(int x, int y, int button)
         // check if one of the corners is selected
         if(m_selectedCorner >= 0)
         {
-            const ofPoint normalizedMouseCoords = Util::normalizePoint(mousePosition);
-
             // move the selected corner
-            quads[activeQuad].corners[m_selectedCorner] = normalizedMouseCoords;
+            quads[activeQuad].corners[m_selectedCorner] += normalizedMouseMovement;
         }
         else
         {
@@ -1520,45 +1519,40 @@ void testApp::mouseDragged(int x, int y, int button)
             // by dragging its center and rotation mark
             if(quads[activeQuad].bHighlightCenter) // TODO: verifiy if threshold value is good for distance
             {
-                const ofPoint normalizedMouseMovement = Util::normalizePoint(mousePosition - startDrag);
-
                 // move the entire quad
                 for(int i = 0; i < 4; i++)
                 {
                     quads[activeQuad].corners[i] += normalizedMouseMovement;
                 }
-                startDrag = mousePosition;
             }
             // rotate the quad
             else if(quads[activeQuad].bHighlightRotation)
             {
-                float angle;
-                // quad center in pixel coordinates
+                // compute the angle active quads center and the last two mouse positions
                 const ofPoint centerInPixel = Util::scalePointToPixel(quads[activeQuad].center);
-                ofPoint vec1 = (startDrag - centerInPixel);
-                ofPoint vec2 = (mousePosition - centerInPixel);
-                angle = ofRadToDeg(std::atan2(vec2.y, vec2.x) - std::atan2(vec1.y, vec1.x));
+                const ofPoint vec1 = (m_lastMousePosition - centerInPixel);
+                const ofPoint vec2 = (mousePosition - centerInPixel);
+                const float deltaAngle = ofRadToDeg(std::atan2(vec2.y, vec2.x) - std::atan2(vec1.y, vec1.x));
 
-                totRotationAngle += angle;
-                rotationSector.clear();
-                rotationSector.addVertex(centerInPixel);
-                rotationSector.lineTo(centerInPixel.x+(0.025*ofGetWidth()),centerInPixel.y);
-                rotationSector.arc(centerInPixel, 0.025*ofGetWidth(), 0.025*ofGetWidth(), 0, totRotationAngle, 40);
-                rotationSector.close();
+                // add that angle to the total rotation
+                m_totalRotationAngle += deltaAngle;
+                m_rotationSector.clear();
+                m_rotationSector.addVertex(centerInPixel);
+                m_rotationSector.lineTo(centerInPixel.x + (0.025 * ofGetWidth()), centerInPixel.y);
+                m_rotationSector.arc(centerInPixel, 0.025 * ofGetWidth(), 0.025 * ofGetWidth(), 0, m_totalRotationAngle, 40);
+                m_rotationSector.close();
 
-                ofMatrix4x4 rotation;
-                ofMatrix4x4 centerToOrigin;
-                ofMatrix4x4 originToCenter;
-                ofMatrix4x4 resultingMatrix;
-                centerToOrigin.makeTranslationMatrix(-quads[activeQuad].center);
-                originToCenter.makeTranslationMatrix(quads[activeQuad].center);
-                rotation.makeRotationMatrix(angle, 0, 0, 1);
-                resultingMatrix = centerToOrigin * rotation * originToCenter;
-                for(int i=0; i<4; i++)
+                // compute a matrices for the following steps: 1. move quads center to (0, 0)
+                // 2. rotate quad 3. move quads center back to the original position
+                // combine these matrices and apply them to the active quad
+                const ofMatrix4x4 centerToOriginMatrix = ofMatrix4x4::newTranslationMatrix(-quads[activeQuad].center);
+                const ofMatrix4x4 rotationMatrix = ofMatrix4x4::newRotationMatrix(deltaAngle, 0, 0, 1);
+                const ofMatrix4x4 originToCenterMatrix = ofMatrix4x4::newTranslationMatrix(quads[activeQuad].center);
+                const ofMatrix4x4 resultingMatrix = centerToOriginMatrix * rotationMatrix * originToCenterMatrix;
+                for(int i = 0; i < 4; i++)
                 {
                     quads[activeQuad].corners[i] = quads[activeQuad].corners[i] * resultingMatrix;
                 }
-                startDrag = mousePosition;
             }
         }
     }
@@ -1589,6 +1583,9 @@ void testApp::mouseDragged(int x, int y, int button)
             quads[activeQuad].gridPoints[currentRow][currentCol][1] = normalizedWarpedPoint.y;
         }
     }
+
+    // save the last mouse position for calculating the delta movement
+    m_lastMousePosition = mousePosition;
 }
 
 //--------------------------------------------------------------
@@ -1596,9 +1593,9 @@ void testApp::mousePressed(int x, int y, int button)
 {
     const ofPoint mousePosition(x, y);
 
-    rotationSector.clear();
-    // this is used for dragging the whole quad using its centroid
-    startDrag = mousePosition;
+    m_rotationSector.clear();
+    // this is used for dragging the whole quad or one of it's corners
+    m_lastMousePosition = mousePosition;
 
     // deactivate the splash screen on click
     if (m_isSplashScreenActive)
@@ -1632,11 +1629,11 @@ void testApp::mousePressed(int x, int y, int button)
 }
 
 //--------------------------------------------------------------
-void testApp::mouseReleased()
+void testApp::mouseReleased(int x, int y, int button)
 {
-    totRotationAngle = 0;
-    rotationSector.clear();
-    if (isSetup && !bGui && !bTimeline)
+    m_totalRotationAngle = 0;
+    m_rotationSector.clear();
+    if (bSnapOn && isSetup && !bGui && !bTimeline)
     {
         if (m_selectedCorner >= 0)
         {
@@ -1662,7 +1659,7 @@ void testApp::mouseReleased()
                     }
                 }
             }
-            if (snapQuad >= 0 && snapCorner >= 0 && bSnapOn)
+            if (snapQuad >= 0 && snapCorner >= 0)
             {
                 quads[activeQuad].corners[m_selectedCorner] = quads[snapQuad].corners[snapCorner];
             }

@@ -68,7 +68,7 @@ public:
     void mouseMoved(int x, int y );
     void mouseDragged(int x, int y, int button);
     void mousePressed(int x, int y, int button);
-    void mouseReleased();
+    void mouseReleased(int x, int y, int button);
     void windowResized(int w, int h);
 
     int m_selectedCorner;
@@ -169,8 +169,8 @@ public:
     void loadProject();
     void saveProject();
 
-    float totRotationAngle;
-    ofPolyline rotationSector;
+    float m_totalRotationAngle;
+    ofPolyline m_rotationSector;
 
     // snapshot background variables
     bool m_isSnapshotTextureOn;
@@ -195,7 +195,7 @@ public:
 
     void activateClosestQuad(ofPoint point);
 
-    ofPoint startDrag;
+    ofPoint m_lastMousePosition;
 
 
     // snapshot loading
