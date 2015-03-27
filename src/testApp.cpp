@@ -1512,6 +1512,28 @@ void testApp::mouseDragged(int x, int y, int button)
         {
             // move the selected corner
             quads[activeQuad].corners[m_selectedCorner] += normalizedMouseMovement;
+
+            if((GetKeyState( VK_SHIFT ) & 0x80) > 0)
+            {
+                int previousCorner = m_selectedCorner - 1;
+                int nextCorner = m_selectedCorner + 1;
+
+                if(previousCorner == -1)
+                    previousCorner = 3;
+                if(nextCorner == 4)
+                    nextCorner = 0;
+
+                if(m_selectedCorner == 0 || m_selectedCorner == 2)
+                {
+                    quads[activeQuad].corners[previousCorner].x += normalizedMouseMovement.x;
+                    quads[activeQuad].corners[nextCorner].y += normalizedMouseMovement.y;
+                }
+                else
+                {
+                    quads[activeQuad].corners[previousCorner].y += normalizedMouseMovement.y;
+                    quads[activeQuad].corners[nextCorner].x += normalizedMouseMovement.x;
+                }
+            }
         }
         else
         {
