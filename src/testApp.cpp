@@ -1513,8 +1513,17 @@ void testApp::mouseDragged(int x, int y, int button)
             // move the selected corner
             quads[activeQuad].corners[m_selectedCorner] += normalizedMouseMovement;
 
+            // this is a hack, because ofGetKeyPressed doesn't seem to work on windows with the shift key
+            // on linux the define for the shift key seems to be wrong... I already notified the openFrameworks team
+#ifdef TARGET_WIN
             if((GetKeyState( VK_SHIFT ) & 0x80) > 0)
+#else
+            #define SHIFT_KEY (112 | OF_KEY_MODIFIER)
+            if(ofGetKeyPressed(SHIFT_KEY))
+#endif
+            // scale the whole quad if shift is pressed and one of the corners is moved
             {
+                // get the previous and the next corner
                 int previousCorner = m_selectedCorner - 1;
                 int nextCorner = m_selectedCorner + 1;
 
@@ -1523,6 +1532,7 @@ void testApp::mouseDragged(int x, int y, int button)
                 if(nextCorner == 4)
                     nextCorner = 0;
 
+                // move the previous and next quad accordingly so the quad gets scaled
                 if(m_selectedCorner == 0 || m_selectedCorner == 2)
                 {
                     quads[activeQuad].corners[previousCorner].x += normalizedMouseMovement.x;
